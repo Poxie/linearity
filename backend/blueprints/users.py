@@ -1,7 +1,10 @@
+import os
 from flask import Blueprint, jsonify, request
 from database import database
 from utils.common import create_id
 from time import time
+from cryptography.fernet import Fernet
+f = Fernet(os.getenv('CRYPTOGRAPHY_KEY') or '')
 
 users = Blueprint('users', __name__)
 
@@ -30,10 +33,13 @@ def create_user_route():
     if user:
         return 'Username is unavailable', 409
 
+    # Encrypting password
+    encrypted_password = f.encrypt(password.encode('utf-8'))
+
     # Creating user
     id = create_id('users')
     query = "INSERT INTO users (id, username, password, name, email, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
-    values = (id, username, password, name, email, int(time()))
+    values = (id, username, encrypted_password, name, email, int(time()))
 
     database.insert(query, values)
     
