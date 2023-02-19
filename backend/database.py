@@ -3,7 +3,7 @@ from mysql.connector.errors import DatabaseError
 from mysql.connector import pooling
 from mysql.connector.pooling import MySQLConnectionPool, PooledMySQLConnection
 from mysql.connector.cursor import MySQLCursor
-from typing import Tuple
+from typing import Tuple, Union
 
 MYSQL_DATABASE = os.getenv('MYSQL_DATABASE')
 db_config = {
@@ -50,5 +50,70 @@ class Database():
         connection = self.pool.get_connection()
         cursor = connection._cnx.cursor(dictionary=True, buffered=True)
         return connection, cursor
+
+    def fetch_one(self, query: str, values: Tuple[Union[str, int]]):
+        connection, cursor = self.connection()
+
+        data = None
+        cursor.execute(query, values)
+        
+        if cursor.with_rows:
+            data = cursor.fetchone()
+
+        connection.close()
+        cursor.close()
+        return data
+
+    def fetch_many(self, query: str, values: Tuple[Union[str, int]]):
+        connection, cursor = self.connection()
+
+        data = None
+        cursor.execute(query, values)
+        
+        if cursor.with_rows:
+            data = cursor.fetchmany()
+
+        connection.close()
+        cursor.close()
+        return data
+
+    def insert(self, query: str, values: Tuple[Union[str, int]]):
+        connection, cursor = self.connection()
+
+        data = None
+        cursor.execute(query, values)
+        
+        id = cursor.lastrowid
+
+        connection._cnx.commit()
+        connection.close()
+        cursor.close()
+        return id
+
+    def update(self, query: str, values: Tuple[Union[str, int]]):
+        connection, cursor = self.connection()
+
+        data = None
+        cursor.execute(query, values)
+        
+        rowcount = cursor.rowcount
+
+        connection._cnx.commit()
+        connection.close()
+        cursor.close()
+        return rowcount
+
+    def delete(self, query: str, values: Tuple[Union[str, int]]):
+        connection, cursor = self.connection()
+
+        data = None
+        cursor.execute(query, values)
+        
+        id = cursor.lastrowid
+
+        connection._cnx.commit()
+        connection.close()
+        cursor.close()
+        return id
 
 database = Database()
