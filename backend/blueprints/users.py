@@ -43,6 +43,7 @@ def create_user_route():
 
     database.insert(query, values)
     
+    # Fetching created user
     user = database.fetch_one(
         "SELECT * FROM users WHERE id = %s",
         (id,)
