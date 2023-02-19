@@ -1,13 +1,14 @@
-import os
+import os, jwt
 from flask import Blueprint, jsonify, request
 from database import database
 from utils.common import create_id
 from time import time
 from cryptography.fernet import Fernet
-f = Fernet(os.getenv('CRYPTOGRAPHY_KEY') or '')
+f = Fernet(os.getenv('CRYPTOGRAPHY_KEY'))
 
 users = Blueprint('users', __name__)
 
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 @users.post('/users')
 def create_user_route():
     # Getting request arguments
@@ -43,13 +44,10 @@ def create_user_route():
 
     database.insert(query, values)
     
-    # Fetching created user
-    user = database.fetch_one(
-        "SELECT * FROM users WHERE id = %s",
-        (id,)
-    )
+    # Creating token for user
+    token = jwt.encode({ 'id': id }, JWT_SECRET_KEY)
 
-    return jsonify(user)
+    return jsonify({ 'token': token })
 
 @users.get('/users/<int:user_id>')
 def get_user_route(user_id: int):
