@@ -1,5 +1,5 @@
 from utils.constants import ID_LENGTH
-from utils.abstracts import User, Team, Member, Group
+from utils.abstracts import User, Team, Member, Group, Block
 from database import database
 from random import randrange
 from typing import Union
@@ -48,6 +48,14 @@ def get_group_by_id(id: int) -> Union[None, Group]:
     group = database.fetch_one(query, values)
 
     return group
+
+def get_block_by_id(id: int) -> Union[None, Block]:
+    query = "SELECT * FROM blocks WHERE id = %s"
+    values = (id,)
+
+    block = database.fetch_one(query, values)
+
+    return block
 
 def get_member(id: int, team_íd: int) -> Union[None, Member]:
     query = "SELECT * FROM members WHERE id = %s AND team_id = %s"
