@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
 from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_group_by_id
-from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES
+from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_GROUP_ALLOWED_PROPERTIES
 from database import database
 from time import time
 
@@ -208,6 +208,52 @@ def delete_team_group_route(team_id: int, group_id: int, token_id: int):
     database.delete(query, values)
 
     return jsonify({})
+
+@teams.patch('/teams/<int:team_id>/groups/<int:group_id>')
+@token_required
+def update_team_group_route(team_id: int, group_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if group exists
+    group = get_group_by_id(group_id)
+    if not group:
+        return 'Group not found', 404
+
+    # Checking if user has permission to delete group
+    # Currently only owner has access, but fix with member permissions later
+    if team['owner_id'] != token_id:
+        return 'Unauthorized', 401
+
+    # Deciding what properties should update
+    keys = []
+    values = ()
+    for key, value in request.form.items():
+        # Making sure user can update property
+        if key not in PATCH_GROUP_ALLOWED_PROPERTIES: continue
+
+        # Appending values
+        keys.append(key)
+        values += (value,)
+
+    # If not properties are updated
+    if not len(keys):
+        return 'No properties to update were provided', 400
+
+    # Creating update query
+    keys_str = [f'{key} = %s' for key in keys]
+    query = f"UPDATE groups SET {','.join(keys_str)} WHERE id = %s"
+    values += (group_id,)
+    
+    # Updating team properties
+    database.update(query, values)
+
+    # Fetching updated group
+    group = get_group_by_id(group_id)
+
+    return jsonify(group)
 
 @teams.get('/teams/<int:team_id>/groups')
 @token_required
