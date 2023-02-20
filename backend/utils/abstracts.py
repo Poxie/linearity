@@ -10,6 +10,7 @@ class User(TypedDict):
 
 class Team(TypedDict):
     id: int
+    owner_id: int
     name: str
     description: Union[None, str]
     icon: Union[None, str]
