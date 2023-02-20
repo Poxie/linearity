@@ -41,6 +41,14 @@ def get_team_by_id(id: int) -> Union[None, Team]:
     
     return team
 
+def get_member(id: int, team_íd: int) -> Union[None, Member]:
+    query = "SELECT * FROM members WHERE id = %s AND team_id = %s"
+    values = (id, team_íd)
+
+    member = database.fetch_one(query, values)
+
+    return member
+
 def get_group_by_id(id: int) -> Union[None, Group]:
     query = "SELECT * FROM groups WHERE id = %s"
     values = (id,)
@@ -56,11 +64,3 @@ def get_block_by_id(id: int) -> Union[None, Block]:
     block = database.fetch_one(query, values)
 
     return block
-
-def get_member(id: int, team_íd: int) -> Union[None, Member]:
-    query = "SELECT * FROM members WHERE id = %s AND team_id = %s"
-    values = (id, team_íd)
-
-    member = database.fetch_one(query, values)
-
-    return member

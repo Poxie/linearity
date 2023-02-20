@@ -16,6 +16,11 @@ class Team(TypedDict):
     icon: Union[None, str]
     created_at: int
 
+class Member(TypedDict):
+    id: int
+    team_id: int
+    joined_at: int
+
 class Group(TypedDict):
     id: int
     team_id: int
@@ -30,8 +35,3 @@ class Block(TypedDict):
     description: Union[None, str]
     position: int
     created_at: int
-
-class Member(TypedDict):
-    id: int
-    team_id: int
-    joined_at: int
