@@ -91,10 +91,8 @@ def update_user_route(user_id: int, token_id: int):
 
 @users.get('/users/<int:user_id>')
 def get_user_route(user_id: int):
-    connection, cursor = database.connection()
+    user = get_user_by_id(user_id)
+    if not user:
+        return 'User not found', 404
 
-    cursor.execute('SELECT * FROM users')
-    for user in cursor:
-        print(user)
-
-    return jsonify({ 'user_id': user_id })
+    return jsonify(user)
