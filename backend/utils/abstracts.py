@@ -21,6 +21,7 @@ class Group(TypedDict):
     team_id: int
     name: str
     description: Union[None, str]
+    created_at: int
 
 class Block(TypedDict):
     id: int
