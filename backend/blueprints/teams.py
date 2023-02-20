@@ -276,3 +276,23 @@ def get_team_groups_route(team_id: int, token_id: int):
     groups = database.fetch_many(query, values)
 
     return jsonify(groups)
+
+@teams.get('/teams/<int:team_id>/groups/<int:group_id>')
+@token_required
+def get_team_group_route(team_id: int, group_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, team_id)
+    if not member:
+        return 'Unauthorized', 401
+
+    # Checking if group exists
+    group = get_group_by_id(group_id)
+    if not group:
+        return 'Group not found', 404
+
+    return jsonify(group)
