@@ -74,7 +74,7 @@ class Database():
         cursor.execute(query, values)
         
         if cursor.with_rows:
-            data = cursor.fetchmany()
+            data = cursor.fetchmany(500)
 
         connection.close()
         cursor.close()
