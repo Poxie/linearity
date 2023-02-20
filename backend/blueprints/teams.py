@@ -178,3 +178,25 @@ def add_group_route(team_id: int, token_id: int):
     group = get_group_by_id(id)
 
     return jsonify(group)
+
+@teams.get('/teams/<int:team_id>/groups')
+@token_required
+def get_team_groups_route(team_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, team_id)
+    if not member:
+        return 'Unauthorized', 401
+
+    # Creating fetching query
+    query = "SELECT * FROM groups WHERE team_id = %s"
+    values = (team_id,)
+    
+    # Fetching groups
+    groups = database.fetch_many(query, values)
+
+    return jsonify(groups)
