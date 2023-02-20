@@ -42,7 +42,8 @@ class Database():
             cursor.execute(F'USE {MYSQL_DATABASE}')
 
             # Creating database tables
-            cursor.execute(f'CREATE TABLE IF NOT EXISTS users (id BIGINT(20), username VARCHAR(255), password VARCHAR(255), email VARCHAR(255) DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, avatar VARCHAR(255) DEFAULT NULL, created_at BIGINT(20))')
+            cursor.execute('CREATE TABLE IF NOT EXISTS users (id BIGINT(20), username VARCHAR(255), password VARCHAR(255), email VARCHAR(255) DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, avatar VARCHAR(255) DEFAULT NULL, created_at BIGINT(20))')
+            cursor.execute('CREATE TABLE IF NOT EXISTS teams (id BIGINT(20), owner_id BIGINT(20), name VARCHAR(255), description TEXT DEFAULT NULL, icon VARCHAR(255) DEFAULT NULL, created_at BIGINT(20))')
 
             return self.__create_connection()
 
