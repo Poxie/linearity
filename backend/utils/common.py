@@ -20,3 +20,13 @@ def create_id(table: str) -> int:
         return create_id()
 
     return id
+
+def get_user_by_id(id: int):
+    query = "SELECT * FROM users WHERE id = %s"
+    values = (id,)
+
+    user = database.fetch_one(query, values)
+    if user:
+        del user['password']
+
+    return user
