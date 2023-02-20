@@ -1,6 +1,8 @@
 from utils.constants import ID_LENGTH
+from utils.abstracts import User
 from database import database
 from random import randrange
+from typing import Union
 
 def create_id(table: str) -> int:
     # Creating id
@@ -21,7 +23,7 @@ def create_id(table: str) -> int:
 
     return id
 
-def get_user_by_id(id: int):
+def get_user_by_id(id: int) -> Union[None, User]:
     query = "SELECT * FROM users WHERE id = %s"
     values = (id,)
 
