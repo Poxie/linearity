@@ -1,5 +1,5 @@
 from utils.constants import ID_LENGTH
-from utils.abstracts import User, Team
+from utils.abstracts import User, Team, Member
 from database import database
 from random import randrange
 from typing import Union
@@ -40,3 +40,11 @@ def get_team_by_id(id: int) -> Union[None, Team]:
     team = database.fetch_one(query, values)
     
     return team
+
+def get_member(id: int, team_íd: int) -> Union[None, Member]:
+    query = "SELECT * FROM members WHERE id = %s AND team_id = %s"
+    values = (id, team_íd)
+
+    member = database.fetch_one(query, values)
+
+    return member
