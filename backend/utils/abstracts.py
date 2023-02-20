@@ -16,6 +16,12 @@ class Team(TypedDict):
     icon: Union[None, str]
     created_at: int
 
+class Group(TypedDict):
+    id: int
+    team_id: int
+    name: str
+    description: Union[None, str]
+
 class Member(TypedDict):
     id: int
     team_id: int
