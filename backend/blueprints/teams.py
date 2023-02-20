@@ -70,3 +70,12 @@ def update_team_route(team_id: int, token_id: int):
     team = get_team_by_id(team_id)
 
     return jsonify(team)
+
+# TODO: make sure only members of the team can fetch the team
+@teams.get('/teams/<int:team_id>')
+def get_team_route(team_id: int):
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    return jsonify(team)
