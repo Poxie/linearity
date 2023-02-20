@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
-from utils.common import create_id, get_team_by_id, get_member
+from utils.common import create_id, get_team_by_id, get_user_by_id, get_member
 from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES
 from database import database
 from time import time
@@ -94,6 +94,11 @@ def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
     # Currently only owner is allowed, allow with member permissions later
     if token_id != team['owner_id']:
         return 'Unauthorized', 401
+
+    # Checking if user exists
+    user = get_user_by_id(user_id)
+    if not user:
+        return 'User not found', 404
 
     # Checking if member already exists
     member = get_member(user_id, team_id)
