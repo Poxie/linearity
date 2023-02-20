@@ -14,11 +14,11 @@ JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 @users.post('/users')
 def create_user_route():
     # Getting request arguments
-    args = request.args
-    username = args.get('username')
-    password = args.get('password')
-    name = args.get('name')
-    email = args.get('email')
+    form = request.form
+    username = form.get('username')
+    password = form.get('password')
+    name = form.get('name')
+    email = form.get('email')
 
     # Checking if required arguments are present
     if not username:
@@ -54,18 +54,17 @@ def create_user_route():
 @users.patch('/users/<int:user_id>')
 @token_required
 def update_user_route(user_id: int, token_id: int):
-    print(user_id, token_id)
     # Making sure user is authorized
     if user_id != token_id:
         return 'Unauthorized', 401
 
     # Getting user properties to update
-    args = request.args
+    form = request.form
     
     # Deciding what properties should update
     keys = []
     values = ()
-    for key, value in args.items():
+    for key, value in form.items():
         # Making sure user can update property
         if key not in PATCH_USER_ALLOWED_PROPERTIES: continue
 
