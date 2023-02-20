@@ -1,7 +1,9 @@
 import os, jwt
 from flask import Blueprint, jsonify, request
 from database import database
-from utils.common import create_id
+from utils.common import create_id, get_user_by_id
+from utils.auth import token_required
+from utils.constants import PATCH_USER_ALLOWED_PROPERTIES
 from time import time
 from cryptography.fernet import Fernet
 f = Fernet(os.getenv('CRYPTOGRAPHY_KEY'))
@@ -48,6 +50,45 @@ def create_user_route():
     token = jwt.encode({ 'id': id }, JWT_SECRET_KEY)
 
     return jsonify({ 'token': token })
+
+@users.patch('/users/<int:user_id>')
+@token_required
+def update_user_route(user_id: int, token_id: int):
+    print(user_id, token_id)
+    # Making sure user is authorized
+    if user_id != token_id:
+        return 'Unauthorized', 401
+
+    # Getting user properties to update
+    args = request.args
+    
+    # Deciding what properties should update
+    keys = []
+    values = ()
+    for key, value in args.items():
+        # Making sure user can update property
+        if key not in PATCH_USER_ALLOWED_PROPERTIES: continue
+
+        # Appending values
+        keys.append(key)
+        values += (value,)
+
+    # If not properties are updated
+    if not len(keys):
+        return 'No properties to update were provided', 400
+
+    # Creating update query
+    keys_str = [f'{key} = %s' for key in keys]
+    query = f"UPDATE users SET {','.join(keys_str)} WHERE id = %s"
+    values += (token_id,)
+    
+    # Updating user properties
+    database.update(query, values)
+
+    # Fetching user with new properties
+    user = get_user_by_id(token_id)
+
+    return jsonify(user)
 
 @users.get('/users/<int:user_id>')
 def get_user_route(user_id: int):
