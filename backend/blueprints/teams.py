@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
-from utils.common import create_id, get_team_by_id
+from utils.common import create_id, get_team_by_id, get_member
 from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES
 from database import database
 from time import time
@@ -79,3 +79,33 @@ def get_team_route(team_id: int):
         return 'Team not found', 404
 
     return jsonify(team)
+
+
+@teams.post('/teams/<int:team_id>/members/<int:user_id>')
+@token_required
+def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
+    team = get_team_by_id(team_id)
+
+    # Checking if team exists
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user has access to add member
+    # Currently only owner is allowed, allow with member permissions later
+    if token_id != team['owner_id']:
+        return 'Unauthorized', 401
+
+    # Checking if member already exists
+    member = get_member(user_id, team_id)
+    if member:
+        return 'User is already a member of this team', 409
+
+    # Creating team member
+    query = "INSERT INTO members (id, team_id, joined_at) VALUES (%s, %s, %s)"
+    values = (user_id, team_id, time())
+    database.insert(query, values)
+
+    # Fetching created member
+    member = get_member(user_id, team_id)
+
+    return jsonify(member)
