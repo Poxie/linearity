@@ -114,3 +114,34 @@ def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
     member = get_member(user_id, team_id)
 
     return jsonify(member)
+
+@teams.delete('/teams/<int:team_id>/members/<int:user_id>')
+@token_required
+def remove_member_from_team_route(team_id: int, user_id: int, token_id: int):
+    team = get_team_by_id(team_id)
+
+    # Checking if team exists
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user has access to remove member
+    # Currently only owner is allowed, allow with member permissions later
+    if token_id != team['owner_id']:
+        return 'Unauthorized', 401
+
+    # Checking if user exists
+    user = get_user_by_id(user_id)
+    if not user:
+        return 'User not found', 404
+
+    # Checking if user is a member
+    member = get_member(user_id, team_id)
+    if not member:
+        return 'User is not a member of this team', 409
+
+    # Deleteing team member
+    query = "DELETE FROM members WHERE id = %s AND team_id = %s"
+    values = (user_id, team_id)
+    database.delete(query, values)
+
+    return jsonify({})
