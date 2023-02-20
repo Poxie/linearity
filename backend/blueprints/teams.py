@@ -25,6 +25,11 @@ def create_team_route(token_id: int):
     values = (id, token_id, name, description, icon, time())
     database.insert(query, values)
 
+    # Creating owner member
+    member_query = "INSERT INTO members (id, team_id, joined_at) VALUES (%s, %s, %s)"
+    member_values = (token_id, id, time())
+    database.insert(member_query, member_values)
+
     # Fetching created team
     team = get_team_by_id(id)
 
