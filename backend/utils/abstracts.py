@@ -7,3 +7,10 @@ class User(TypedDict):
     email: Union[None, str]
     avatar: Union[None, str]
     created_at: int
+
+class Team(TypedDict):
+    id: int
+    name: str
+    description: Union[None, str]
+    icon: Union[None, str]
+    created_at: int
