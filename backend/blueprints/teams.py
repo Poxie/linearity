@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
-from utils.common import create_id, get_team_by_id, get_user_by_id, get_member
+from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_group_by_id
 from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES
 from database import database
 from time import time
@@ -145,3 +145,36 @@ def remove_member_from_team_route(team_id: int, user_id: int, token_id: int):
     database.delete(query, values)
 
     return jsonify({})
+
+
+@teams.post('/teams/<int:team_id>/groups')
+@token_required
+def add_group_route(team_id: int, token_id: int):
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user has access to create group
+    # Currently only owner is allowed, allow with member permissions later
+    if token_id != team['owner_id']:
+        return 'Unauthorized', 401
+
+    # Getting group attributes from form
+    form = request.form
+    name = form.get('name')
+    description = form.get('description')
+
+    # Checking if name is present
+    if not name:
+        return 'Name is a required argument', 400
+
+    # Creating group
+    id = create_id('groups')
+    query = "INSERT INTO groups (id, team_id, name, description, created_at) VALUES (%s, %s, %s, %s, %s)"
+    values = (id, team_id, name, description, time())
+    database.insert(query, values)
+
+    # Fetching created group
+    group = get_group_by_id(id)
+
+    return jsonify(group)
