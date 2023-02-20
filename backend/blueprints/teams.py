@@ -184,6 +184,31 @@ def add_group_route(team_id: int, token_id: int):
 
     return jsonify(group)
 
+@teams.delete('/teams/<int:team_id>/groups/<int:group_id>')
+@token_required
+def delete_team_group_route(team_id: int, group_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if group exists
+    group = get_group_by_id(group_id)
+    if not group:
+        return 'Group not found', 404
+
+    # Checking if user has permission to delete group
+    # Currently only owner has access, but fix with member permissions later
+    if team['owner_id'] != token_id:
+        return 'Unauthorized', 401
+
+    # Deleting group; make sure to delete data related to group as well in the future
+    query = "DELETE FROM groups WHERE id = %s"
+    values = (group_id,)
+    database.delete(query, values)
+
+    return jsonify({})
+
 @teams.get('/teams/<int:team_id>/groups')
 @token_required
 def get_team_groups_route(team_id: int, token_id: int):
