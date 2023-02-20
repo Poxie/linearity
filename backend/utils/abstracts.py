@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Union, TypedDict
 
-@dataclass
 class User(TypedDict):
     id: int
     username: str
