@@ -45,3 +45,23 @@ def create_group_block_route(group_id: int, token_id: int):
     block = get_block_by_id(id)
 
     return jsonify(block)
+
+@groups.get('/groups/<int:group_id>/blocks')
+@token_required
+def get_group_blocks_route(group_id: int, token_id: int):
+    # Checking if group exists
+    group = get_group_by_id(group_id)
+    if not group:
+        return 'Group not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, group['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Fetching blocks
+    query = "SELECT * FROM blocks WHERE group_id = %s"
+    values = (group_id,)
+    blocks = database.fetch_many(query, values)
+
+    return jsonify(blocks)
