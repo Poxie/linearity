@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from utils.common import get_task_by_id, get_member, get_assignee, get_task_assignees
+from utils.common import get_task_by_id, get_member, get_assignee, get_task_assignees, get_label_by_id, get_task_label
 from utils.auth import token_required
 from database import database
 from time import time
@@ -125,3 +125,33 @@ def get_task_assignees_route(task_id: int, token_id: int):
     assignees = get_task_assignees(task_id)
 
     return jsonify(assignees)
+
+@tasks.put('/tasks/<int:task_id>/labels/<int:label_id>')
+@token_required
+def add_task_label_route(task_id: int, label_id: int, token_id: int):
+    # Checking if task exists
+    task = get_task_by_id(task_id)
+    if not task:
+        return 'Task not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, task['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Checking if label exists
+    label = get_label_by_id(label_id)
+    if not label:
+        return 'Label not found', 404
+
+    # Checking if label is already added
+    task_label = get_task_label(label_id, task_id)
+    if task_label:
+        return 'Task already has this label', 400
+
+    # Adding label to task
+    query = "INSERT INTO task_labels (id, task_id, added_at) VALUES (%s, %s, %s)"
+    values = (label_id, task_id, time())
+    database.insert(query, values)
+
+    return '', 201

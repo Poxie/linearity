@@ -44,6 +44,11 @@ class Label(TypedDict):
     color: str
     created_at: int
 
+class TaskLabel(TypedDict):
+    id: int
+    task_id: int
+    added_at: int
+
 class Task(TypedDict):
     id: int
     team_id: int

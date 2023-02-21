@@ -50,6 +50,7 @@ class Database():
             cursor.execute('CREATE TABLE IF NOT EXISTS tasks (id BIGINT(20), team_id BIGINT(20), group_id BIGINT(20), title VARCHAR(255), description TEXT DEFAULT NULL, position BIGINT(20), created_at BIGINT(20))')
             cursor.execute('CREATE TABLE IF NOT EXISTS assignees (id BIGINT(20), task_id BIGINT(20), assigned_at BIGINT(20))')
             cursor.execute('CREATE TABLE IF NOT EXISTS labels (id BIGINT(20), team_id BIGINT(20), name VARCHAR(255), color VARCHAR(255) DEFAULT NULL, created_at BIGINT(20))')
+            cursor.execute('CREATE TABLE IF NOT EXISTS task_labels (id BIGINT(20), task_id BIGINT(20), added_at BIGINT(20))')
 
             return self.__create_connection()
 
