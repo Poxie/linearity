@@ -21,6 +21,42 @@ def get_block_route(block_id: int, token_id: int):
 
     return jsonify(block)
 
+@blocks.delete('/blocks/<int:block_id>')
+@token_required
+def remove_block_route(block_id: int, token_id: int):
+    # Checking if block exists
+    block = get_block_by_id(block_id)
+    if not block:
+        return 'Block not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, block['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Creating global query value
+    values = (block_id,)
+
+    # Fetching tasks related to block
+    task_query = "SELECT id FROM tasks WHERE block_id = %s"
+    task_rows = database.fetch_many(task_query, values)
+    task_ids = [task_row['id'] for task_row in task_rows]
+
+    # Creating assignee delete query
+    assignee_where_clause = ' or '.join([f'task_id = {task_id}' for task_id in task_ids])
+    assignee_query = f"DELETE FROM assignees WHERE {assignee_where_clause}"
+
+    # Creating block and task delete queries
+    block_query = "DELETE FROM blocks WHERE id = %s"
+    task_query = "DELETE FROM tasks WHERE block_id = %s"
+
+    # Deleting block and its related fields
+    database.delete(assignee_query, ())
+    database.delete(block_query, values)
+    database.delete(task_query, values)
+
+    return jsonify({})
+
 @blocks.post('/blocks/<int:block_id>/tasks')
 @token_required
 def add_group_task_route(block_id: int, token_id: int):
