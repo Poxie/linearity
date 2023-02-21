@@ -2,7 +2,7 @@ from utils.constants import ID_LENGTH
 from utils.abstracts import User, Team, Member, Group, Block, Task, Assignee, Label, TaskLabel
 from database import database
 from random import randrange
-from typing import Union
+from typing import Union, List
 
 def create_id(table: str) -> int:
     # Creating id
@@ -86,6 +86,7 @@ def get_task_by_id(id: int, hydrate=False) -> Union[None, Task]:
     # Hydrating task
     if hydrate and task:
         task['assignees'] = get_task_assignees(id)
+        task['labels'] = get_task_labels(id)
 
     return task
 
@@ -135,3 +136,20 @@ def get_task_label(label_id: int, task_id: int) -> Union[None, TaskLabel]:
     label = database.fetch_one(query, values)
 
     return label
+
+def get_task_labels(task_id: int) -> Union[None, List[TaskLabel]]:
+    query = """
+    SELECT
+        lt.*,
+        l.*
+    FROM task_labels lt
+        JOIN labels l ON l.id = lt.id
+    WHERE
+        task_id = %s
+    GROUP BY
+        task_id
+    """
+    values = (task_id,)
+    labels = database.fetch_many(query, values)
+
+    return labels
