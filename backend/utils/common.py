@@ -1,5 +1,5 @@
 from utils.constants import ID_LENGTH
-from utils.abstracts import User, Team, Member, Group, Block, Task
+from utils.abstracts import User, Team, Member, Group, Block, Task, Assignee
 from database import database
 from random import randrange
 from typing import Union
@@ -72,3 +72,11 @@ def get_task_by_id(id: int) -> Union[None, Task]:
     task = database.fetch_one(query, values)
 
     return task
+
+def get_assignee(user_id: int, task_id: int) -> Union[None, Assignee]:
+    query = "SELECT * FROM assignees WHERE id = %s AND task_id = %s"
+    values = (user_id, task_id)
+
+    assignee = database.fetch_one(query, values)
+
+    return assignee
