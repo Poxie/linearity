@@ -37,8 +37,8 @@ def add_group_task_route(block_id: int, token_id: int):
 
     # Inserting task
     id = create_id('tasks')
-    query = "INSERT INTO tasks (id, block_id, title, description, position, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
-    values = (id, block_id, title, description, position, time())
+    query = "INSERT INTO tasks (id, team_id, block_id, title, description, position, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    values = (id, block['team_id'], block_id, title, description, position, time())
     database.insert(query, values)
 
     # Fetching inserted task

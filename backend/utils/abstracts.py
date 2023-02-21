@@ -39,12 +39,13 @@ class Block(TypedDict):
 
 class Label(TypedDict):
     id: int
-    team_id: str
+    team_id: int
     name: str
     color: str
 
 class Task(TypedDict):
     id: int
+    team_id: int
     block_id: int
     title: str
     description: Union[None, str]
