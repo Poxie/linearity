@@ -80,3 +80,26 @@ def get_assignee(user_id: int, task_id: int) -> Union[None, Assignee]:
     assignee = database.fetch_one(query, values)
 
     return assignee
+
+def get_task_assignees(task_id: int) -> Union[None, User]:
+    query = """
+    SELECT
+        a.*,
+        u.*
+    FROM assignees a
+        JOIN users u ON u.id = a.id
+    WHERE
+        a.task_id = %s
+    GROUP BY
+        a.id
+    """
+    values = (task_id,)
+
+    # Fetching assignees
+    assignees = database.fetch_many(query, values)
+    
+    # Making sure to remove confidential information
+    for assignee in assignees:
+        del assignee['password']
+
+    return assignees

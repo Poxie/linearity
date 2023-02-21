@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from utils.common import get_task_by_id, get_member, get_assignee
+from utils.common import get_task_by_id, get_member, get_assignee, get_task_assignees
 from utils.auth import token_required
 from database import database
 from time import time
@@ -69,3 +69,21 @@ def remove_assignee_route(task_id: int, assignee_id: int, token_id: int):
     database.delete(query, values)
 
     return jsonify({})
+
+@tasks.get('/tasks/<int:task_id>/assignees')
+@token_required
+def get_task_assignees_route(task_id: int, token_id: int):
+    # Checking if task exists
+    task = get_task_by_id(task_id)
+    if not task:
+        return 'Task not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, task['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Fetching assignees
+    assignees = get_task_assignees(task_id)
+
+    return jsonify(assignees)
