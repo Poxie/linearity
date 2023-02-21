@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union, TypedDict
+from typing import Union, TypedDict, List
 
 class User(TypedDict):
     id: int
@@ -35,3 +35,24 @@ class Block(TypedDict):
     description: Union[None, str]
     position: int
     created_at: int
+
+class Label(TypedDict):
+    id: int
+    team_id: str
+    name: str
+    color: str
+
+class Task(TypedDict):
+    id: int
+    block_id: int
+    title: str
+    description: Union[None, str]
+    position: int
+    created_at: int
+    labels: List[Label]
+    assignees: List[User]
+
+class Assignee(TypedDict):
+    id: int
+    task_id: int
+    assgined_at: int
