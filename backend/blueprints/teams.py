@@ -329,3 +329,23 @@ def add_team_label_route(team_id: int, token_id: int):
     label = get_label_by_id(id)
 
     return jsonify(label)
+
+@teams.get('/teams/<int:team_id>/labels')
+@token_required
+def get_team_labels_route(team_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, team_id)
+    if not member:
+        return 'Unauthorized', 401
+
+    # Fetching labels
+    query = "SELECT * FROM labels WHERE team_id = %s"
+    values = (team_id,)
+    labels = database.fetch_many(query, values)
+
+    return jsonify(labels)
