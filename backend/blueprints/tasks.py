@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils.common import get_task_by_id, get_member, get_assignee, get_task_assignees, get_label_by_id, get_task_label
+from utils.constants import PATCH_TASK_ALLOWED_PROPERTIES
 from utils.auth import token_required
 from database import database
 from time import time
@@ -46,6 +47,47 @@ def remove_task_route(task_id: int, token_id: int):
     database.delete(label_query, values)
 
     return jsonify({})
+
+@tasks.patch('/tasks/<int:task_id>')
+@token_required
+def update_task_route(task_id: int, token_id: int):
+    # Checking if task exists
+    task = get_task_by_id(task_id)
+    if not task:
+        return 'Task not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, task['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Deciding what properties should update
+    keys = []
+    values = ()
+    for key, value in request.form.items():
+        # Making sure user can update property
+        if key not in PATCH_TASK_ALLOWED_PROPERTIES: continue
+
+        # Appending values
+        keys.append(key)
+        values += (value,)
+
+    # If not properties are updated
+    if not len(keys):
+        return 'No properties to update were provided', 400
+
+    # Creating update query
+    keys_str = [f'{key} = %s' for key in keys]
+    query = f"UPDATE tasks SET {','.join(keys_str)} WHERE id = %s"
+    values += (task_id,)
+    
+    # Updating task properties
+    database.update(query, values)
+
+    # Fetching new task
+    task = get_task_by_id(task_id)
+    
+    return jsonify(task)
 
 @tasks.put('/tasks/<int:task_id>/assignees/<int:assignee_id>')
 @token_required
