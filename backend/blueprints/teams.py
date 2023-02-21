@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
-from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_group_by_id
+from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_label_by_id, get_group_by_id
 from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_GROUP_ALLOWED_PROPERTIES
 from database import database
 from time import time
@@ -296,3 +296,36 @@ def get_team_group_route(team_id: int, group_id: int, token_id: int):
         return 'Group not found', 404
 
     return jsonify(group)
+
+@teams.post('/teams/<int:team_id>/labels')
+@token_required
+def add_team_label_route(team_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, team_id)
+    if not member:
+        return 'Unauthorized', 401
+
+    # Fetching label information
+    form = request.form
+    name = form.get('name')
+    color = form.get('color')
+
+    # Checking if name is presnet
+    if not name:
+        return 'Name is a required argument', 400
+
+    # Creating label
+    id = create_id('labels')
+    query = "INSERT INTO labels (id, team_id, name, color, created_at) VALUES (%s, %s, %s, %s, %s)"
+    values = (id, team_id, name, color, time())
+    database.insert(query, values)
+
+    # Fetching created label
+    label = get_label_by_id(id)
+
+    return jsonify(label)

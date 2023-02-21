@@ -42,6 +42,7 @@ class Label(TypedDict):
     team_id: int
     name: str
     color: str
+    created_at: int
 
 class Task(TypedDict):
     id: int
