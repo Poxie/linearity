@@ -155,3 +155,33 @@ def add_task_label_route(task_id: int, label_id: int, token_id: int):
     database.insert(query, values)
 
     return '', 201
+
+@tasks.delete('/tasks/<int:task_id>/labels/<int:label_id>')
+@token_required
+def remove_task_label_route(task_id: int, label_id: int, token_id: int):
+     # Checking if task exists
+    task = get_task_by_id(task_id)
+    if not task:
+        return 'Task not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, task['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Checking if label exists
+    label = get_label_by_id(label_id)
+    if not label:
+        return 'Label not found', 404
+
+    # Checking if task has label
+    task_label = get_task_label(label_id, task_id)
+    if not task_label:
+        return 'Task does not have this label', 400
+
+    # Removing label from task
+    query = "DELETE FROM task_labels WHERE id = %s AND task_id = %s"
+    values = (label_id, task_id)
+    database.delete(query, values)
+
+    return '', 204
