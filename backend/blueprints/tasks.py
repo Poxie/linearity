@@ -4,8 +4,22 @@ from utils.auth import token_required
 from database import database
 from time import time
 
-
 tasks = Blueprint('tasks', __name__)
+
+@tasks.get('/tasks/<int:task_id>')
+@token_required
+def get_group_task_route(task_id: int, token_id: int):
+    # Checking if task exists
+    task = get_task_by_id(task_id)
+    if not task:
+        return 'Task not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, task['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    return jsonify(task)
 
 @tasks.put('/tasks/<int:task_id>/assignees/<int:assignee_id>')
 @token_required
