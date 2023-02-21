@@ -37,11 +37,13 @@ def remove_task_route(task_id: int, token_id: int):
     # Creating delete queries
     task_query = "DELETE FROM tasks WHERE id = %s"
     assignees_query = "DELETE FROM assignees WHERE task_id = %s"
+    label_query = "DELETE FROM task_labels WHERE task_id = %s"
     values = (task_id,)
 
     # Deleting task
     database.delete(task_query, values)
     database.delete(assignees_query, values)
+    database.delete(label_query, values)
 
     return jsonify({})
 

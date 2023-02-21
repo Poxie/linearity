@@ -42,9 +42,10 @@ def remove_block_route(block_id: int, token_id: int):
     task_rows = database.fetch_many(task_query, values)
     task_ids = [task_row['id'] for task_row in task_rows]
 
-    # Creating assignee delete query
-    assignee_where_clause = ' or '.join([f'task_id = {task_id}' for task_id in task_ids])
-    assignee_query = f"DELETE FROM assignees WHERE {assignee_where_clause}"
+    # Creating delete query for block's tasks
+    where_clause = ' or '.join([f'task_id = {task_id}' for task_id in task_ids])
+    assignee_query = f"DELETE FROM assignees WHERE {where_clause}"
+    label_query = f"DELETE FROM task_labels WHERE {where_clause}"
 
     # Creating block and task delete queries
     block_query = "DELETE FROM blocks WHERE id = %s"
@@ -52,6 +53,7 @@ def remove_block_route(block_id: int, token_id: int):
 
     # Deleting block and its related fields
     database.delete(assignee_query, ())
+    database.delete(label_query, ())
     database.delete(block_query, values)
     database.delete(task_query, values)
 
