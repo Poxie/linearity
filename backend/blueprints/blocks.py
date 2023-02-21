@@ -45,3 +45,23 @@ def add_group_task_route(block_id: int, token_id: int):
     task = get_task_by_id(id)
 
     return jsonify(task)
+
+@blocks.get('/blocks/<int:block_id>/tasks/<int:task_id>')
+@token_required
+def get_group_task_route(block_id: int, task_id: int, token_id: int):
+    # Checking if block exists
+    block = get_block_by_id(block_id)
+    if not block:
+        return 'Block not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, block['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Checking if t ask exists
+    task = get_task_by_id(task_id)
+    if not task:
+        return 'Task not found', 404
+
+    return jsonify(task)
