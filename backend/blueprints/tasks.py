@@ -10,7 +10,7 @@ tasks = Blueprint('tasks', __name__)
 @token_required
 def get_group_task_route(task_id: int, token_id: int):
     # Checking if task exists
-    task = get_task_by_id(task_id)
+    task = get_task_by_id(task_id, hydrate=True)
     if not task:
         return 'Task not found', 404
 

@@ -67,7 +67,7 @@ def get_block_tasks_route(block_id: int, token_id: int):
     # Fetching task specific data
     tasks = []
     for task_id in task_ids:
-        task = get_task_by_id(task_id['id'])
+        task = get_task_by_id(task_id['id'], hydrate=True)
         if task:
             tasks.append(task)
     

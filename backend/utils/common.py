@@ -65,11 +65,15 @@ def get_block_by_id(id: int) -> Union[None, Block]:
 
     return block
 
-def get_task_by_id(id: int) -> Union[None, Task]:
+def get_task_by_id(id: int, hydrate=False) -> Union[None, Task]:
+    # Fetching task
     query = "SELECT * FROM tasks WHERE id = %s"
     values = (id,)
-
     task = database.fetch_one(query, values)
+
+    # Hydrating task
+    if hydrate and task:
+        task['assignees'] = get_task_assignees(id)
 
     return task
 
