@@ -57,11 +57,23 @@ def get_group_by_id(id: int) -> Union[None, Group]:
 
     return group
 
-def get_block_by_id(id: int) -> Union[None, Block]:
+def get_block_by_id(id: int, hydrate=False) -> Union[None, Block]:
     query = "SELECT * FROM blocks WHERE id = %s"
     values = (id,)
-
     block = database.fetch_one(query, values)
+
+    # Hydrating block
+    if block and hydrate:
+        task_query = "SELECT id FROM tasks WHERE block_id = %s"
+        task_values = (id,)
+        task_rows = database.fetch_many(task_query, task_values)
+
+        # Hydrating block with hydrated tasks
+        block['tasks'] = []
+        for task_row in task_rows:
+            task = get_task_by_id(task_row['id'], hydrate=True)
+            if task:
+                block['tasks'].append(task)
 
     return block
 

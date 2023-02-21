@@ -6,6 +6,21 @@ from time import time
 
 blocks = Blueprint('blocks', __name__)
 
+@blocks.get('/blocks/<int:block_id>')
+@token_required
+def get_block_route(block_id: int, token_id: int):
+    # Checking if block exists
+    block = get_block_by_id(block_id, hydrate=True)
+    if not block:
+        return 'Block not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, block['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    return jsonify(block)
+
 @blocks.post('/blocks/<int:block_id>/tasks')
 @token_required
 def add_group_task_route(block_id: int, token_id: int):
