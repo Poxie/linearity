@@ -31,6 +31,7 @@ class Group(TypedDict):
 class Block(TypedDict):
     id: int
     group_id: int
+    team_id: int
     name: str
     description: Union[None, str]
     position: int

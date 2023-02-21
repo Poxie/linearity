@@ -37,8 +37,8 @@ def create_group_block_route(group_id: int, token_id: int):
 
     # Creating block
     id = create_id('blocks')
-    query = "INSERT INTO blocks (id, group_id, name, description, position, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
-    values = (id, group_id, name, description, position, time())
+    query = "INSERT INTO blocks (id, team_id, group_id, name, description, position, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    values = (id, group['team_id'], group_id, name, description, position, time())
     database.insert(query, values)
 
     # Fetching created block
