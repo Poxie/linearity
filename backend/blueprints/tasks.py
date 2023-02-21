@@ -21,6 +21,30 @@ def get_group_task_route(task_id: int, token_id: int):
 
     return jsonify(task)
 
+@tasks.delete('/tasks/<int:task_id>')
+@token_required
+def remove_task_route(task_id: int, token_id: int):
+    # Checking if task exists
+    task = get_task_by_id(task_id)
+    if not task:
+        return 'Task not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, task['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Creating delete queries
+    task_query = "DELETE FROM tasks WHERE id = %s"
+    assignees_query = "DELETE FROM assignees WHERE task_id = %s"
+    values = (task_id,)
+
+    # Deleting task
+    database.delete(task_query, values)
+    database.delete(assignees_query, values)
+
+    return jsonify({})
+
 @tasks.put('/tasks/<int:task_id>/assignees/<int:assignee_id>')
 @token_required
 def add_assignee_route(task_id: int, assignee_id: int, token_id: int):
