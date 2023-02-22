@@ -151,7 +151,11 @@ def update_block_tasks_route(block_id: int, token_id: int):
     for task in tasks:
         # Making sure position and id are present
         if 'position' not in task or 'id' not in task:
-            continue
+            return 'Position or id is missing in task', 400
+
+        # Checking if position and id are numbers
+        if not isinstance(task['position'], int) or not isinstance(task['id'], int):
+            return 'Position and id must be a number', 400
 
         keys.append([task['id'], task['position']])
 
