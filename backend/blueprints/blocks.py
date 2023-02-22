@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
-from utils.common import create_id, get_block_by_id, get_member, get_task_by_id
+from utils.common import create_id, get_block_by_id, get_member, get_task_by_id, get_block_tasks
 from database import database
 from time import time
+import json
 
 blocks = Blueprint('blocks', __name__)
 
@@ -112,16 +113,55 @@ def get_block_tasks_route(block_id: int, token_id: int):
     if not member:
         return 'Unauthorized', 401
 
-    # Fetching task ids
-    query = "SELECT id FROM tasks WHERE block_id = %s"
-    values = (block_id,)
-    task_ids = database.fetch_many(query, values)
-
-    # Fetching task specific data
-    tasks = []
-    for task_id in task_ids:
-        task = get_task_by_id(task_id['id'], hydrate=True)
-        if task:
-            tasks.append(task)
+    # Fetching tasks
+    tasks = get_block_tasks(block_id)
     
+    return jsonify(tasks)
+
+@blocks.patch('/blocks/<int:block_id>/tasks')
+@token_required
+def update_block_tasks_route(block_id: int, token_id: int):
+    # Checking if block exists
+    block = get_block_by_id(block_id)
+    if not block:
+        return 'Block not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, block['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Getting tasks to update
+    # Will be formated like [{position: 0, id: task_id_one}, {position: 1, id: task_id_two}]
+    # Which updates the position of these tasks
+    tasks = request.form.get('tasks')
+
+    # Checking if tasks are present
+    if not tasks:
+        return 'Tasks is a required argument', 400
+
+    # Attempting to load tasks list from string
+    try:
+        tasks = json.loads(tasks)
+    except Exception as e:
+        return 'Tasks list is malformed', 400
+
+    # Deciding how to update task position
+    keys = []
+    for task in tasks:
+        # Making sure position and id are present
+        if 'position' not in task or 'id' not in task:
+            continue
+
+        keys.append([task['id'], task['position']])
+
+    # Updating task positions
+    for key in keys:
+        query = "UPDATE tasks SET position = %s WHERE id = %s"
+        values = (key[1], key[0])
+        database.update(query, values)
+
+    # Fetching new tasks
+    tasks = get_block_tasks(block_id)
+
     return jsonify(tasks)
