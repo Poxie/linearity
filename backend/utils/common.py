@@ -57,6 +57,14 @@ def get_group_by_id(id: int) -> Union[None, Group]:
 
     return group
 
+def get_group_blocks(group_id: int) -> Union[None, List[Block]]:
+    query = "SELECT * FROM blocks WHERE group_id = %s"
+    values = (group_id,)
+
+    blocks = database.fetch_many(query, values)
+
+    return blocks
+
 def get_block_by_id(id: int, hydrate=False) -> Union[None, Block]:
     query = "SELECT * FROM blocks WHERE id = %s"
     values = (id,)
