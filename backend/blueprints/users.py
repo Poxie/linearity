@@ -124,3 +124,12 @@ def login_route():
     token = jwt.encode({ 'id': user['id'] }, os.getenv('JWT_SECRET_KEY'))
 
     return jsonify({ 'token': token })
+
+@users.get('/users/@me')
+@token_required
+def get_me_route(token_id: int):
+    user = get_user_by_id(token_id)
+    if not user:
+        return 'User not found', 404
+
+    return jsonify(user)
