@@ -5,13 +5,15 @@ import { GoogleIcon } from '@/assets/icons/GoogleIcon';
 import { PasswordIcon } from "@/assets/icons/PasswordIcon";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { useAuth } from "@/contexts/auth";
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 import Button from "../button";
 import { Input } from "../input";
 
 export default function Login() {
     const { setToken } = useAuth();
 
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -27,13 +29,18 @@ export default function Login() {
         formData.append('username', username);
         formData.append('password', password);
 
+        setLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/login`, {
             method: 'POST',
             body: formData
         });
+
         if(!res.ok) {
-            console.log(await res.text());
-            return;
+            setLoading(false);
+            if([409, 404].includes(res.status)) {
+                return setError(await res.text());
+            }
+            return setError('Something went wrong.');
         }
 
         const { token } = await res.json();
@@ -62,9 +69,15 @@ export default function Login() {
                     onSubmit={() => login()}
                     ref={passwordRef}
                 />
-                <Button>
-                    Sign in
+                <Button buttonType={'submit'} disabled={loading}>
+                    {loading ? 'Logging in...' : 'Sign in'}
                 </Button>
+
+                {error && (
+                    <span>
+                        {error}
+                    </span>
+                )}
 
                 <div className={styles['form-options']}>
                     <button type="button">
@@ -78,7 +91,7 @@ export default function Login() {
             <span className={styles.divider}>
                 OR
             </span>
-            <Button type={'hollow'}>
+            <Button type={'hollow'} disabled={loading}>
                 <GoogleIcon />
                 Continue with Google
             </Button>
