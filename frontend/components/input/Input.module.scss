@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border: 1px solid var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+
+    input, textarea {
+        width: 100%;
+        font-size: 14px;
+        outline: none;
+        padding: var(--spacing-secondary);
+        border: none;
+        background-color: transparent;
+        color: var(--text-primary);
+    }
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    svg {
+        width: 14px;
+        height: 14px;
+        margin: var(--spacing-secondary);
+        fill: var(--text-secondary);
+        display: block;
+    }
+    label+textarea, label+input {
+        padding-left: 0;
+    }
+}
