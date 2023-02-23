@@ -1,6 +1,7 @@
 import { Roboto } from '@next/font/google';
 import AuthProvider from '@/contexts/auth'
 import './globals.scss'
+import { Providers } from './providers';
 
 const roboto = Roboto({ weight: ['400', '500', '700'] });
 
@@ -17,9 +18,9 @@ export default function RootLayout({
       */}
       <head />
       <body className={roboto.className}>
-        <AuthProvider>
+        <Providers>
           {children}
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   )
