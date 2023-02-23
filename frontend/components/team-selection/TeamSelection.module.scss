@@ -2,10 +2,9 @@
     padding: var(--spacing-primary) 0;
     display: grid;
     gap: var(--spacing-primary);
-
-    >* {
-        padding: 0 var(--spacing-primary);
-    }
+}
+.header, .list {
+    padding: 0 var(--spacing-primary);
 }
 .header {
     margin: 0;
@@ -36,4 +35,10 @@
     padding: var(--spacing-secondary);
     border-radius: var(--border-radius-secondary);
     transition: background-color .2s, transform .2s;
+}
+.footer {
+    padding: 0 var(--spacing-primary);
+}
+.footer-button {
+    padding: var(--spacing-secondary) 100px;
 }

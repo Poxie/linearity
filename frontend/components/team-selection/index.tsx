@@ -1,7 +1,9 @@
 "use client";
 
+import { AddIcon } from '@/assets/icons/AddIcon';
 import { useAppSelector } from '@/redux/store';
 import { selectTeams } from '@/redux/teams/selectors';
+import Button from '../button';
 import styles from './TeamSelection.module.scss';
 import { TeamSelectionItem } from './TeamSelectionItem';
 
@@ -31,6 +33,14 @@ export const TeamSelection = () => {
                         <TeamSelectionItem team={team} key={team.id} />
                     ))}
                 </ul>
+            </div>
+            <div className={styles['footer']}>
+                <Button
+                    icon={<AddIcon />}
+                    className={styles['footer-button']}
+                >
+                    Add Team
+                </Button>
             </div>
         </div>
     )
