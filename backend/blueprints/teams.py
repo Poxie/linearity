@@ -184,77 +184,6 @@ def add_group_route(team_id: int, token_id: int):
 
     return jsonify(group)
 
-@teams.delete('/teams/<int:team_id>/groups/<int:group_id>')
-@token_required
-def delete_team_group_route(team_id: int, group_id: int, token_id: int):
-    # Checking if team exists
-    team = get_team_by_id(team_id)
-    if not team:
-        return 'Team not found', 404
-
-    # Checking if group exists
-    group = get_group_by_id(group_id)
-    if not group:
-        return 'Group not found', 404
-
-    # Checking if user has permission to delete group
-    # Currently only owner has access, but fix with member permissions later
-    if team['owner_id'] != token_id:
-        return 'Unauthorized', 401
-
-    # Deleting group; make sure to delete data related to group as well in the future
-    query = "DELETE FROM groups WHERE id = %s"
-    values = (group_id,)
-    database.delete(query, values)
-
-    return jsonify({})
-
-@teams.patch('/teams/<int:team_id>/groups/<int:group_id>')
-@token_required
-def update_team_group_route(team_id: int, group_id: int, token_id: int):
-    # Checking if team exists
-    team = get_team_by_id(team_id)
-    if not team:
-        return 'Team not found', 404
-
-    # Checking if group exists
-    group = get_group_by_id(group_id)
-    if not group:
-        return 'Group not found', 404
-
-    # Checking if user has permission to delete group
-    # Currently only owner has access, but fix with member permissions later
-    if team['owner_id'] != token_id:
-        return 'Unauthorized', 401
-
-    # Deciding what properties should update
-    keys = []
-    values = ()
-    for key, value in request.form.items():
-        # Making sure user can update property
-        if key not in PATCH_GROUP_ALLOWED_PROPERTIES: continue
-
-        # Appending values
-        keys.append(key)
-        values += (value,)
-
-    # If not properties are updated
-    if not len(keys):
-        return 'No properties to update were provided', 400
-
-    # Creating update query
-    keys_str = [f'{key} = %s' for key in keys]
-    query = f"UPDATE groups SET {','.join(keys_str)} WHERE id = %s"
-    values += (group_id,)
-    
-    # Updating team properties
-    database.update(query, values)
-
-    # Fetching updated group
-    group = get_group_by_id(group_id)
-
-    return jsonify(group)
-
 @teams.get('/teams/<int:team_id>/groups')
 @token_required
 def get_team_groups_route(team_id: int, token_id: int):
@@ -276,26 +205,6 @@ def get_team_groups_route(team_id: int, token_id: int):
     groups = database.fetch_many(query, values)
 
     return jsonify(groups)
-
-@teams.get('/teams/<int:team_id>/groups/<int:group_id>')
-@token_required
-def get_team_group_route(team_id: int, group_id: int, token_id: int):
-    # Checking if team exists
-    team = get_team_by_id(team_id)
-    if not team:
-        return 'Team not found', 404
-
-    # Checking if user is part of team
-    member = get_member(token_id, team_id)
-    if not member:
-        return 'Unauthorized', 401
-
-    # Checking if group exists
-    group = get_group_by_id(group_id)
-    if not group:
-        return 'Group not found', 404
-
-    return jsonify(group)
 
 @teams.post('/teams/<int:team_id>/labels')
 @token_required
