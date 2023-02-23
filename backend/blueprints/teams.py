@@ -76,15 +76,20 @@ def update_team_route(team_id: int, token_id: int):
 
     return jsonify(team)
 
-# TODO: make sure only members of the team can fetch the team
 @teams.get('/teams/<int:team_id>')
-def get_team_route(team_id: int):
+@token_required
+def get_team_route(team_id: int, token_id: int):
+    # Checking if team exists
     team = get_team_by_id(team_id)
     if not team:
         return 'Team not found', 404
 
-    return jsonify(team)
+    # Checking if user is part of team
+    member = get_member(token_id, team_id)
+    if not member:
+        return 'Unauthorized', 401
 
+    return jsonify(team)
 
 @teams.post('/teams/<int:team_id>/members/<int:user_id>')
 @token_required
