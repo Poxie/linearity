@@ -5,12 +5,14 @@ import { GoogleIcon } from '@/assets/icons/GoogleIcon';
 import { PasswordIcon } from "@/assets/icons/PasswordIcon";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { useAuth } from "@/contexts/auth";
+import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from "react";
 import Button from "../button";
 import { Input } from "../input";
 
 export default function Login() {
     const { setToken } = useAuth();
+    const { push } = useRouter();
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -52,6 +54,9 @@ export default function Login() {
         
         localStorage.token = token;
         setToken(token);
+
+        // Redirecting user to app
+        push('/t');
     }
 
     return(
