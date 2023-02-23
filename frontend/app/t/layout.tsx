@@ -1,5 +1,7 @@
 "use client";
 
+import styles from './page.module.scss';
+import { Sidebar } from "@/components/sidebar";
 import { useAuth } from "@/contexts/auth";
 import { useAppDispatch } from "@/redux/store";
 import { setTeams } from "@/redux/teams/actions";
@@ -34,8 +36,11 @@ export default function TeamLayout({
     if(loading) return null;
 
     return (
-        <main>
-            {children}
-        </main>
+        <div className={styles['app-content']}>
+            <Sidebar />
+            <main className={styles['container']}>
+                {children}
+            </main>
+        </div>
     )
 }

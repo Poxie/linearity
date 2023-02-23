@@ -1,0 +1,9 @@
+.app-content {
+    display: flex;
+    height: calc(100vh - var(--navbar-height));
+}
+.container {
+    flex: 1;
+    background-color: var(--background-secondary);
+    border-top-left-radius: var(--border-radius-primary);
+}
