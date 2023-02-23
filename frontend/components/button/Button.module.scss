@@ -11,9 +11,10 @@
     justify-content: center;
 
     svg {
-        width: 16px;
-        height: 16px;
-        margin-right: var(--spacing-secondary);
+        width: 14px;
+        height: 14px;
+        margin-right: var(--spacing-tertiary);
+        fill: var(--text-secondary);
         display: block;
         transition: fill .2s;
     }
@@ -39,10 +40,11 @@
     }
     &.hollow {
         border-color: var(--background-tertiary);
-        color: var(--text-primary);
+        color: var(--text-secondary);
+        font-weight: 400;
 
         &:hover:not(.disabled) {
-            background-color: var(--background-tertiary);
+            background-color: var(--background-secondary);
         }
     }
 
