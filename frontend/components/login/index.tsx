@@ -20,21 +20,25 @@ export default function Login() {
     const login = async (e?: FormEvent) => {
         e?.preventDefault();
 
+        // Fetching and checking if username and password have values
         const username = usernameRef.current?.value;
         const password = passwordRef.current?.value;
 
         if(!username || !password) return;
 
+        // Creating request data
         const formData = new FormData();
         formData.append('username', username);
         formData.append('password', password);
 
+        // Checking if username and password match
         setLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/login`, {
             method: 'POST',
             body: formData
         });
 
+        // If error occurs, display error to user
         if(!res.ok) {
             setLoading(false);
             if([409, 404].includes(res.status)) {
@@ -43,6 +47,7 @@ export default function Login() {
             return setError('Something went wrong.');
         }
 
+        // Getting and updating user token
         const { token } = await res.json();
         
         localStorage.token = token;
