@@ -18,6 +18,20 @@
         gap: var(--spacing-secondary);
     }
 }
+.form-options {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        color: var(--text-secondary);
+        transition: color .2s;
+        font-size: 12.5px;
+
+        &:hover {
+            color: var(--text-primary);
+        }
+    }
+}
 .divider {
     text-align: center;
     position: relative;

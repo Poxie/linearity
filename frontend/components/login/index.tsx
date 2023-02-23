@@ -65,6 +65,15 @@ export default function Login() {
                 <Button>
                     Sign in
                 </Button>
+
+                <div className={styles['form-options']}>
+                    <button type="button">
+                        Forgot your password?
+                    </button>
+                    <button type="button">
+                        Don't have an account? Create one here.
+                    </button>
+                </div>
             </form>
             <span className={styles.divider}>
                 OR
