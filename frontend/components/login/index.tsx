@@ -1,6 +1,7 @@
 "use client";
 
 import styles from '@/app/login/page.module.scss';
+import { GoogleIcon } from '@/assets/icons/GoogleIcon';
 import { PasswordIcon } from "@/assets/icons/PasswordIcon";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { useAuth } from "@/contexts/auth";
@@ -65,6 +66,13 @@ export default function Login() {
                     Sign in
                 </Button>
             </form>
+            <span className={styles.divider}>
+                OR
+            </span>
+            <Button type={'hollow'}>
+                <GoogleIcon />
+                Continue with Google
+            </Button>
         </main>
     )
 }
