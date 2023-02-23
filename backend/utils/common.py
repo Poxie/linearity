@@ -45,9 +45,13 @@ def get_user_teams(user_id: int) -> Union[None, List[Team]]:
     query = """
     SELECT
         t.*,
-        m.team_id
+        m.team_id,
+        COUNT(DISTINCT ms.id) AS member_count,
+        COUNT(DISTINCT ts.id) AS task_count
     FROM teams t
         LEFT JOIN members m ON m.id = %s
+        LEFT JOIN members ms ON ms.team_id = m.team_id
+        LEFT JOIN tasks ts ON ts.team_id = m.team_id
     WHERE
         m.team_id = t.id
     GROUP BY 
