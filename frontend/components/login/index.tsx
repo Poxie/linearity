@@ -56,7 +56,7 @@ export default function Login() {
         setToken(token);
 
         // Redirecting user to app
-        push('/t');
+        push('/teams');
     }
 
     return(
