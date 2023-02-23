@@ -41,6 +41,24 @@ def get_team_by_id(id: int) -> Union[None, Team]:
     
     return team
 
+def get_user_teams(user_id: int) -> Union[None, List[Team]]:
+    query = """
+    SELECT
+        t.*,
+        m.team_id
+    FROM teams t
+        LEFT JOIN members m ON m.id = %s
+    WHERE
+        m.team_id = t.id
+    GROUP BY 
+        m.team_id
+    """
+    values = (user_id,)
+
+    teams = database.fetch_many(query, values)
+
+    return teams
+
 def get_member(id: int, team_íd: int) -> Union[None, Member]:
     query = "SELECT * FROM members WHERE id = %s AND team_id = %s"
     values = (id, team_íd)

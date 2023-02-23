@@ -1,7 +1,7 @@
 import os, jwt
 from flask import Blueprint, jsonify, request
 from database import database
-from utils.common import create_id, get_user_by_id
+from utils.common import create_id, get_user_by_id, get_user_teams
 from utils.auth import token_required
 from utils.constants import PATCH_USER_ALLOWED_PROPERTIES
 from time import time
@@ -96,6 +96,23 @@ def get_user_route(user_id: int):
         return 'User not found', 404
 
     return jsonify(user)
+
+@users.get('/users/<int:user_id>/teams')
+@token_required
+def get_user_teams_route(user_id: int, token_id: int):
+    # Checking if user is authorized
+    if user_id != token_id:
+        return 'Unauthorized', 401
+
+    # Checking if user exists
+    user = get_user_by_id(user_id)
+    if not user:
+        return 'Unauthorized'
+
+    # Fetching teams
+    teams = get_user_teams(token_id)
+
+    return jsonify(teams)
 
 @users.post('/login')
 def login_route():
