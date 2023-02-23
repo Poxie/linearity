@@ -13,4 +13,6 @@ export interface Team {
     name: string;
     owner_id: number;
     team_id: number;
+    member_count: number;
+    task_count: number;
 }

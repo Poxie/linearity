@@ -1,3 +1,3 @@
-export default function Team() {
-    return null;
-}
+import { TeamSelection } from "@/components/team-selection";
+
+export default TeamSelection;
