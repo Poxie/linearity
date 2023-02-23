@@ -96,3 +96,31 @@ def get_user_route(user_id: int):
         return 'User not found', 404
 
     return jsonify(user)
+
+@users.post('/login')
+def login_route():
+    form = request.form
+    username = form.get('username')
+    password = form.get('password')
+
+    # Making sure username and password are present
+    if not username:
+        return 'Username is a required argument', 400
+    if not password:
+        return 'Password is a required argument', 400
+    
+    # Checking if there is a user by that username
+    query = "SELECT * FROM users WHERE username = %s"
+    values = (username,)
+    user = database.fetch_one(query, values)
+    if not user:
+        return 'User not found', 404
+
+    # Checking if passwords match
+    if f.decrypt(user['password']) != password.encode('utf-8'):
+        return 'Login details are incorrect', 409
+
+    # Creating user access token
+    token = jwt.encode({ 'id': user['id'] }, os.getenv('JWT_SECRET_KEY'))
+
+    return jsonify({ 'token': token })
