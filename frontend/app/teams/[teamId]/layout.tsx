@@ -1,5 +1,6 @@
 "use client";
 
+import { TeamHeader } from "@/components/team-header";
 import { useAuth } from "@/contexts/auth";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setTeamGroups } from "@/redux/teams/actions";
@@ -15,11 +16,9 @@ export default function TeamLayout({
     children: React.ReactNode;
     params: { teamId?: string };
 }) {
-    console.log()
     const { get, token } = useAuth();
 
     const dispatch = useAppDispatch();
-    const groups = useAppSelector(state => selectTeamGroups(state, parseInt(teamId || '0')));
 
     useEffect(() => {
         console.log(teamId, token);
@@ -35,6 +34,7 @@ export default function TeamLayout({
 
     return(
         <main>
+            <TeamHeader teamId={parseInt(teamId)} />
             {children}
         </main>
     )

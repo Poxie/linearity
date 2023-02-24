@@ -10,3 +10,8 @@ export const selectTeamGroups = createSelector(
     [selectGroups, selectId],
     (groups, teamId) => groups[teamId]
 )
+
+export const selectTeamById = createSelector(
+    [selectTeams, selectId],
+    (teams, teamId) => teams.find(team => team.id === teamId)
+)

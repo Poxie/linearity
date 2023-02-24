@@ -1,0 +1,20 @@
+.header {
+    padding: var(--spacing-primary);
+    border-bottom: 1px solid var(--background-tertiary);
+    display: flex;
+    gap: var(--spacing-primary);
+}
+.input {
+    padding: 0 !important;
+    max-width: 400px;
+    flex: 1;
+
+    input {
+        padding: 0 var(--spacing-tertiary) !important;
+        height: 100%;
+    }
+    svg {
+        margin: 0;
+        margin-left: var(--spacing-tertiary);
+    }
+}
