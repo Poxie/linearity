@@ -21,6 +21,7 @@
 
     .item {
         cursor: pointer;
+        padding: var(--spacing-primary);
         
         &:hover {
             background-color: var(--background-quaternary);
