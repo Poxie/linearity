@@ -31,7 +31,6 @@ export const TeamHeader: React.FC<{
             <Input 
                 containerClassName={styles['input']}
                 placeholder={`Search in ${team?.name}`}
-                name={'search'}
                 icon={<SearchIcon />}
             />
         </div>
