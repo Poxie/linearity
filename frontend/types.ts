@@ -14,3 +14,10 @@ export interface Team {
     owner_id: number;
     team_id: number;
 }
+export interface Group {
+    id: string;
+    team_id: string;
+    name: string | null;
+    description: string | null;
+    created_at: string;
+}
