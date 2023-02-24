@@ -1,0 +1,86 @@
+.container {
+    position: relative;
+    --item-padding: var(--spacing-tertiary);
+
+    ul {
+        position: absolute;
+        z-index: 14;
+        top: calc(100% + 10px);
+        background-color: var(--background-tertiary);
+        border-radius: var(--border-radius-secondary);
+        box-shadow: rgb(0 0 0 / 30%) 0px 1px 4px 0px;
+        overflow: auto;
+        max-height: 500px;
+        min-width: 100%;
+
+        button {
+            padding: calc(var(--item-padding) * 1.5);
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            width: 100%;
+            text-align: unset;
+            transition: background-color .2s;
+
+            &:hover {
+                background-color: var(--background-quaternary);
+            }
+        }
+
+        &::-webkit-scrollbar {
+            width: 6px;
+            border-radius: 120px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--text-secondary);
+            border-radius: 120px;
+        }
+    }
+
+    &.center {
+        ul {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+    &.right {
+        ul {
+            right: 0;
+        }
+    }
+}
+.selected {
+    border-radius: var(--border-radius-secondary);
+    border: 1px solid var(--background-tertiary);
+    background-color: transparent;
+    transition: background-color .2s;
+    padding: var(--item-padding);
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        background-color: var(--background-secondary);
+    }
+    &:active {
+        background-color: var(--background-tertiary);
+    }
+    &::after {
+        content: '';
+        border: 5px solid var(--text-primary);
+        border-bottom-color: transparent;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        transform: translateY(3.5px);
+        margin-left: 50px;
+    }
+}
+.search {
+    position: sticky;
+    top: 0;
+
+    input {
+        background-color: var(--background-primary);
+    }
+}
