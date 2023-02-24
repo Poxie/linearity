@@ -18,7 +18,7 @@ const setTeams: ReducerAction = (state, action) => {
 }
 
 const setTeamGroups: ReducerAction = (state, action) => {
-    const groups: Group[] = action.payload.groupId;
+    const groups: Group[] = action.payload.groups;
     const teamId: string = action.payload.teamId;
 
     return updateObject(state, {
