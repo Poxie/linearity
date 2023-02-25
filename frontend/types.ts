@@ -24,3 +24,22 @@ export interface Group {
     description: string | null;
     created_at: number;
 }
+export interface Block {
+    created_at: number;
+    description: string | null;
+    group_id: number;
+    id: number;
+    name: string;
+    position: number;
+    team_id: number;
+    tasks: Task[];
+}
+export interface Task {
+    block_id: number;
+    created_at: number;
+    description: string;
+    id: number;
+    position: number;
+    team_id: number;
+    title: string;
+}
