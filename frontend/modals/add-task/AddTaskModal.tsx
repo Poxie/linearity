@@ -36,6 +36,7 @@ export const AddTaskModal: React.FC<{
 
         // Creating task
         try {
+            setLoading(true);
             const task = await post<Task>(`/blocks/${blockId}/tasks`, {
                 title,
                 description
@@ -74,6 +75,8 @@ export const AddTaskModal: React.FC<{
             confirmLabel={'Add issue'}
             onCancel={close}
             onConfirm={addTask}
+            confirmLoading={loading}
+            confirmLoadingLabel={'Adding issue...'}
         />
         </>
     )
