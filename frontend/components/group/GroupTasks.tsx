@@ -6,7 +6,8 @@ import { GroupTask } from './GroupTask';
 
 export const GroupTasks = () => {
     const { groupId, blockId } = useBlock();
-    const taskIds = useAppSelector(state => selectBlockTaskIds(state, groupId, blockId))
+    const taskIds = useAppSelector(state => selectBlockTaskIds(state, groupId, blockId));
+    if(!taskIds?.length) return null;
     
     return(
         <ul className={styles['block-tasks']}>
