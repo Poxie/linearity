@@ -3,6 +3,7 @@ import styles from './Group.module.scss';
 import { GroupTaskContent } from './GroupTaskContent';
 import { GroupTaskHeader } from './GroupTaskHeader';
 import { GroupTaskLabels } from './GroupTaskLabels';
+import { GroupViewTaskButton } from './GroupViewTaskButton';
 
 const TaskContext = React.createContext({} as {
     taskId: number;
@@ -19,6 +20,7 @@ export const GroupTask: React.FC<{
                 <GroupTaskHeader />
                 <GroupTaskContent />
                 <GroupTaskLabels />
+                <GroupViewTaskButton />
             </li>
         </TaskContext.Provider>
     )
