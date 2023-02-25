@@ -15,7 +15,7 @@ export const SidebarTeams = () => {
             <ul className={styles['list']}>
                 {teams.map(team => (
                     <li className={styles['list-item']} key={team.id}>
-                        <Link href={`/teams/${team.id}`}>
+                        <Link href={`/teams/${team.id}/groups/${team.primary_group_id}`}>
                             {team.name}
                         </Link>
                     </li>

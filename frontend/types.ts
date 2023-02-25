@@ -15,13 +15,7 @@ export interface Team {
     team_id: number;
     member_count: number;
     task_count: number;
-}
-export interface Group {
-    id: number;
-    team_id: number;
-    name: string | null;
-    description: string | null;
-    created_at: number;
+    primary_group_id: number;
 }
 export interface Group {
     id: number;

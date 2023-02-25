@@ -4,10 +4,10 @@ import styles from './TeamSelection.module.scss';
 
 export const TeamSelectionItem: React.FC<{
     team: Team;
-}> = ({ team: { id, name, task_count, member_count } }) => {
+}> = ({ team: { id, name, task_count, member_count, primary_group_id } }) => {
     return(
         <li>
-            <Link href={`/teams/${id}`} className={styles['item']}>
+            <Link href={`/teams/${id}/groups/${primary_group_id}`} className={styles['item']}>
                 <span>
                     {name}
                 </span>
