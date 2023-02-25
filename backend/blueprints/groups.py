@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
 from utils.constants import PATCH_GROUP_ALLOWED_PROPERTIES
-from utils.common import create_id, get_group_by_id, get_member, get_block_by_id, get_group_blocks, get_team_by_id
+from utils.common import create_id, get_group_by_id, get_member, get_block_by_id, get_group_blocks, get_team_by_id, get_task_by_id
 from database import database
 from time import time
 import json
@@ -138,9 +138,28 @@ def get_group_blocks_route(group_id: int, token_id: int):
         return 'Unauthorized', 401
 
     # Fetching blocks
-    query = "SELECT * FROM blocks WHERE group_id = %s"
+    query = """
+    SELECT
+        b.*,
+        GROUP_CONCAT(DISTINCT t.id) as task_ids
+    FROM blocks b
+        LEFT JOIN tasks t ON t.block_id = b.id
+    WHERE
+        b.group_id = %s
+    GROUP BY
+        b.id
+    """
     values = (group_id,)
     blocks = database.fetch_many(query, values)
+
+    # Fetching block tasks
+    for block in blocks:
+        block['tasks'] = []
+        if not block['task_ids']: continue
+
+        task_ids = block['task_ids'].split(',')
+        tasks = [get_task_by_id(int(task_id)) for task_id in task_ids]
+        block['tasks'] = tasks
 
     return jsonify(blocks)
 
