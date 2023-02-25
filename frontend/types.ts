@@ -13,6 +13,15 @@ export interface Team {
     name: string;
     owner_id: number;
     team_id: number;
+    member_count: number;
+    task_count: number;
+}
+export interface Group {
+    id: number;
+    team_id: number;
+    name: string | null;
+    description: string | null;
+    created_at: number;
 }
 export interface Group {
     id: number;
