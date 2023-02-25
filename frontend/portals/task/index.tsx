@@ -35,6 +35,14 @@ export const TaskPortal: React.FC<{
                                 {label.name}
                             </li>
                         ))}
+                        <li>
+                            <button 
+                                className={styles['add-label-button']}
+                                aria-label={'Add label'}
+                            >
+                                <AddIcon />
+                            </button>
+                        </li>
                     </ul>
                 )}
             </TaskPortalGroup>

@@ -19,7 +19,34 @@
 .label {
     font-size: 12px;
     padding: 5px 10px;
-    border-radius: 120px;
+    border-radius: var(--border-radius-tertiary);
+    display: flex;
+    gap: 5px;
+    border: 1px solid;
+
+    svg {
+        width: 10px;
+        fill: var(--text-primary);
+    }
+}
+.add-label-button {
+    border: 1px solid var(--background-quinary);
+    border-radius: var(--border-radius-tertiary);
+    transition: background-color .2s;
+    height: 26px;
+    width: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: 10px;
+        fill: var(--text-secondary);
+    }
+
+    &:hover {
+        background-color: var(--background-quaternary);
+    }
 }
 .assignee {
     width: 100%;
