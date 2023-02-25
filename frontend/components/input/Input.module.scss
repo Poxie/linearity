@@ -15,14 +15,15 @@
         color: var(--text-primary);
     }
     textarea {
-        min-height: 120px;
+        min-height: 80px;
         resize: vertical;
     }
 
     svg {
         width: 14px;
         height: 14px;
-        margin: var(--spacing-secondary);
+        margin: var(--spacing-tertiary);
+        margin-right: 0;
         fill: var(--text-secondary);
         display: block;
     }
