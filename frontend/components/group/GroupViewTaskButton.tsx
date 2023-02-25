@@ -6,13 +6,12 @@ import { useTask } from './GroupTask';
 
 export const GroupViewTaskButton = () => {
     const { taskId } = useTask();
-    const { groupId, blockId } = useBlock();
+    const { blockId } = useBlock();
     const { setPortal } = usePortal();
     
     const viewTask = () => {
         setPortal(
             <TaskPortal 
-                groupId={groupId}
                 blockId={blockId}
                 taskId={taskId}
             />

@@ -13,7 +13,7 @@ export const setGroupBlocks = (groupId: number, blocks: Block[]) => ({
     type: SET_GROUP_BLOCKS,
     payload: { groupId, blocks }
 })
-export const addBlockTask = (groupId: number, blockId: number, task: Task) => ({
+export const addBlockTask = (blockId: number, task: Task) => ({
     type: ADD_BLOCK_TASK,
-    payload: { groupId, blockId, task }
+    payload: { blockId, task }
 })

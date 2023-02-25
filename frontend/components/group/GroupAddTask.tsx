@@ -8,13 +8,12 @@ import { AddTaskModal } from '@/modals/add-task/AddTaskModal';
 
 export const GroupAddTask = () => {
     const { setModal } = useModal();
-    const { groupId, blockId } = useBlock();
-    const { name } = useAppSelector(state => selectBlockInfo(state, groupId, blockId));
+    const { blockId } = useBlock();
+    const { name } = useAppSelector(state => selectBlockInfo(state, blockId));
 
     const openModal = () => {
         setModal(
-            <AddTaskModal 
-                groupId={groupId}
+            <AddTaskModal
                 blockId={blockId}
             />
         )

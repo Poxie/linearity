@@ -5,9 +5,9 @@ import { useBlock } from './GroupBlock';
 import { useTask } from './GroupTask';
 
 export const GroupTaskLabels = () => {
-    const { groupId, blockId } = useBlock();
+    const { blockId } = useBlock();
     const { taskId } = useTask();
-    const labels = useAppSelector(state => selectTaskLabels(state, groupId, blockId, taskId));
+    const labels = useAppSelector(state => selectTaskLabels(state, blockId, taskId));
     if(!labels?.length) return null;
 
     return(

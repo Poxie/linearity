@@ -14,16 +14,15 @@ import { Task } from '@/types';
 import { addBlockTask } from '@/redux/teams/actions';
 
 export const AddTaskModal: React.FC<{
-    groupId: number;
     blockId: number;
-}> = ({ groupId, blockId }) => {
+}> = ({ blockId }) => {
     const { close } = useModal();
     const { post } = useAuth();
 
     const [loading, setLoading] = useState(false);
 
     const dispatch = useAppDispatch();
-    const block = useAppSelector(state => selectBlockInfo(state, groupId, blockId));
+    const block = useAppSelector(state => selectBlockInfo(state, blockId));
     const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
 
@@ -43,7 +42,7 @@ export const AddTaskModal: React.FC<{
             });
 
             // Adding task to redux
-            dispatch(addBlockTask(groupId, blockId, task));
+            dispatch(addBlockTask(blockId, task));
 
             close();
         } catch(error) {

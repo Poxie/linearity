@@ -4,9 +4,9 @@ import { selectBlockInfo, selectBlockTaskCount } from "@/redux/teams/selectors";
 import { useBlock } from "./GroupBlock"
 
 export const GroupBlockHeader = () => {
-    const { blockId, groupId } = useBlock();
-    const { name } = useAppSelector(state => selectBlockInfo(state, groupId, blockId));
-    const taskCount = useAppSelector(state => selectBlockTaskCount(state, groupId, blockId));
+    const { blockId } = useBlock();
+    const { name } = useAppSelector(state => selectBlockInfo(state, blockId));
+    const taskCount = useAppSelector(state => selectBlockTaskCount(state, blockId));
 
     return(
         <div className={styles['block-header']}>

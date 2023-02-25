@@ -1,6 +1,6 @@
 import { Block, Group, Task, Team } from "@/types";
 import { AnyAction } from "redux";
-import { createReducer, updateItemInArray, updateObject } from "../utils";
+import { createReducer, updateObject } from "../utils";
 import { ADD_BLOCK_TASK, SET_GROUP_BLOCKS, SET_TEAMS, SET_TEAM_GROUPS } from "./constants";
 import { TeamsState } from "./types";
 
@@ -32,37 +32,28 @@ const setTeamGroups: ReducerAction = (state, action) => {
 
 const setGroupBlocks: ReducerAction = (state, action) => {
     const blocks: Block[] = action.payload.blocks;
-    const groupId: number = action.payload.groupId;
 
     return updateObject(state, {
         ...state,
-        blocks: {
-            ...state.blocks,
-            [groupId]: blocks
-        }
+        blocks: [...state.blocks, ...blocks]
     })
 }
 
 const addBlockTask: ReducerAction = (state, action) => {
-    const { groupId, blockId, task } = action.payload as {
-        groupId: number;
+    const { blockId, task } = action.payload as {
         blockId: number;
         task: Task;
     }
 
-    const newBlocks = state.blocks[groupId]?.map(block => {
-        if(block.group_id !== groupId || block.id !== blockId) return block;
-        
-        block.tasks = [...block.tasks, ...[task]];
-        return block;
-    }) || [];
-
     return updateObject(state, {
         ...state,
-        blocks: {
-            ...state.blocks,
-            [groupId]: newBlocks
-        }
+        blocks: state.blocks.map(block => {
+            if(block.id !== blockId) return block;
+
+            return updateObject(block, {
+                tasks: [...block.tasks, ...[task]]
+            })
+        })
     })
 }
 
@@ -70,7 +61,7 @@ const addBlockTask: ReducerAction = (state, action) => {
 export const teamsReducer = createReducer({
     teams: [],
     groups: {},
-    blocks: {},
+    blocks: [],
     loading: true
 }, {
     [SET_TEAMS]: setTeams,

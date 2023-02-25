@@ -6,8 +6,8 @@ import { useTask } from "./GroupTask"
 
 export const GroupTaskAssignees = () => {
     const { taskId } = useTask();
-    const { groupId, blockId } = useBlock();
-    const assignees = useAppSelector(state => selectTaskAssignees(state, groupId, blockId, taskId));
+    const { blockId } = useBlock();
+    const assignees = useAppSelector(state => selectTaskAssignees(state, blockId, taskId));
 
     const primaryAssignee = assignees ? assignees[0] : undefined;
     return(

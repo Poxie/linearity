@@ -6,8 +6,8 @@ import { useTask } from "./GroupTask"
 
 export const GroupTaskContent = () => {
     const { taskId } = useTask();
-    const { groupId, blockId } = useBlock();
-    const { description } = useAppSelector(state => selectTaskInfo(state, groupId, blockId, taskId));
+    const { blockId } = useBlock();
+    const { description } = useAppSelector(state => selectTaskInfo(state, blockId, taskId));
 
     return(
         <span className={styles['task-content']}>

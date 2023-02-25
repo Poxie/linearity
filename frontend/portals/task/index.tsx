@@ -7,13 +7,12 @@ import { TaskPortalAssignee } from './TaskPortalAssignee';
 import { AddIcon } from '@/assets/icons/AddIcon';
 
 export const TaskPortal: React.FC<{
-    groupId: number;
     blockId: number;
     taskId: number;
-}> = ({ groupId, blockId, taskId }) => {
-    const { title, description } = useAppSelector(state => selectTaskInfo(state, groupId, blockId, taskId));
-    const labels = useAppSelector(state => selectTaskLabels(state, groupId, blockId, taskId));
-    const assignees = useAppSelector(state => selectTaskAssignees(state, groupId, blockId, taskId));
+}> = ({ blockId, taskId }) => {
+    const { title, description } = useAppSelector(state => selectTaskInfo(state, blockId, taskId));
+    const labels = useAppSelector(state => selectTaskLabels(state, blockId, taskId));
+    const assignees = useAppSelector(state => selectTaskAssignees(state, blockId, taskId));
 
     return(
         <Portal 
