@@ -3,7 +3,7 @@
 import { Group } from "@/components/group";
 import { useAuth } from "@/contexts/auth";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { setGroupBlocks } from "@/redux/teams/actions";
+import { setBlocks } from "@/redux/teams/actions";
 import { selectGroupHasFetchedBlocks } from "@/redux/teams/selectors";
 import { Block } from "@/types";
 import { useEffect } from "react"
@@ -21,7 +21,7 @@ export default function GroupPage({ params: { groupId } }: {
 
         get<Block[]>(`/groups/${groupId}/blocks`)
             .then(blocks => {
-                dispatch(setGroupBlocks(parseInt(groupId), blocks));
+                dispatch(setBlocks(blocks));
             })
     }, [get, token, groupId, blocksFetched]);
 

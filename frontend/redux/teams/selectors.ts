@@ -11,7 +11,7 @@ const __selectId = (_:RootState, __: number, ___: number, id: number) => id;
 const selectGroups = (state: RootState) => state.teams.groups;
 export const selectTeamGroups = createSelector(
     [selectGroups, selectId],
-    (groups, teamId) => groups[teamId]
+    (groups, teamId) => groups.filter(group => group.team_id === teamId)
 )
 
 export const selectTeamById = createSelector(

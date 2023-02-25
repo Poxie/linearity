@@ -1,7 +1,7 @@
 import { Block, Group, Task, Team } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateObject } from "../utils";
-import { ADD_BLOCK_TASK, SET_GROUP_BLOCKS, SET_TEAMS, SET_TEAM_GROUPS } from "./constants";
+import { ADD_BLOCK_TASK, SET_GROUPS, SET_BLOCKS, SET_TEAMS } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -11,31 +11,24 @@ const setTeams: ReducerAction = (state, action) => {
     const teams: Team[] = action.payload;
 
     return updateObject(state, {
-        ...state,
         teams,
         loading: false
     })
 }
 
-const setTeamGroups: ReducerAction = (state, action) => {
-    const groups: Group[] = action.payload.groups;
-    const teamId: string = action.payload.teamId;
+const setGroups: ReducerAction = (state, action) => {
+    const groups: Group[] = action.payload;
 
     return updateObject(state, {
-        ...state,
-        groups: {
-            ...state.groups,
-            [teamId]: groups
-        }
+        groups
     })
 }
 
-const setGroupBlocks: ReducerAction = (state, action) => {
-    const blocks: Block[] = action.payload.blocks;
+const setBlocks: ReducerAction = (state, action) => {
+    const blocks: Block[] = action.payload;
 
     return updateObject(state, {
-        ...state,
-        blocks: [...state.blocks, ...blocks]
+        blocks
     })
 }
 
@@ -46,7 +39,6 @@ const addBlockTask: ReducerAction = (state, action) => {
     }
 
     return updateObject(state, {
-        ...state,
         blocks: state.blocks.map(block => {
             if(block.id !== blockId) return block;
 
@@ -60,12 +52,12 @@ const addBlockTask: ReducerAction = (state, action) => {
 // Creating reducer
 export const teamsReducer = createReducer({
     teams: [],
-    groups: {},
+    groups: [],
     blocks: [],
     loading: true
 }, {
     [SET_TEAMS]: setTeams,
-    [SET_TEAM_GROUPS]: setTeamGroups,
-    [SET_GROUP_BLOCKS]: setGroupBlocks,
+    [SET_GROUPS]: setGroups,
+    [SET_BLOCKS]: setBlocks,
     [ADD_BLOCK_TASK]: addBlockTask
 })

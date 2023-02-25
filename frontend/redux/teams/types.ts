@@ -2,7 +2,7 @@ import { Block, Group, Team } from "@/types";
 
 export interface TeamsState {
     teams: Team[];
-    groups: {[groupId: string]: Group[] | undefined};
+    groups: Group[];
     blocks: Block[];
     loading: boolean;
 }
