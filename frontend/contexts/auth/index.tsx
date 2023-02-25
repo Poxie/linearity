@@ -10,6 +10,7 @@ type AuthContextType = {
     token: string | null;
     loading: boolean;
     get: <T>(query: string, signal?: AbortSignal) => Promise<T>;
+    post: <T>(query: string, values: Object, signal?: AbortSignal) => Promise<T>;
 }
 
 const AuthContext = React.createContext({} as AuthContextType);
@@ -102,10 +103,16 @@ export default function AuthProvider({
         return makeRequest<T>(query, 'GET', {}, signal);
     }, [token]);
 
+    // Function to post data to API with user authentication.
+    const post = useCallback(async function<T>(query: string, values: Object, signal?: AbortSignal) {
+        return makeRequest<T>(query, 'POST', values, signal);
+    }, [token]);
+
     const value = {
         profile,
         setToken,
         get,
+        post,
         token,
         loading,
     }

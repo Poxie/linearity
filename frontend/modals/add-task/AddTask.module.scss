@@ -1,0 +1,29 @@
+.content {
+    display: grid;
+    gap: var(--spacing-tertiary);
+}
+.group {
+    display: grid;
+}
+.group-header {
+    margin-bottom: var(--spacing-tertiary);
+    font-size: 12px;
+}
+.add-item {
+    width: 26px;
+    height: 26px;
+    background-color: var(--background-tertiary);
+    border: 2px solid var(--background-secondary);
+    border-radius: var(--border-radius-tertiary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+        width: 10px;
+        fill: var(--text-secondary);
+    }
+}
+.assignee-text {
+    font-size: 13px;
+}

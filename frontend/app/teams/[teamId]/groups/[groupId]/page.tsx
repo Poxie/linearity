@@ -9,21 +9,21 @@ import { Block } from "@/types";
 import { useEffect } from "react"
 
 export default function GroupPage({ params: { groupId } }: {
-    params: { groupId: number }
+    params: { groupId: string }
 }) {
     const { get, token } = useAuth();
 
     const dispatch = useAppDispatch();
-    const blocksFetched = useAppSelector(state => selectGroupHasFetchedBlocks(state, groupId));
+    const blocksFetched = useAppSelector(state => selectGroupHasFetchedBlocks(state, parseInt(groupId)));
 
     useEffect(() => {
         if(!token || blocksFetched) return;
 
         get<Block[]>(`/groups/${groupId}/blocks`)
             .then(blocks => {
-                dispatch(setGroupBlocks(groupId, blocks));
+                dispatch(setGroupBlocks(parseInt(groupId), blocks));
             })
     }, [get, token, groupId, blocksFetched]);
 
-    return <Group groupId={groupId} />
+    return <Group groupId={parseInt(groupId)} />
 }

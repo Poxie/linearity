@@ -1,3 +1,4 @@
 export const SET_TEAMS = 'SET_TEAMS';
 export const SET_TEAM_GROUPS = 'SET_TEAM_GROUPS';
 export const SET_GROUP_BLOCKS = 'SET_GROUP_BLOCKS';
+export const ADD_BLOCK_TASK = 'ADD_BLOCK_TASK';
