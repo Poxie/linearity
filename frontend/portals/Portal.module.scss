@@ -1,0 +1,39 @@
+.container {
+    background-color: var(--background-tertiary);
+    border-radius: var(--border-radius-secondary);
+    margin: var(--spacing-primary);
+    min-width: 400px;
+}
+.header {
+    border-bottom: 1px solid var(--background-quaternary);
+    padding: var(--spacing-secondary);
+}
+.header-main {
+    display: flex;
+    justify-content: space-between;
+
+    svg {
+        --size: 25px;
+        --padding: 8px;
+        width: var(--size);
+        height: var(--size);
+        fill: var(--text-secondary);
+        padding: var(--padding);
+        cursor: pointer;
+        border-radius: var(--border-radius-tertiary);
+        margin: calc(-1 * var(--size) / 2 + var(--padding));
+        transform: translateY(2px);
+        transition: fill .2s, background-color .2s;
+
+        &:hover {
+            fill: var(--text-primary);
+            background-color: var(--background-quaternary);
+        }
+    }
+}
+.header-sub {
+    margin-top: var(--spacing-tertiary);
+    color: var(--text-secondary);
+    font-size: 14px;
+    display: block;
+}

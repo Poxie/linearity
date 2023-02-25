@@ -3,6 +3,7 @@
 import { TeamHeader } from "@/components/team-header";
 import { GroupSelector } from "@/components/team/GroupSelector";
 import { useAuth } from "@/contexts/auth";
+import { PortalProvider } from "@/contexts/portal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setTeamGroups } from "@/redux/teams/actions";
 import { Group } from "@/types";
@@ -32,10 +33,14 @@ export default function TeamLayout({
     if(!teamId) return null;
 
     return(
-        <main>
+        <>
             <TeamHeader teamId={parseInt(teamId)} />
-            <GroupSelector teamId={parseInt(teamId)} /> 
-            {children}
-        </main>
+            <PortalProvider>
+                <div style={{ flex: 1 }}>
+                    <GroupSelector teamId={parseInt(teamId)} /> 
+                    {children}
+                </div>
+            </PortalProvider>
+        </>
     )
 }
