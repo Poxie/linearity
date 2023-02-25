@@ -158,7 +158,7 @@ def get_group_blocks_route(group_id: int, token_id: int):
         if not block['task_ids']: continue
 
         task_ids = block['task_ids'].split(',')
-        tasks = [get_task_by_id(int(task_id)) for task_id in task_ids]
+        tasks = [get_task_by_id(int(task_id), hydrate=True) for task_id in task_ids]
         block['tasks'] = tasks
 
     return jsonify(blocks)
