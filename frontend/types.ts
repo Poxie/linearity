@@ -15,9 +15,9 @@ export interface Team {
     team_id: number;
 }
 export interface Group {
-    id: string;
-    team_id: string;
+    id: number;
+    team_id: number;
     name: string | null;
     description: string | null;
-    created_at: string;
+    created_at: number;
 }
