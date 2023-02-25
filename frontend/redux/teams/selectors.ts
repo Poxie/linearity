@@ -60,6 +60,10 @@ export const selectTaskAssignees = createSelector(
     [selectTaskById],
     task => task?.assignees
 )
+export const selectTaskLabels = createSelector(
+    [selectTaskById],
+    task => task?.labels
+)
 
 export const selectGroupHasFetchedBlocks = createSelector(
     [selectGroupBlockIds],

@@ -69,6 +69,14 @@
     font-size: 12px;
     color: var(--text-secondary);
 }
+.task-labels {
+    display: flex;
+}
+.task-label {
+    padding: 4px 8px;
+    border-radius: 120px;
+    font-size: 10px;
+}
 .add-task-button {
     border-color: var(--background-quaternary) !important;
     font-size: 12px;

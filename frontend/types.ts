@@ -43,4 +43,12 @@ export interface Task {
     team_id: number;
     title: string;
     assignees: User[];
+    labels: Label[];
+}
+export interface Label {
+    id: number;
+    team_id: number;
+    name: string;
+    color: string | null;
+    created_at: number;
 }
