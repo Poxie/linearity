@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Group.module.scss';
+import { GroupAddTask } from './GroupAddTask';
 import { GroupBlockHeader } from './GroupBlockHeader';
 import { GroupTasks } from './GroupTasks';
 
@@ -22,7 +23,10 @@ export const GroupBlock: React.FC<{
         <BlockContext.Provider value={value}>
             <div className={styles['block']}>
                 <GroupBlockHeader />
-                <GroupTasks />
+                <div className={styles['block-content']}>
+                    <GroupTasks />
+                    <GroupAddTask />
+                </div>
             </div>
         </BlockContext.Provider>
     )

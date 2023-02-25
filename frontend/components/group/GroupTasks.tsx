@@ -9,13 +9,13 @@ export const GroupTasks = () => {
     const taskIds = useAppSelector(state => selectBlockTaskIds(state, groupId, blockId))
     
     return(
-        <div className={styles['block-tasks']}>
+        <ul className={styles['block-tasks']}>
             {taskIds?.map(taskId => (
                 <GroupTask 
                     taskId={taskId}
                     key={taskId}
                 />
             ))}
-        </div>
+        </ul>
     )
 }

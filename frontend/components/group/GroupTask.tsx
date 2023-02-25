@@ -14,10 +14,10 @@ export const GroupTask: React.FC<{
 }> = ({ taskId }) => {
     return(
         <TaskContext.Provider value={{ taskId }}>
-            <div className={styles['block-task']}>
+            <li className={styles['block-task']}>
                 <GroupTaskHeader />
                 <GroupTaskContent />
-            </div>
+            </li>
         </TaskContext.Provider>
     )
 }
