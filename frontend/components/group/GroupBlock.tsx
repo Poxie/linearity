@@ -23,10 +23,8 @@ export const GroupBlock: React.FC<{
         <BlockContext.Provider value={value}>
             <div className={styles['block']}>
                 <GroupBlockHeader />
-                <div className={styles['block-content']}>
-                    <GroupTasks />
-                    <GroupAddTask />
-                </div>
+                <GroupTasks />
+                <GroupAddTask />
             </div>
         </BlockContext.Provider>
     )

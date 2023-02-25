@@ -20,12 +20,14 @@ export const GroupAddTask = () => {
     }
 
     return(
-        <Button 
-            type={'hollow'}
-            className={styles['add-task-button']}
-            onClick={openModal}
-        >
-            Add issue to {name}
-        </Button>
+        <div className={styles['block-footer']}>
+            <Button 
+                type={'hollow'}
+                className={styles['add-task-button']}
+                onClick={openModal}
+            >
+                Add issue to {name}
+            </Button>
+        </div>
     )
 }
