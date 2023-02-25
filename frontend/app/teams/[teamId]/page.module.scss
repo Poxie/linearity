@@ -1,20 +1,38 @@
 .group-selector {
+    padding: var(--spacing-primary);
+    border-bottom: 1px solid var(--background-tertiary);
+}
+.group-list, .group-selector {
     display: flex;
+    align-items: center;
     gap: var(--spacing-tertiary);
-    padding: var(--spacing-secondary) var(--spacing-primary);
+}
+.group-item {
+    border: 1px solid var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+    padding: var(--spacing-tertiary);
+    padding-right: 60px;
+    transition: background-color .2s;
+    cursor: pointer;
+    font-size: 12px;
+    display: block;
 
-    li a {
-        border: 1px solid var(--background-tertiary);
-        border-radius: var(--border-radius-tertiary);
-        padding: var(--spacing-secondary);
-        padding-right: 60px;
-        transition: background-color .2s;
-        cursor: pointer;
-        font-size: 14px;
+    &.active, &:hover {
+        background-color: var(--background-tertiary);
+    }
+}
+.create-group-button {
+    @extend .group-item;
+    height: 100%;
+    aspect-ratio: 1;
+    padding-right: var(--spacing-tertiary);
+    
+    svg {
+        --size: 14px;
+        width: var(--size);
+        height: var(--size);
+        fill: var(--text-secondary);
+        opacity: .7;
         display: block;
-
-        &.active, &:hover {
-            background-color: var(--background-tertiary);
-        }
     }
 }
