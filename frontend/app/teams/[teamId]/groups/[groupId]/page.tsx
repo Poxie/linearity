@@ -1,26 +1,29 @@
 "use client";
 
+import { Group } from "@/components/group";
 import { useAuth } from "@/contexts/auth";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { setGroupBlocks } from "@/redux/teams/actions";
+import { selectGroupHasFetchedBlocks } from "@/redux/teams/selectors";
+import { Block } from "@/types";
 import { useEffect } from "react"
-import { Block } from "typescript";
 
-export default function Group({ params: { groupId } }: {
+export default function GroupPage({ params: { groupId } }: {
     params: { groupId: number }
 }) {
     const { get, token } = useAuth();
 
+    const dispatch = useAppDispatch();
+    const blocksFetched = useAppSelector(state => selectGroupHasFetchedBlocks(state, groupId));
+
     useEffect(() => {
-        if(!token) return;
+        if(!token || blocksFetched) return;
 
         get<Block[]>(`/groups/${groupId}/blocks`)
             .then(blocks => {
-                console.log(blocks);
+                dispatch(setGroupBlocks(groupId, blocks));
             })
-    }, [get, token, groupId]);
+    }, [get, token, groupId, blocksFetched]);
 
-    return(
-        <div>
-            {groupId}
-        </div>
-    )
+    return <Group groupId={groupId} />
 }
