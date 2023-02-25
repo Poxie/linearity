@@ -1,5 +1,7 @@
+import styles from './Group.module.scss';
 import { useAppSelector } from "@/redux/store";
 import { selectGroupBlockIds } from "@/redux/teams/selectors";
+import { GroupBlock } from "./GroupBlock";
 
 export const Group: React.FC<{
     groupId: number;
@@ -7,8 +9,14 @@ export const Group: React.FC<{
     const blockIds = useAppSelector(state => selectGroupBlockIds(state, groupId));
     
     return(
-        <div>
-            {blockIds?.map(blockId => blockId)}
+        <div className={styles['container']}>
+            {blockIds?.map(blockId => (
+                <GroupBlock 
+                    id={blockId}
+                    groupId={groupId}
+                    key={blockId} 
+                />
+            ))}
         </div>
     )
 }

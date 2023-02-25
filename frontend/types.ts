@@ -42,4 +42,5 @@ export interface Task {
     position: number;
     team_id: number;
     title: string;
+    assignees: User[];
 }
