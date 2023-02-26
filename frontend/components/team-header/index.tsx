@@ -16,7 +16,10 @@ export const TeamHeader: React.FC<{
 
     if(!teams.length) return null;
 
-    const goToTeam = (id: number) => push(`/teams/${id}`);
+    const goToTeam = (id: number) => {
+        const team = teams.find(team => team.id === id);
+        push(`/teams/${id}/groups/${team?.primary_group_id}`);
+    }
     
     const dropdownItems = teams.map(team => ({
         text: team.name,
