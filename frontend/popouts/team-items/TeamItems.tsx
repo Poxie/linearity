@@ -1,27 +1,31 @@
 import styles from './TeamItems.module.scss';
 import { Input } from "@/components/input";
 import { useAppSelector } from "@/redux/store";
-import { selectTeamMembers } from "@/redux/teams/selectors";
+import { selectTeamLabels, selectTeamMembers } from "@/redux/teams/selectors";
 import { useCallback, useMemo, useState } from 'react';
-import { Member } from '@/types';
+import { Label, Member } from '@/types';
 import { usePopout } from '@/contexts/popout';
+import { TeamItemsMembers } from './TeamItemsMembers';
+import { TeamItemsLabels } from './TeamItemsLabels';
 
 export const TeamItems: React.FC<{
     teamId: number;
     type: 'members' | 'labels';
-    onSelect?: (item: Member) => void;
+    onSelect?: (item: Member | Label) => void;
     closeOnSelect?: boolean;
 }> = ({ teamId, type, onSelect, closeOnSelect }) => {
     const { close } = usePopout();
-    const members = useAppSelector(state => selectTeamMembers(state, teamId));
+    const items = useAppSelector(state => (
+        type === 'members' ? selectTeamMembers(state, teamId) : selectTeamLabels(state, teamId)
+    ));
     const [search, setSearch] = useState('');
 
-    const filteredMembers = useMemo(() => (
-        members.filter(member => member.name.toLowerCase().includes(search.toLowerCase()))
-    ), [members, search]);
+    const filteredItems = useMemo(() => (
+        (items as {name: string}[]).filter(item => item.name.toLowerCase().includes(search))
+    ), [items, search])
 
-    const handleSelect = useCallback((member: Member) => {
-        if(onSelect) onSelect(member);
+    const handleSelect = useCallback((item: Member | Label) => {
+        if(onSelect) onSelect(item);
         if(closeOnSelect) close();
     }, [onSelect, closeOnSelect]);
 
@@ -32,26 +36,21 @@ export const TeamItems: React.FC<{
                 inputClassName={styles['input']}
                 onChange={setSearch}
             />
-            {filteredMembers.length !== 0 && (
-                <ul className={styles['member-items']}>
-                    {filteredMembers.map(member => (
-                        <li key={member.id}>
-                            <button 
-                                className={styles['member-item']}
-                                onClick={() => handleSelect(member)}
-                            >
-                                <span className={styles['member-icon']}>
-                                    {member.name[0]}
-                                </span>
-                                {member.name}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
+            {filteredItems.length !== 0 && type === 'members' && (
+                <TeamItemsMembers 
+                    members={filteredItems as Member[]}
+                    handleSelect={handleSelect}
+                />
             )}
-            {filteredMembers.length === 0 && (
+            {filteredItems.length !== 0 && type === 'labels' && (
+                <TeamItemsLabels 
+                    labels={filteredItems as Label[]}
+                    handleSelect={handleSelect}
+                />
+            )}
+            {filteredItems.length === 0 && (
                 <span  className={styles['empty']}>
-                    No members found.
+                    No {`${type}s`} found.
                 </span>
             )}
         </>
