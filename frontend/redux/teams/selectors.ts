@@ -25,6 +25,12 @@ export const selectTeamMembers = createSelector(
     (members, teamId) => members.filter(member => member.team_id === teamId)
 )
 
+const selectLabels = (state: RootState) => state.teams.labels;
+export const selectTeamLabels = createSelector(
+    [selectLabels, selectId],
+    (labels, teamId) => labels.filter(label => label.team_id === teamId)
+)
+
 const selectBlocks = (state: RootState) => state.teams.blocks;
 export const selectGroupBlockIds = createSelector(
     [selectBlocks, selectId],

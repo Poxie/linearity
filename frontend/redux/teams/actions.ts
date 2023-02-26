@@ -1,5 +1,5 @@
-import { Block, Group, Task, Team, User } from "@/types";
-import { SET_GROUPS, SET_TEAMS, SET_BLOCKS, ADD_BLOCK_TASK, SET_MEMBERS } from "./constants";
+import { Block, Group, Label, Task, Team, User } from "@/types";
+import { SET_GROUPS, SET_TEAMS, SET_BLOCKS, ADD_BLOCK_TASK, SET_MEMBERS, SET_LABELS } from "./constants";
 
 export const setTeams = (teams: Team[]) => ({
     type: SET_TEAMS,
@@ -8,6 +8,10 @@ export const setTeams = (teams: Team[]) => ({
 export const setMembers = (members: User[]) => ({
     type: SET_MEMBERS,
     payload: members
+})
+export const setLabels = (labels: Label[]) => ({
+    type: SET_LABELS,
+    payload: labels
 })
 export const setGroups = (groups: Group[]) => ({
     type: SET_GROUPS,
