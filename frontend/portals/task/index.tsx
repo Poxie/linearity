@@ -58,7 +58,7 @@ export const TaskPortal: React.FC<{
                     closeOnSelect
                 />
             ),
-            position: 'left',
+            position: type === 'members' ? 'left' : 'up',
             ref
         })
     }
