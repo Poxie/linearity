@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import React, { ReactElement, useState } from 'react';
 
 type PortalContextType = {
@@ -22,10 +23,10 @@ export const PortalProvider: React.FC<{
     }
     return(
         <PortalContext.Provider value={value}>
-            <div style={{ display: 'flex', flex: 1 }}>
-                {children}
+            {children}
+            <AnimatePresence>
                 {portal}
-            </div>
+            </AnimatePresence>
         </PortalContext.Provider>
     )
 }

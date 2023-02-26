@@ -1,8 +1,12 @@
 .container {
+    --width: 400px;
     background-color: var(--background-tertiary);
     border-radius: var(--border-radius-secondary);
-    margin: var(--spacing-primary);
-    min-width: 400px;
+    width: var(--width);
+    right: calc(-1 * var(--width));
+    position: fixed;
+    top: calc(var(--navbar-height) + var(--team-header-height));
+    height: calc(100vh - var(--navbar-height) - var(--team-header-height) - var(--spacing-primary));
 }
 .header {
     border-bottom: 1px solid var(--background-quaternary);
