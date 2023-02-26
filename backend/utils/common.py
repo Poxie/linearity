@@ -192,9 +192,9 @@ def get_task_labels(task_id: int) -> Union[None, List[TaskLabel]]:
     FROM task_labels lt
         JOIN labels l ON l.id = lt.id
     WHERE
-        task_id = %s
+        lt.task_id = %s
     GROUP BY
-        task_id
+        l.id
     """
     values = (task_id,)
     labels = database.fetch_many(query, values)
