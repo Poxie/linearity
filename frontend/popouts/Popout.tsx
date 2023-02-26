@@ -14,6 +14,8 @@ export const Popout: React.FC<{
     const popout = useRef<HTMLDivElement>(null);
     const [popoutOffset, setPopoutOffset] = useState(0);
 
+    // Closing popout on click outside
+    // Updating popout position, on mount and resize
     useEffect(() => {
         if(!popout.current) return;
 
@@ -63,6 +65,18 @@ export const Popout: React.FC<{
         }
     }, [element, position]);
 
+    // Determining popout animations
+    const initial = { 
+        translateY: position === 'up' ? ANIMATE_TRANSLATE_VALUE : 0,
+        translateX: position === 'left' ? ANIMATE_TRANSLATE_VALUE : 0,
+        opacity: 0
+    }
+    const animate = { 
+        translateY: 0,
+        translateX: 0,
+        opacity: 1
+    }
+
     const className = [
         styles['container'],
         styles[position]
@@ -70,9 +84,9 @@ export const Popout: React.FC<{
     return(
         <motion.div
             className={className}
-            animate={{ translateY: 0, opacity: 1 }}
-            initial={{ translateY: ANIMATE_TRANSLATE_VALUE, opacity: 0 }}
-            exit={{ translateY: ANIMATE_TRANSLATE_VALUE, opacity: 0 }}
+            animate={animate}
+            initial={initial}
+            exit={initial}
             transition={{ duration: .2 }}
             style={{
                 '--popout-offset': `${popoutOffset}px`
