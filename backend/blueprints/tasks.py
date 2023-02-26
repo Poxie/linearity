@@ -198,7 +198,7 @@ def add_task_label_route(task_id: int, label_id: int, token_id: int):
     values = (label_id, task_id, time())
     database.insert(query, values)
 
-    return '', 201
+    return jsonify({}), 201
 
 @tasks.delete('/tasks/<int:task_id>/labels/<int:label_id>')
 @token_required
@@ -228,4 +228,4 @@ def remove_task_label_route(task_id: int, label_id: int, token_id: int):
     values = (label_id, task_id)
     database.delete(query, values)
 
-    return '', 204
+    return jsonify({})
