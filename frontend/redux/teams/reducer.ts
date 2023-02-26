@@ -53,7 +53,7 @@ const setMembers: ReducerAction = (state, action) => {
     const members: Member[] = action.payload;
 
     return updateObject(state, {
-        members: [...state.members, ...members]
+        members
     })
 } 
 
