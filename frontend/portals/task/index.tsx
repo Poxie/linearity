@@ -1,5 +1,5 @@
 import styles from './TaskPortal.module.scss';
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { selectTaskAssignees, selectTaskInfo, selectTaskLabels } from "@/redux/teams/selectors";
 import { Portal } from "../Portal";
 import { TaskPortalGroup } from "./TaskPortalGroup";
@@ -9,21 +9,38 @@ import { Member } from '@/types';
 import { TeamItems } from '@/popouts/team-items/TeamItems';
 import { usePopout } from '@/contexts/popout';
 import { useRef } from 'react';
+import { useAuth } from '@/contexts/auth';
+import { addTaskAssignee, removeTaskAssignee } from '@/redux/teams/actions';
 
 export const TaskPortal: React.FC<{
     blockId: number;
     taskId: number;
 }> = ({ blockId, taskId }) => {
     const { setPopout } = usePopout();
-
+    const { put, destroy } = useAuth();
+    const dispatch = useAppDispatch();
+    
     const { title, description, team_id } = useAppSelector(state => selectTaskInfo(state, blockId, taskId));
     const labels = useAppSelector(state => selectTaskLabels(state, blockId, taskId));
     const assignees = useAppSelector(state => selectTaskAssignees(state, blockId, taskId));
 
     const assigneeRef = useRef<HTMLButtonElement>(null);
 
-    const toggleAssignee = (member: Member) => {
+    const toggleAssignee = async (member: Member) => {
+        const exists = assignees?.find(assignee => assignee.id === member.id);
+        
+        const addAssignee = () => dispatch(addTaskAssignee(blockId, taskId, member));
+        const removeAssignee = () => dispatch(removeTaskAssignee(blockId, taskId, member.id));
 
+        if(exists) {
+            removeAssignee();
+            destroy(`/tasks/${taskId}/assignees/${member.id}`)
+                .catch(addAssignee)
+        } else {
+            addAssignee();
+            put(`/tasks/${taskId}/assignees/${member.id}`)
+                .catch(removeAssignee);
+        }
     }
 
     const openAssigneePortal = () => {

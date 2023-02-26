@@ -1,7 +1,7 @@
 import { Block, Group, Label, Member, Task, Team } from "@/types";
 import { AnyAction } from "redux";
-import { createReducer, updateObject } from "../utils";
-import { ADD_BLOCK_TASK, SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS } from "./constants";
+import { createReducer, updateItemInArray, updateObject } from "../utils";
+import { ADD_BLOCK_TASK, SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -65,6 +65,46 @@ const setLabels: ReducerAction = (state, action) => {
     })
 }
 
+const addTaskAssignee: ReducerAction = (state, action) => {
+    const blockId: number = action.payload.blockId;
+    const taskId: number = action.payload.taskId;
+    const member: Member = action.payload.member;
+
+    return updateObject(state, {
+        blocks: updateItemInArray(state.blocks, blockId, block => {
+            return updateObject(block, {
+                tasks: updateItemInArray(
+                    block.tasks, 
+                    taskId, 
+                    task => updateObject(task, {
+                        assignees: [...task.assignees, ...[member]]
+                    }
+                ))
+            })
+        })
+    })
+}
+
+const removeTaskAssignee: ReducerAction = (state, action) => {
+    const blockId: number = action.payload.blockId;
+    const taskId: number = action.payload.taskId;
+    const memberId: number = action.payload.memberId;
+
+    return updateObject(state, {
+        blocks: updateItemInArray(state.blocks, blockId, block => {
+            return updateObject(block, {
+                tasks: updateItemInArray(
+                    block.tasks, 
+                    taskId, 
+                    task => updateObject(task, {
+                        assignees: task.assignees.filter(assignee => assignee.id !== memberId)
+                    }
+                ))
+            })
+        })
+    })
+}
+
 // Creating reducer
 export const teamsReducer = createReducer({
     teams: [],
@@ -80,4 +120,6 @@ export const teamsReducer = createReducer({
     [SET_GROUPS]: setGroups,
     [SET_BLOCKS]: setBlocks,
     [ADD_BLOCK_TASK]: addBlockTask,
+    [ADD_TASK_ASSIGNEE]: addTaskAssignee,
+    [REMOVE_TASK_ASSIGNEE]: removeTaskAssignee
 })
