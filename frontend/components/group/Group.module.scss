@@ -85,6 +85,7 @@
 }
 .task-labels {
     display: flex;
+    gap: calc(var(--spacing-tertiary) / 2);
 }
 .task-label {
     padding: 4px 8px;
