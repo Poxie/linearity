@@ -1,0 +1,17 @@
+.container {
+    position: absolute;
+    z-index: 10000000000000000000000000000;
+    background-color: var(--background-tertiary);
+    border-radius: var(--border-radius-secondary);
+    min-width: 250px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 10px solid transparent;
+        border-top-color: var(--background-tertiary);
+    }
+}
