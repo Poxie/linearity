@@ -50,7 +50,7 @@ export const TeamItems: React.FC<{
             )}
             {filteredItems.length === 0 && (
                 <span  className={styles['empty']}>
-                    No {`${type}s`} found.
+                    No {type} found.
                 </span>
             )}
         </>
