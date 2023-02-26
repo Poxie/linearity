@@ -5,6 +5,10 @@ export interface User {
     avatar: string | null;
     created_at: number;
 }
+export interface Member extends User {
+    team_id: number;
+    joined_at: number;
+}
 export interface Team {
     created_at: number;
     description: null | string;

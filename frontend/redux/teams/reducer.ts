@@ -1,7 +1,7 @@
-import { Block, Group, Task, Team } from "@/types";
+import { Block, Group, Member, Task, Team } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateObject } from "../utils";
-import { ADD_BLOCK_TASK, SET_GROUPS, SET_BLOCKS, SET_TEAMS } from "./constants";
+import { ADD_BLOCK_TASK, SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -49,14 +49,24 @@ const addBlockTask: ReducerAction = (state, action) => {
     })
 }
 
+const setMembers: ReducerAction = (state, action) => {
+    const members: Member[] = action.payload;
+
+    return updateObject(state, {
+        members: [...state.members, ...members]
+    })
+} 
+
 // Creating reducer
 export const teamsReducer = createReducer({
     teams: [],
     groups: [],
     blocks: [],
+    members: [],
     loading: true
 }, {
     [SET_TEAMS]: setTeams,
+    [SET_MEMBERS]: setMembers,
     [SET_GROUPS]: setGroups,
     [SET_BLOCKS]: setBlocks,
     [ADD_BLOCK_TASK]: addBlockTask

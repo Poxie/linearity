@@ -19,6 +19,12 @@ export const selectTeamById = createSelector(
     (teams, teamId) => teams.find(team => team.id === teamId)
 )
 
+const selectMembers = (state: RootState) => state.teams.members;
+export const selectTeamMembers = createSelector(
+    [selectMembers, selectId],
+    (members, teamId) => members.filter(member => member.team_id === teamId)
+)
+
 const selectBlocks = (state: RootState) => state.teams.blocks;
 export const selectGroupBlockIds = createSelector(
     [selectBlocks, selectId],

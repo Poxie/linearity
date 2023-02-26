@@ -1,9 +1,13 @@
-import { Block, Group, Task, Team } from "@/types";
-import { SET_GROUPS, SET_TEAMS, SET_BLOCKS, ADD_BLOCK_TASK } from "./constants";
+import { Block, Group, Task, Team, User } from "@/types";
+import { SET_GROUPS, SET_TEAMS, SET_BLOCKS, ADD_BLOCK_TASK, SET_MEMBERS } from "./constants";
 
 export const setTeams = (teams: Team[]) => ({
     type: SET_TEAMS,
     payload: teams
+})
+export const setMembers = (members: User[]) => ({
+    type: SET_MEMBERS,
+    payload: members
 })
 export const setGroups = (groups: Group[]) => ({
     type: SET_GROUPS,
