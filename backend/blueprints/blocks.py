@@ -77,6 +77,18 @@ def add_group_task_route(block_id: int, token_id: int):
     form = request.form
     title = form.get('title')
     description = form.get('description')
+    assignees = form.get('assignees')
+    
+    # Checking if assinees is valid
+    assignee_ids = []
+    try:
+        assignee_ids = json.loads(assignees)
+        new_assignee_ids = []
+        for id in assignee_ids:
+            if isinstance(id, int):
+                new_assignee_ids.append(id)
+    except Exception as e:
+        return 'Assignees list is malformed', 400
 
     # Checking if title is present
     if not title:
@@ -95,8 +107,14 @@ def add_group_task_route(block_id: int, token_id: int):
     values = (id, block['team_id'], block_id, title, description, position, time())
     database.insert(query, values)
 
+    # Inserting assignees
+    if(len(new_assignee_ids) > 0):
+        for assignee_id in new_assignee_ids:
+            assignee_query = "INSERT INTO assignees (id, task_id, assigned_at) VALUES (%s, %s, %s)"
+            database.insert(assignee_query, (assignee_id, id, time()))
+
     # Fetching inserted task
-    task = get_task_by_id(id)
+    task = get_task_by_id(id, hydrate=True)
 
     return jsonify(task)
 
