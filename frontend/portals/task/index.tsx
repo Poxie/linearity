@@ -66,7 +66,7 @@ export const TaskPortal: React.FC<{
     return(
         <Portal 
             header={title || ''} 
-            subHeader={description}
+            subHeader={description || 'This issue is missing a description'}
         >
             <TaskPortalGroup header={'Labels'}>
                 {labels && (
