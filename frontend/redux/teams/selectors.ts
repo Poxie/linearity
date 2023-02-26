@@ -37,6 +37,7 @@ export const selectBlockById = createSelector(
 export const selectBlockInfo = createSelector(
     [selectBlockById],
     block => ({
+        team_id: block?.team_id,
         name: block?.name,
         description: block?.description,
         created_at: block?.created_at
