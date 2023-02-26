@@ -11,6 +11,8 @@ type AuthContextType = {
     loading: boolean;
     get: <T>(query: string, signal?: AbortSignal) => Promise<T>;
     post: <T>(query: string, values: Object, signal?: AbortSignal) => Promise<T>;
+    put: <T>(query: string, values?: Object, signal?: AbortSignal) => Promise<T>;
+    destroy: <T>(query: string, values?: Object, signal?: AbortSignal) => Promise<T>;
 }
 
 const AuthContext = React.createContext({} as AuthContextType);
@@ -108,11 +110,23 @@ export default function AuthProvider({
         return makeRequest<T>(query, 'POST', values, signal);
     }, [token]);
 
+    // Function to put data to API with user authentication.
+    const put = useCallback(async function<T>(query: string, values?: Object, signal?: AbortSignal) {
+        return makeRequest<T>(query, 'PUT', values || {}, signal);
+    }, [token]);
+
+    // Function to put data to API with user authentication.
+    const destroy = useCallback(async function<T>(query: string, values?: Object, signal?: AbortSignal) {
+        return makeRequest<T>(query, 'DELETE', values || {}, signal);
+    }, [token]);
+
     const value = {
         profile,
         setToken,
         get,
+        put,
         post,
+        destroy,
         token,
         loading,
     }
