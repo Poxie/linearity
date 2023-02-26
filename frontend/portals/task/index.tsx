@@ -5,12 +5,12 @@ import { Portal } from "../Portal";
 import { TaskPortalGroup } from "./TaskPortalGroup";
 import { TaskPortalAssignee } from './TaskPortalAssignee';
 import { AddIcon } from '@/assets/icons/AddIcon';
-import { Member } from '@/types';
+import { Label, Member } from '@/types';
 import { TeamItems } from '@/popouts/team-items/TeamItems';
 import { usePopout } from '@/contexts/popout';
-import { useRef } from 'react';
+import { RefObject, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
-import { addTaskAssignee, removeTaskAssignee } from '@/redux/teams/actions';
+import { addTaskAssignee, addTaskLabel, removeTaskAssignee, removeTaskLabel } from '@/redux/teams/actions';
 
 export const TaskPortal: React.FC<{
     blockId: number;
@@ -25,38 +25,41 @@ export const TaskPortal: React.FC<{
     const assignees = useAppSelector(state => selectTaskAssignees(state, blockId, taskId));
 
     const assigneeRef = useRef<HTMLButtonElement>(null);
+    const labelRef = useRef<HTMLButtonElement>(null);
 
-    const toggleAssignee = async (member: Member) => {
-        const exists = assignees?.find(assignee => assignee.id === member.id);
+    const toggleItem = async (item: Member | Label, path: 'assignees' | 'labels') => {
+        const exists = (path === 'assignees' ? assignees : labels as {id: number}[])?.find(i => i.id === item.id);
         
-        const addAssignee = () => dispatch(addTaskAssignee(blockId, taskId, member));
-        const removeAssignee = () => dispatch(removeTaskAssignee(blockId, taskId, member.id));
+        const addAction = path === 'assignees' ? addTaskAssignee : addTaskLabel;
+        const removeAction = path === 'assignees' ? removeTaskAssignee : removeTaskLabel;
+        
+        const addItem = () => dispatch(addAction(blockId, taskId, item as any));
+        const removeItem = () => dispatch(removeAction(blockId, taskId, item.id));
 
         if(exists) {
-            removeAssignee();
-            destroy(`/tasks/${taskId}/assignees/${member.id}`)
-                .catch(addAssignee)
+            removeItem();
+            destroy(`/tasks/${taskId}/${path}/${item.id}`)
+                .catch(addItem)
         } else {
-            addAssignee();
-            put(`/tasks/${taskId}/assignees/${member.id}`)
-                .catch(removeAssignee);
+            addItem();
+            put(`/tasks/${taskId}/${path}/${item.id}`)
+                .catch(removeItem);
         }
     }
-
-    const openAssigneePortal = () => {
+    const openPortal = (ref: RefObject<HTMLButtonElement>, type: 'members' | 'labels') => {
         if(!team_id) return;
-        
+
         setPopout({
             popout: (
                 <TeamItems 
                     teamId={team_id}
-                    type={'members'}
-                    onSelect={item => toggleAssignee(item as Member)}
+                    type={type}
+                    onSelect={item => toggleItem(item, type === 'members' ? 'assignees' : 'labels')}
                     closeOnSelect
                 />
             ),
             position: 'left',
-            ref: assigneeRef
+            ref
         })
     }
 
@@ -84,6 +87,8 @@ export const TaskPortal: React.FC<{
                             <button 
                                 className={styles['add-label-button']}
                                 aria-label={'Add label'}
+                                onClick={() => openPortal(labelRef, 'labels')}
+                                ref={labelRef}
                             >
                                 <AddIcon />
                             </button>
@@ -104,7 +109,7 @@ export const TaskPortal: React.FC<{
                         icon={<AddIcon />}
                         text={'Add assignee'}
                         className={styles['add-assignee']}
-                        onClick={openAssigneePortal}
+                        onClick={() => openPortal(assigneeRef, 'members')}
                         ref={assigneeRef}
                     />
                 </ul>
