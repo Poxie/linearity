@@ -7,6 +7,7 @@ import { GroupTasks } from './GroupTasks';
 const BlockContext = React.createContext({} as {
     groupId: number;
     blockId: number;
+    teamId: number;
 });
 
 export const useBlock = () => React.useContext(BlockContext);
@@ -14,9 +15,11 @@ export const useBlock = () => React.useContext(BlockContext);
 export const GroupBlock: React.FC<{
     id: number;
     groupId: number;
-}> = ({ id, groupId }) => {
+    teamId: number;
+}> = ({ id, groupId, teamId }) => {
     const value = {
         blockId: id,
+        teamId,
         groupId
     }
     return(

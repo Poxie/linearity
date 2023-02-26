@@ -5,7 +5,8 @@ import { GroupBlock } from "./GroupBlock";
 
 export const Group: React.FC<{
     groupId: number;
-}> = ({ groupId }) => {
+    teamId: number;
+}> = ({ groupId, teamId }) => {
     const blockIds = useAppSelector(state => selectGroupBlockIds(state, groupId));
     
     return(
@@ -14,6 +15,7 @@ export const Group: React.FC<{
                 <GroupBlock 
                     id={blockId}
                     groupId={groupId}
+                    teamId={teamId}
                     key={blockId} 
                 />
             ))}

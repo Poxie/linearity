@@ -10,7 +10,7 @@ import { AddTaskLabels } from './AddTaskLabels';
 import { useRef, useState } from 'react';
 import { useModal } from '@/contexts/modal';
 import { useAuth } from '@/contexts/auth';
-import { Task } from '@/types';
+import { Member, Task } from '@/types';
 import { addBlockTask } from '@/redux/teams/actions';
 
 export const AddTaskModal: React.FC<{
@@ -20,11 +20,22 @@ export const AddTaskModal: React.FC<{
     const { post } = useAuth();
 
     const [loading, setLoading] = useState(false);
+    const [assignees, setAssinees] = useState<Member[]>([]);
 
     const dispatch = useAppDispatch();
     const block = useAppSelector(state => selectBlockInfo(state, blockId));
     const titleRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLInputElement>(null);
+
+    if(!block.team_id) return null;
+
+    const toggleAssignee = (assignee: Member) => {
+        setAssinees(prev => {
+            const exists = prev.find(member => member.id === assignee.id);
+            if(exists) return prev.filter(member => member.id !== assignee.id);
+            return [...prev, ...[assignee]];
+        });
+    }
 
     const addTask = async () => {
         // Fetching input values
@@ -39,7 +50,8 @@ export const AddTaskModal: React.FC<{
             setLoading(true);
             const task = await post<Task>(`/blocks/${blockId}/tasks`, {
                 title,
-                description
+                description,
+                assignees: assignees.map(assignee => assignee.id)
             });
 
             // Adding task to redux
@@ -67,7 +79,11 @@ export const AddTaskModal: React.FC<{
                 textArea
                 ref={descriptionRef}
             />
-            <AddTaskAssignees />
+            <AddTaskAssignees 
+                teamId={block.team_id}
+                assignees={assignees}
+                toggleAssignee={toggleAssignee}
+            />
             <AddTaskLabels />
         </ModalMain>
         <ModalFooter 

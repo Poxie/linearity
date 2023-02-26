@@ -8,8 +8,8 @@ import { selectGroupHasFetchedBlocks } from "@/redux/teams/selectors";
 import { Block } from "@/types";
 import { useEffect } from "react"
 
-export default function GroupPage({ params: { groupId } }: {
-    params: { groupId: string }
+export default function GroupPage({ params: { groupId, teamId } }: {
+    params: { groupId: string, teamId: string }
 }) {
     const { get, token } = useAuth();
 
@@ -25,5 +25,5 @@ export default function GroupPage({ params: { groupId } }: {
             })
     }, [get, token, groupId, blocksFetched]);
 
-    return <Group groupId={parseInt(groupId)} />
+    return <Group teamId={parseInt(teamId)} groupId={parseInt(groupId)} />
 }
