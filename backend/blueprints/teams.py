@@ -91,6 +91,39 @@ def get_team_route(team_id: int, token_id: int):
 
     return jsonify(team)
 
+@teams.get('/teams/<int:team_id>/members')
+@token_required
+def get_team_members_route(team_id: int, token_id: int):
+    team = get_team_by_id(team_id)
+    # Checking if team exists
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, team_id)
+    if not member:
+        return 'Unauthorized', 401
+    
+    # Getting team members
+    query = """
+    SELECT
+        m.*,
+        u.*
+    FROM members m
+        LEFT JOIN users u ON u.id = m.id
+    WHERE
+        m.team_id = %s
+    GROUP BY
+        u.id
+    """
+    members = database.fetch_many(query, (team_id, ))
+    if members:
+        for member in members:
+            del member['password']
+            del member['email']
+
+    return jsonify(members)
+
 @teams.post('/teams/<int:team_id>/members/<int:user_id>')
 @token_required
 def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
