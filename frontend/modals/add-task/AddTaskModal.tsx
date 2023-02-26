@@ -10,7 +10,7 @@ import { AddTaskLabels } from './AddTaskLabels';
 import { useRef, useState } from 'react';
 import { useModal } from '@/contexts/modal';
 import { useAuth } from '@/contexts/auth';
-import { Member, Task } from '@/types';
+import { Label, Member, Task } from '@/types';
 import { addBlockTask } from '@/redux/teams/actions';
 
 export const AddTaskModal: React.FC<{
@@ -21,6 +21,7 @@ export const AddTaskModal: React.FC<{
 
     const [loading, setLoading] = useState(false);
     const [assignees, setAssinees] = useState<Member[]>([]);
+    const [labels, setLabels] = useState<Label[]>([]);
 
     const dispatch = useAppDispatch();
     const block = useAppSelector(state => selectBlockInfo(state, blockId));
@@ -34,6 +35,13 @@ export const AddTaskModal: React.FC<{
             const exists = prev.find(member => member.id === assignee.id);
             if(exists) return prev.filter(member => member.id !== assignee.id);
             return [...prev, ...[assignee]];
+        });
+    }
+    const toggleLabel = (label: Label) => {
+        setLabels(prev => {
+            const exists = prev.find(l => l.id === label.id);
+            if(exists) return prev.filter(l => l.id !== label.id);
+            return [...prev, ...[label]];
         });
     }
 
@@ -84,7 +92,11 @@ export const AddTaskModal: React.FC<{
                 assignees={assignees}
                 toggleAssignee={toggleAssignee}
             />
-            <AddTaskLabels />
+            <AddTaskLabels 
+                teamId={block.team_id}
+                labels={labels}
+                toggleLabel={toggleLabel}
+            />
         </ModalMain>
         <ModalFooter 
             cancelLabel={'Cancel'}

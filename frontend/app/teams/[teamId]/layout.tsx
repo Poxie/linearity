@@ -5,9 +5,9 @@ import { GroupSelector } from "@/components/team/GroupSelector";
 import { useAuth } from "@/contexts/auth";
 import { PortalProvider } from "@/contexts/portal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { setGroups, setMembers } from "@/redux/teams/actions";
+import { setGroups, setLabels, setMembers } from "@/redux/teams/actions";
 import { selectTeamMembers } from "@/redux/teams/selectors";
-import { Group, User } from "@/types";
+import { Group, Label, User } from "@/types";
 import { useEffect } from "react";
 
 export default function TeamLayout({
@@ -35,6 +35,12 @@ export default function TeamLayout({
         get<User[]>(`/teams/${teamId}/members`)
             .then(members => {
                 dispatch(setMembers(members));
+            })
+
+        // Fetching team labels
+        get<Label[]>(`/teams/${teamId}/labels`)
+            .then(labels => {
+                dispatch(setLabels(labels));
             })
     }, [teamId, get, token]);
 

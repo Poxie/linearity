@@ -16,13 +16,20 @@ export const AddTaskAssignees: React.FC<{
 
     const openPopout = () => {
         setPopout({
-            popout: <TeamItems teamId={teamId} type={'members'} onSelect={toggleAssignee} closeOnSelect />,
+            popout: (
+                <TeamItems 
+                    teamId={teamId} 
+                    type={'members'} 
+                    onSelect={item => toggleAssignee(item as Member)} 
+                    closeOnSelect
+                />
+            ),
             ref
         })
     }
 
     return(
-        <AddTaskGroup header={'Assignees'} className={styles['assignee-list']}>
+        <AddTaskGroup header={'Assignees'} className={styles['list']}>
             {assignees.length !== 0 && (
                 <ul>
                     {assignees.map(assignee => (
