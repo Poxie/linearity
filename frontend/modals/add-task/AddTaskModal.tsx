@@ -59,7 +59,8 @@ export const AddTaskModal: React.FC<{
             const task = await post<Task>(`/blocks/${blockId}/tasks`, {
                 title,
                 description,
-                assignees: assignees.map(assignee => assignee.id)
+                assignees: assignees.map(assignee => assignee.id),
+                labels: labels.map(label => label.id)
             });
 
             // Adding task to redux

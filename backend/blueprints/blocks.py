@@ -78,17 +78,27 @@ def add_group_task_route(block_id: int, token_id: int):
     title = form.get('title')
     description = form.get('description')
     assignees = form.get('assignees')
+    labels = form.get('labels')
     
     # Checking if assinees is valid
-    assignee_ids = []
+    new_assignee_ids = []
     try:
         assignee_ids = json.loads(assignees)
-        new_assignee_ids = []
         for id in assignee_ids:
             if isinstance(id, int):
                 new_assignee_ids.append(id)
     except Exception as e:
         return 'Assignees list is malformed', 400
+    
+    # Checking if labels is valid
+    new_label_ids = []
+    try:
+        label_ids = json.loads(labels)
+        for id in label_ids:
+            if isinstance(id, int):
+                new_label_ids.append(id)
+    except Exception as e:
+        return 'Labels list is malformed', 400
 
     # Checking if title is present
     if not title:
@@ -112,6 +122,12 @@ def add_group_task_route(block_id: int, token_id: int):
         for assignee_id in new_assignee_ids:
             assignee_query = "INSERT INTO assignees (id, task_id, assigned_at) VALUES (%s, %s, %s)"
             database.insert(assignee_query, (assignee_id, id, time()))
+
+    # Inserting labels
+    if(len(new_label_ids) > 0):
+        for label_id in new_label_ids:
+            label_query = "INSERT INTO task_labels (id, task_id, added_at) VALUES (%s, %s, %s)"
+            database.insert(label_query, (label_id, id, time()))
 
     # Fetching inserted task
     task = get_task_by_id(id, hydrate=True)
