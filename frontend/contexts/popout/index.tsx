@@ -9,24 +9,31 @@ type PopoutContextType = {
 type PopoutArgs = {
     popout: ReactElement | null;
     ref: RefObject<HTMLElement> | null;
+    position?: 'up' | 'left'
 }
 
 const PopoutContext = React.createContext({} as PopoutContextType);
 
 export const usePopout = () => React.useContext(PopoutContext);
 
+const DEFAULT_POSITION = 'up';
 export const PopoutProvider: React.FC<{
     children: any;
 }> = ({ children }) => {
-    const [popout, setPopout] = useState<PopoutArgs>({
+    const [popout, setPopout] = useState<PopoutArgs & {position: 'up' | 'left'}>({
         popout: null,
-        ref: null
+        ref: null,
+        position: 'up'
     });
 
-    const close = () => setPopout({ popout: null, ref: null });
+    const _setPopout = (args: PopoutArgs) => setPopout({
+        ...args,
+        position: args.position || DEFAULT_POSITION
+    })
+    const close = () => setPopout({ popout: null, ref: null, position: DEFAULT_POSITION });
 
     const value = {
-        setPopout,
+        setPopout: _setPopout, 
         close
     }
     return(
@@ -34,7 +41,7 @@ export const PopoutProvider: React.FC<{
             {children}
             <AnimatePresence>
                 {popout.popout && popout.ref && (
-                    <Popout element={popout.ref}>
+                    <Popout element={popout.ref} position={popout.position}>
                         {popout.popout}
                     </Popout>
                 )}

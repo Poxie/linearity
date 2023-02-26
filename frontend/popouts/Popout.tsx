@@ -1,6 +1,6 @@
 import styles from './Popouts.module.scss';
 import { motion } from "framer-motion"
-import { RefObject, useEffect, useRef } from "react";
+import { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
 import { usePopout } from '@/contexts/popout';
 
 const SPACE_FROM_ELEMENT = 20;
@@ -8,9 +8,11 @@ const ANIMATE_TRANSLATE_VALUE = -10;
 export const Popout: React.FC<{
     children: any;
     element: RefObject<HTMLElement>;
-}> = ({ children, element }) => {
+    position: 'up' | 'left';
+}> = ({ children, element, position }) => {
     const { close } = usePopout();
     const popout = useRef<HTMLDivElement>(null);
+    const [popoutOffset, setPopoutOffset] = useState(0);
 
     useEffect(() => {
         if(!popout.current) return;
@@ -26,12 +28,23 @@ export const Popout: React.FC<{
         // Updating popout position
         const updatePopoutPosition = () => {
             if(!element.current || !popout.current) return;
-            let { top, left, width: _width } = element.current.getBoundingClientRect();
+
+            // Getting sizes and position of clicked element and popout
+            let { top, left, width: _width, height: _height } = element.current.getBoundingClientRect();
             const { width, height } = popout.current.getBoundingClientRect();
             
-            top -= height + SPACE_FROM_ELEMENT;
-            left -= width / 2 - _width / 2;
+            // Determining position for popout
+            if(position === 'up') {
+                top -= height + SPACE_FROM_ELEMENT;
+                left -= width / 2 - _width / 2;
+            } else if(position === 'left') {
+                left -= width + SPACE_FROM_ELEMENT;
+            }
+
+            // Checking offset based on element ref
+            setPopoutOffset(_height / 2);
             
+            // Updating popout top and left
             popout.current.style.top = `${top}px`;
             popout.current.style.left = `${left}px`;
         }
@@ -48,15 +61,22 @@ export const Popout: React.FC<{
             window.removeEventListener('resize', updatePopoutPosition);
             window.removeEventListener('mousedown', handleClickOutside);
         }
-    }, [element]);
+    }, [element, position]);
 
+    const className = [
+        styles['container'],
+        styles[position]
+    ].join(' ');
     return(
         <motion.div
-            className={styles['container']}
+            className={className}
             animate={{ translateY: 0, opacity: 1 }}
             initial={{ translateY: ANIMATE_TRANSLATE_VALUE, opacity: 0 }}
             exit={{ translateY: ANIMATE_TRANSLATE_VALUE, opacity: 0 }}
             transition={{ duration: .2 }}
+            style={{
+                '--popout-offset': `${popoutOffset}px`
+            } as CSSProperties}
             ref={popout}
         >
             {children}

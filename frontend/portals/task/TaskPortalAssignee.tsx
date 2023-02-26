@@ -1,17 +1,20 @@
+import React from 'react';
 import styles from './TaskPortal.module.scss';
 
-export const TaskPortalAssignee: React.FC<{
+type Props = {
     icon: any;
     text: string;
     className?: string;
-}> = ({ icon, text, className }) => {
+    onClick?: () => void;
+}
+export const TaskPortalAssignee = React.forwardRef<HTMLButtonElement, Props>(({ icon, text, className, onClick }, ref) => {
     className = [
         className,
         styles['assignee']
     ].join(' ');
     return(
         <li>
-            <button className={className}>
+            <button className={className} onClick={onClick} ref={ref}>
                 <span className={styles['assignee-icon']}>
                     {icon}
                 </span>
@@ -21,4 +24,4 @@ export const TaskPortalAssignee: React.FC<{
             </button>
         </li>
     )
-}
+})

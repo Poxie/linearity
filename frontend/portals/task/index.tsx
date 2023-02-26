@@ -5,14 +5,43 @@ import { Portal } from "../Portal";
 import { TaskPortalGroup } from "./TaskPortalGroup";
 import { TaskPortalAssignee } from './TaskPortalAssignee';
 import { AddIcon } from '@/assets/icons/AddIcon';
+import { Member } from '@/types';
+import { TeamItems } from '@/popouts/team-items/TeamItems';
+import { usePopout } from '@/contexts/popout';
+import { useRef } from 'react';
 
 export const TaskPortal: React.FC<{
     blockId: number;
     taskId: number;
 }> = ({ blockId, taskId }) => {
-    const { title, description } = useAppSelector(state => selectTaskInfo(state, blockId, taskId));
+    const { setPopout } = usePopout();
+
+    const { title, description, team_id } = useAppSelector(state => selectTaskInfo(state, blockId, taskId));
     const labels = useAppSelector(state => selectTaskLabels(state, blockId, taskId));
     const assignees = useAppSelector(state => selectTaskAssignees(state, blockId, taskId));
+
+    const assigneeRef = useRef<HTMLButtonElement>(null);
+
+    const toggleAssignee = (member: Member) => {
+
+    }
+
+    const openAssigneePortal = () => {
+        if(!team_id) return;
+        
+        setPopout({
+            popout: (
+                <TeamItems 
+                    teamId={team_id}
+                    type={'members'}
+                    onSelect={item => toggleAssignee(item as Member)}
+                    closeOnSelect
+                />
+            ),
+            position: 'left',
+            ref: assigneeRef
+        })
+    }
 
     return(
         <Portal 
@@ -58,6 +87,8 @@ export const TaskPortal: React.FC<{
                         icon={<AddIcon />}
                         text={'Add assignee'}
                         className={styles['add-assignee']}
+                        onClick={openAssigneePortal}
+                        ref={assigneeRef}
                     />
                 </ul>
             </TaskPortalGroup>
