@@ -3,6 +3,7 @@
     z-index: 10000000000000000000000000000;
     background-color: var(--background-tertiary);
     border-radius: var(--border-radius-secondary);
+    box-shadow: rgb(0 0 0 / 30%) 0px 1px 4px 0px;
     min-width: 250px;
 
     &::after {
