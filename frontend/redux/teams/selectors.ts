@@ -38,18 +38,11 @@ export const selectPositionedBlocks = createSelector(
     (blocks, groupId) => 
         blocks
             .filter(block => block.group_id === groupId)
+            .sort((a,b) => a.position - b.position)
             .map(block => ({
                 id: block.id,
                 position: block.position
             }))
-            .sort((a,b) => a.position - b.position)
-)
-export const selectGroupBlockIds = createSelector(
-    [selectBlocks, selectId],
-    (blocks, groupId) => 
-        blocks.filter(block => block.group_id === groupId)
-              .sort((a,b) => a.position - b.position)
-              .map(block => block.id)
 )
 export const selectBlockById = createSelector(
     [selectBlocks, selectId],
@@ -64,43 +57,29 @@ export const selectBlockInfo = createSelector(
         created_at: block?.created_at
     })
 )
+
+const selectTasks = (state: RootState) => state.teams.tasks;
+export const selectTasksByBlockId = createSelector(
+    [selectTasks, selectId],
+    (tasks, blockId) => tasks.filter(task => task.block_id === blockId)
+)
 export const selectBlockTaskCount = createSelector(
-    [selectBlockById],
-    block => block?.tasks.length
-)
-const selectGroupBlocks = createSelector(
-    [selectBlocks, selectId],
-    (blocks, groupId) => blocks.filter(block => block.group_id === groupId)
-)
-export const selectPositionedGroupTasks = createSelector(
-    [selectGroupBlocks],
-        blocks => 
-            blocks?.map(block => block.tasks)
-                .reduce((pre, cur) => pre.concat(cur), [])
-                .map(task => ({
-                    id: task.id,
-                    block_id: task.block_id,
-                    position: task.position
-                }))
+    [selectTasksByBlockId],
+    tasks => tasks.length
 )
 export const selectPositionedTasks = createSelector(
-    [selectBlockById],
-    block => block?.tasks
-        .sort((a,b) => a.position - b.position)    
+    [selectTasksByBlockId],
+    (tasks) => tasks
+        .sort((a,b) => a.position - b.position)
         .map(task => ({
             id: task.id,
+            block_id: task.block_id,
             position: task.position
         }))
 )
-export const selectBlockTaskIds = createSelector(
-    [selectBlockById],
-    block => block?.tasks
-        .sort((a,b) => a.position - b.position)
-        .map(task => task.id)
-)
 export const selectTaskById = createSelector(
-    [selectBlockById, _selectId],
-    (block, taskId) => block?.tasks.find(task => task.id === taskId)
+    [selectTasks, selectId],
+    (tasks, taskId) => tasks.find(task => task.id === taskId)
 )
 export const selectTaskInfo = createSelector(
     [selectTaskById],
@@ -120,6 +99,6 @@ export const selectTaskLabels = createSelector(
 )
 
 export const selectGroupHasFetchedBlocks = createSelector(
-    [selectGroupBlockIds],
+    [selectPositionedBlocks],
     ids => ids.length !== 0
 )

@@ -3,9 +3,9 @@
 import { Group } from "@/components/group";
 import { useAuth } from "@/contexts/auth";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { setBlocks } from "@/redux/teams/actions";
+import { setTasks, setBlocks } from "@/redux/teams/actions";
 import { selectGroupHasFetchedBlocks } from "@/redux/teams/selectors";
-import { Block } from "@/types";
+import { Block, Task } from "@/types";
 import { useEffect } from "react"
 
 export default function GroupPage({ params: { groupId, teamId } }: {
@@ -19,8 +19,15 @@ export default function GroupPage({ params: { groupId, teamId } }: {
     useEffect(() => {
         if(!token || blocksFetched) return;
 
-        get<Block[]>(`/groups/${groupId}/blocks`)
+        get<(Block & { tasks?: Task[] })[]>(`/groups/${groupId}/blocks`)
             .then(blocks => {
+                const tasks = blocks.map(block => {
+                    const blockTasks = Array.from(block.tasks || []);
+                    delete block.tasks;
+                    return blockTasks;
+                }).reduce((prev, cur) => prev.concat(cur), []);
+                
+                dispatch(setTasks(tasks));
                 dispatch(setBlocks(blocks));
             })
     }, [get, token, groupId, blocksFetched]);

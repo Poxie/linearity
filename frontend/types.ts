@@ -36,7 +36,6 @@ export interface Block {
     name: string;
     position: number;
     team_id: number;
-    tasks: Task[];
 }
 export interface Task {
     block_id: number;

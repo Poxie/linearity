@@ -13,16 +13,15 @@ import { useAuth } from '@/contexts/auth';
 import { addTaskAssignee, addTaskLabel, removeTaskAssignee, removeTaskLabel } from '@/redux/teams/actions';
 
 export const TaskPortal: React.FC<{
-    blockId: number;
     taskId: number;
-}> = ({ blockId, taskId }) => {
+}> = ({ taskId }) => {
     const { setPopout } = usePopout();
     const { put, destroy } = useAuth();
     const dispatch = useAppDispatch();
     
-    const { title, description, team_id } = useAppSelector(state => selectTaskInfo(state, blockId, taskId));
-    const labels = useAppSelector(state => selectTaskLabels(state, blockId, taskId));
-    const assignees = useAppSelector(state => selectTaskAssignees(state, blockId, taskId));
+    const { title, description, team_id } = useAppSelector(state => selectTaskInfo(state, taskId));
+    const labels = useAppSelector(state => selectTaskLabels(state, taskId));
+    const assignees = useAppSelector(state => selectTaskAssignees(state, taskId));
 
     const assigneeRef = useRef<HTMLButtonElement>(null);
     const labelRef = useRef<HTMLButtonElement>(null);
@@ -33,8 +32,8 @@ export const TaskPortal: React.FC<{
         const addAction = path === 'assignees' ? addTaskAssignee : addTaskLabel;
         const removeAction = path === 'assignees' ? removeTaskAssignee : removeTaskLabel;
         
-        const addItem = () => dispatch(addAction(blockId, taskId, item as any));
-        const removeItem = () => dispatch(removeAction(blockId, taskId, item.id));
+        const addItem = () => dispatch(addAction(taskId, item as any));
+        const removeItem = () => dispatch(removeAction(taskId, item.id));
 
         if(exists) {
             removeItem();

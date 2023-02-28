@@ -1,13 +1,11 @@
 import styles from './Group.module.scss';
 import { useAppSelector } from "@/redux/store";
 import { selectTaskAssignees } from "@/redux/teams/selectors";
-import { useBlock } from "./GroupBlock";
 import { useTask } from "./GroupTask"
 
 export const GroupTaskAssignees = () => {
     const { taskId } = useTask();
-    const { blockId } = useBlock();
-    const assignees = useAppSelector(state => selectTaskAssignees(state, blockId, taskId));
+    const assignees = useAppSelector(state => selectTaskAssignees(state, taskId));
 
     const primaryAssignee = assignees ? assignees[0] : undefined;
     return(

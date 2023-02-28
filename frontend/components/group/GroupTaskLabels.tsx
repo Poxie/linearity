@@ -1,13 +1,11 @@
 import { useAppSelector } from '@/redux/store';
 import { selectTaskLabels } from '@/redux/teams/selectors';
 import styles from './Group.module.scss';
-import { useBlock } from './GroupBlock';
 import { useTask } from './GroupTask';
 
 export const GroupTaskLabels = () => {
-    const { blockId } = useBlock();
     const { taskId } = useTask();
-    const labels = useAppSelector(state => selectTaskLabels(state, blockId, taskId));
+    const labels = useAppSelector(state => selectTaskLabels(state, taskId));
     if(!labels?.length) return null;
 
     return(
