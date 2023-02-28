@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from utils.common import get_task_by_id, get_member, get_assignee, get_task_assignees, get_label_by_id, get_task_label
+from utils.common import get_task_by_id, get_member, get_assignee, get_task_assignees, get_label_by_id, get_task_label, get_block_by_id, get_block_tasks
 from utils.constants import PATCH_TASK_ALLOWED_PROPERTIES
 from utils.auth import token_required
 from database import database
@@ -55,6 +55,8 @@ def update_task_route(task_id: int, token_id: int):
     task = get_task_by_id(task_id)
     if not task:
         return 'Task not found', 404
+    current_block_id = task['block_id']
+    current_position = task['position']
 
     # Checking if user is part of team
     member = get_member(token_id, task['team_id'])
@@ -72,6 +74,36 @@ def update_task_route(task_id: int, token_id: int):
         keys.append(key)
         values += (value,)
 
+    # Checking if task changes block
+    if 'block_id' in keys or 'position' in keys:
+        if not 'block_id' in keys:
+            return 'block_id is required with position argument'
+        if not 'position' in keys:
+            return 'position is required with block_id argument'
+        
+        # Checking if block exists
+        block = get_block_by_id(request.form.get('block_id'))
+        if not block:
+            return 'Block not found', 404
+        
+        # Updating positions in new block
+        position = int(request.form.get('position'))
+        tasks = get_block_tasks(block['id'])
+        for task in tasks:
+            if task['position'] >= position:
+                query = "UPDATE tasks SET position = %s WHERE id = %s"
+                pos_values = (task['position'] + 1, task['id'])
+                database.update(query, pos_values)
+
+        # Updating positions in previous block
+        tasks = get_block_tasks(current_block_id)
+        for task in tasks:
+            if task['id'] == task_id: continue
+            if task['position'] >= current_position:
+                query = "UPDATE tasks SET position = %s WHERE id = %s"
+                pos_values = (task['position'] - 1, task['id'])
+                database.update(query, pos_values)
+
     # If not properties are updated
     if not len(keys):
         return 'No properties to update were provided', 400
@@ -80,6 +112,7 @@ def update_task_route(task_id: int, token_id: int):
     keys_str = [f'{key} = %s' for key in keys]
     query = f"UPDATE tasks SET {','.join(keys_str)} WHERE id = %s"
     values += (task_id,)
+    print(query, values)
     
     # Updating task properties
     database.update(query, values)
