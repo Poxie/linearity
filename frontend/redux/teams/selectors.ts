@@ -32,9 +32,23 @@ export const selectTeamLabels = createSelector(
 )
 
 const selectBlocks = (state: RootState) => state.teams.blocks;
+export const selectPositionedBlocks = createSelector(
+    [selectBlocks, selectId],
+    (blocks, groupId) => 
+        blocks
+            .filter(block => block.group_id === groupId)
+            .sort((a,b) => a.position - b.position)
+            .map(block => ({
+                id: block.id,
+                position: block.position
+            }))
+)
 export const selectGroupBlockIds = createSelector(
     [selectBlocks, selectId],
-    (blocks, groupId) => blocks.filter(block => block.group_id === groupId).map(block => block.id)
+    (blocks, groupId) => 
+        blocks.filter(block => block.group_id === groupId)
+              .sort((a,b) => a.position - b.position)
+              .map(block => block.id)
 )
 export const selectBlockById = createSelector(
     [selectBlocks, selectId],

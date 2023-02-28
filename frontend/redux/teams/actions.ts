@@ -1,5 +1,5 @@
 import { Block, Group, Label, Member, Task, Team, User } from "@/types";
-import { SET_GROUPS, SET_TEAMS, SET_BLOCKS, ADD_BLOCK_TASK, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL } from "./constants";
+import { SET_GROUPS, SET_TEAMS, SET_BLOCKS, ADD_BLOCK_TASK, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS } from "./constants";
 
 export const setTeams = (teams: Team[]) => ({
     type: SET_TEAMS,
@@ -19,6 +19,10 @@ export const setGroups = (groups: Group[]) => ({
 })
 export const setBlocks = (blocks: Block[]) => ({
     type: SET_BLOCKS,
+    payload: blocks
+})
+export const updateBlockPositions = (blocks: {id: number, position: number}[]) => ({
+    type: UPDATE_BLOCK_POSITIONS,
     payload: blocks
 })
 export const addBlockTask = (blockId: number, task: Task) => ({
