@@ -18,6 +18,7 @@
     padding: var(--spacing-secondary);
     background-color: var(--background-quaternary);
     border-radius: var(--border-radius) var(--border-radius) 0 0;
+    cursor: move;
 }
 .block-header-main {
     display: flex;
