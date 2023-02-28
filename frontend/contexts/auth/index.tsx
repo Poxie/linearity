@@ -12,6 +12,7 @@ type AuthContextType = {
     get: <T>(query: string, signal?: AbortSignal) => Promise<T>;
     post: <T>(query: string, values: Object, signal?: AbortSignal) => Promise<T>;
     put: <T>(query: string, values?: Object, signal?: AbortSignal) => Promise<T>;
+    patch: <T>(query: string, values?: Object, signal?: AbortSignal) => Promise<T>;
     destroy: <T>(query: string, values?: Object, signal?: AbortSignal) => Promise<T>;
 }
 
@@ -115,6 +116,11 @@ export default function AuthProvider({
         return makeRequest<T>(query, 'PUT', values || {}, signal);
     }, [token]);
 
+    // Function to patch data in the API with user authentication.
+    const patch = useCallback(async function<T>(query: string, values?: Object, signal?: AbortSignal) {
+        return makeRequest<T>(query, 'PATCH', values || {}, signal);
+    }, [token]);
+
     // Function to put data to API with user authentication.
     const destroy = useCallback(async function<T>(query: string, values?: Object, signal?: AbortSignal) {
         return makeRequest<T>(query, 'DELETE', values || {}, signal);
@@ -126,6 +132,7 @@ export default function AuthProvider({
         get,
         put,
         post,
+        patch,
         destroy,
         token,
         loading,
