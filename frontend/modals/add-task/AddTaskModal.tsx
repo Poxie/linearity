@@ -11,7 +11,7 @@ import { useRef, useState } from 'react';
 import { useModal } from '@/contexts/modal';
 import { useAuth } from '@/contexts/auth';
 import { Label, Member, Task } from '@/types';
-import { addBlockTask } from '@/redux/teams/actions';
+import { addTask } from '@/redux/teams/actions';
 
 export const AddTaskModal: React.FC<{
     blockId: number;
@@ -45,7 +45,7 @@ export const AddTaskModal: React.FC<{
         });
     }
 
-    const addTask = async () => {
+    const onConfirm = async () => {
         // Fetching input values
         const title = titleRef.current?.value;
         const description = descriptionRef.current?.value;
@@ -64,7 +64,7 @@ export const AddTaskModal: React.FC<{
             });
 
             // Adding task to redux
-            dispatch(addBlockTask(blockId, task));
+            dispatch(addTask(task));
 
             close();
         } catch(error) {
@@ -103,7 +103,7 @@ export const AddTaskModal: React.FC<{
             cancelLabel={'Cancel'}
             confirmLabel={'Add issue'}
             onCancel={close}
-            onConfirm={addTask}
+            onConfirm={onConfirm}
             confirmLoading={loading}
             confirmLoadingLabel={'Adding issue...'}
         />
