@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { usePosition } from '.';
 import styles from './Group.module.scss';
 import { GroupAddTask } from './GroupAddTask';
 import { GroupBlockHeader } from './GroupBlockHeader';
@@ -18,8 +19,9 @@ export const GroupBlock: React.FC<{
     groupId: number;
     teamId: number;
     index: number;
-    updateBlockPosition: (blockId: number, prevPosition: number, position: number) => void;
-}> = ({ id, groupId, teamId, index, updateBlockPosition }) => {
+}> = ({ id, groupId, teamId, index }) => {
+    const { updateBlockPosition } = usePosition();
+
     const ref = useRef<HTMLDivElement>(null);
     const initialPos = useRef<null | { top: number, left: number }>(null);
     const newIndex = useRef<null | number>(null);
@@ -116,6 +118,7 @@ export const GroupBlock: React.FC<{
             <div 
                 className={styles['block']}
                 data-block-index={index}
+                data-block-id={id}
                 ref={ref}
             >
                 <GroupBlockHeader 

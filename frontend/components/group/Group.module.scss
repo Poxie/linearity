@@ -59,6 +59,7 @@
     gap: var(--spacing-tertiary);
     width: 100%;
     position: relative;
+    z-index: 3;
 }
 .task-header {
     display: flex;
@@ -113,4 +114,11 @@
     &:hover {
         background-color: var(--background-quaternary) !important;
     }
+}
+
+.task-placeholder {
+    border: 3px dashed var(--background-quaternary);
+    background-color: var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+    pointer-events: none;
 }

@@ -1,7 +1,7 @@
 import { Block, Group, Label, Member, Task, Team } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK } from "./constants";
+import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -74,6 +74,44 @@ const updateTaskPositions: ReducerAction = (state, action) => {
             return updateObject(task, {
                 position: t.position
             })
+        })
+    })
+}
+
+const updateTaskPositionsAndBlocks: ReducerAction = (state, action) => {
+    const taskId: number = action.payload.taskId;
+    const newBlockId: number = action.payload.newBlockId;
+    const newPosition: number = action.payload.newPosition;
+
+    const prevTask = state.tasks.find(task => task.id === taskId);
+    if(!prevTask) return state;
+
+    return updateObject(state, {
+        tasks: state.tasks.map(task => {
+            if(task.id === taskId) {
+                return updateObject(task, {
+                    block_id: newBlockId,
+                    position: newPosition
+                })
+            }
+
+            if(task.block_id === prevTask.block_id) {
+                if(task.position >= prevTask.position) {
+                    return updateObject(task, {
+                        position: task.position - 1
+                    })
+                }
+            }
+
+            if(task.block_id === newBlockId) {
+                if(task.position >= newPosition) {
+                    return updateObject(task, {
+                        position: task.position + 1
+                    })
+                }
+            }
+
+            return task;
         })
     })
 }
@@ -172,6 +210,7 @@ export const teamsReducer = createReducer({
     [ADD_TASK]: addTask,
     [UPDATE_BLOCK_POSITIONS]: updateBlockPositions,
     [UPDATE_TASK_POSITIONS]: updateTaskPositions,
+    [UPDATE_TASK_POSITIONS_AND_BLOCKS]: updateTaskPositionsAndBlocks,
     [SET_BLOCKS]: setBlocks,
     [ADD_TASK_ASSIGNEE]: addTaskAssignee,
     [REMOVE_TASK_ASSIGNEE]: removeTaskAssignee,
