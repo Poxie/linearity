@@ -37,11 +37,11 @@ export const selectPositionedBlocks = createSelector(
     (blocks, groupId) => 
         blocks
             .filter(block => block.group_id === groupId)
-            .sort((a,b) => a.position - b.position)
             .map(block => ({
                 id: block.id,
                 position: block.position
             }))
+            .sort((a,b) => a.position - b.position)
 )
 export const selectGroupBlockIds = createSelector(
     [selectBlocks, selectId],
@@ -66,6 +66,15 @@ export const selectBlockInfo = createSelector(
 export const selectBlockTaskCount = createSelector(
     [selectBlockById],
     block => block?.tasks.length
+)
+export const selectPositionedTasks = createSelector(
+    [selectBlockById],
+    block => block?.tasks
+        .map(task => ({
+            id: task.id,
+            position: task.position
+        }))
+        .sort((a,b) => a.position - b.position)
 )
 export const selectBlockTaskIds = createSelector(
     [selectBlockById],
