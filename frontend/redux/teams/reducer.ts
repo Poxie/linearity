@@ -57,7 +57,6 @@ const setTasks: ReducerAction = (state, action) => {
 
 const updateTaskPositions: ReducerAction = (state, action) => {
     const tasks: {id: number, position: number}[] = action.payload.tasks;
-    const blockId: number = action.payload.blockId;
 
     return updateObject(state, {
         tasks: state.tasks.map(task => {

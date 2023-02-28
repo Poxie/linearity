@@ -77,6 +77,16 @@ export const selectPositionedTasks = createSelector(
             position: task.position
         }))
 )
+export const selectAllPositionedTasks = createSelector(
+    [selectTasks],
+    tasks => tasks
+        .sort((a,b) => a.position - a.position)
+        .map(task => ({
+            id: task.id,
+            block_id: task.block_id,
+            position: task.position
+        }))
+)
 export const selectTaskById = createSelector(
     [selectTasks, selectId],
     (tasks, taskId) => tasks.find(task => task.id === taskId)
