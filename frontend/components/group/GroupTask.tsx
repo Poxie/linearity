@@ -116,20 +116,6 @@ export const GroupTask: React.FC<{
     }
     const onMouseUp = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         if(!ref.current) return;
-        console.log('mouse up')
-        window.removeEventListener('mousemove', onMouseMove);
-        document.querySelectorAll(`[data-block-index]>ul>li:not(.${styles['task-placeholder']})`).forEach(task => {
-            (task as HTMLLIElement).removeEventListener('mouseenter', handleMouseEnter);
-            (task as HTMLLIElement).style.order = 'unset';
-        })
-        document.querySelector(`.${styles['task-placeholder']}`)?.remove();
-
-        ref.current.style.position = 'relative';
-        ref.current.style.top = 'unset';
-        ref.current.style.left = 'unset';
-        ref.current.style.width = 'unset';
-        ref.current.style.zIndex = '3';
-        initialPos.current = null;
         
         // Updating task position
         if(currentBlockId.current !== blockId || currentPosition.current !== index) {
@@ -146,6 +132,24 @@ export const GroupTask: React.FC<{
                 )
             );
         }
+        reset();
+    }
+    const reset = () => {
+        if(!ref.current) return;
+        
+        window.removeEventListener('mousemove', onMouseMove);
+        document.querySelectorAll(`[data-block-index]>ul>li:not(.${styles['task-placeholder']})`).forEach(task => {
+            (task as HTMLLIElement).removeEventListener('mouseenter', handleMouseEnter);
+            (task as HTMLLIElement).style.order = 'unset';
+        })
+        document.querySelector(`.${styles['task-placeholder']}`)?.remove();
+        
+        ref.current.style.position = 'relative';
+        ref.current.style.top = 'unset';
+        ref.current.style.left = 'unset';
+        ref.current.style.width = 'unset';
+        ref.current.style.zIndex = '3';
+        initialPos.current = null;
         
         currentBlockId.current = null;
         currentPosition.current = null;
@@ -157,6 +161,7 @@ export const GroupTask: React.FC<{
                 className={styles['block-task']}
                 onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
+                onClick={reset}
                 data-task-index={index + 1}
                 data-task-id={taskId}
                 ref={ref}
