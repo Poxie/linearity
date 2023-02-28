@@ -93,6 +93,8 @@ export const Group: React.FC<{
             patch(`/tasks/${taskId}`, {
                 block_id: newBlockId,
                 position: newPosition
+            }).catch(() => {
+                dispatch(updateTaskPositionsAndBlocks(taskId, prevBlockId, prevPosition));
             })
         }
     }
