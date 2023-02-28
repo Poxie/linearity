@@ -1,3 +1,4 @@
+import { Task } from "@/types";
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
@@ -67,18 +68,35 @@ export const selectBlockTaskCount = createSelector(
     [selectBlockById],
     block => block?.tasks.length
 )
+const selectGroupBlocks = createSelector(
+    [selectBlocks, selectId],
+    (blocks, groupId) => blocks.filter(block => block.group_id === groupId)
+)
+export const selectPositionedGroupTasks = createSelector(
+    [selectGroupBlocks],
+        blocks => 
+            blocks?.map(block => block.tasks)
+                .reduce((pre, cur) => pre.concat(cur), [])
+                .map(task => ({
+                    id: task.id,
+                    block_id: task.block_id,
+                    position: task.position
+                }))
+)
 export const selectPositionedTasks = createSelector(
     [selectBlockById],
     block => block?.tasks
+        .sort((a,b) => a.position - b.position)    
         .map(task => ({
             id: task.id,
             position: task.position
         }))
-        .sort((a,b) => a.position - b.position)
 )
 export const selectBlockTaskIds = createSelector(
     [selectBlockById],
-    block => block?.tasks.map(task => task.id)
+    block => block?.tasks
+        .sort((a,b) => a.position - b.position)
+        .map(task => task.id)
 )
 export const selectTaskById = createSelector(
     [selectBlockById, _selectId],

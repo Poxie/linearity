@@ -1,7 +1,7 @@
 import { Block, Group, Label, Member, Task, Team } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { ADD_BLOCK_TASK, SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS } from "./constants";
+import { ADD_BLOCK_TASK, SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -42,6 +42,28 @@ const updateBlockPositions: ReducerAction = (state, action) => {
 
             return updateObject(block, {
                 position: b.position
+            })
+        })
+    })
+}
+
+const updateTaskPositions: ReducerAction = (state, action) => {
+    const tasks: {id: number, position: number}[] = action.payload.tasks;
+    const blockId: number = action.payload.blockId;
+
+    return updateObject(state, {
+        blocks: state.blocks.map(block => {
+            if(block.id !== blockId) return block;
+
+            return updateObject(block, {
+                tasks: block.tasks.map(task => {
+                    const t = tasks.find(t => t.id === task.id);
+                    if(!t) return task;
+
+                    return updateObject(task, {
+                        position: t.position
+                    })
+                })
             })
         })
     })
@@ -174,6 +196,7 @@ export const teamsReducer = createReducer({
     [SET_LABELS]: setLabels,
     [SET_GROUPS]: setGroups,
     [UPDATE_BLOCK_POSITIONS]: updateBlockPositions,
+    [UPDATE_TASK_POSITIONS]: updateTaskPositions,
     [SET_BLOCKS]: setBlocks,
     [ADD_BLOCK_TASK]: addBlockTask,
     [ADD_TASK_ASSIGNEE]: addTaskAssignee,
