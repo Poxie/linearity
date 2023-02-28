@@ -13,7 +13,10 @@ export const GroupTasks = () => {
     
     return(
         <ul 
-            style={{ padding: !tasks.length ? 0 : 'var(--spacing-secondary)' }}
+            style={{ 
+                padding: !tasks.length ? 0 : 'var(--spacing-secondary)',
+                paddingBottom: 0
+            }}
             className={styles['block-tasks']} 
             ref={ref}
         >
