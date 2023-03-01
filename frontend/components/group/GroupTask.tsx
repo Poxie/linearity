@@ -1,7 +1,5 @@
 import React, { useRef } from 'react';
 import styles from './Group.module.scss';
-import { TaskPortal } from '@/portals/task';
-import { useBlock } from './GroupBlock';
 import { GroupTaskContent } from './GroupTaskContent';
 import { GroupTaskHeader } from './GroupTaskHeader';
 import { GroupTaskLabels } from './GroupTaskLabels';
@@ -20,7 +18,6 @@ export const GroupTask = React.memo<{
     taskId: number;
 }>(({ taskId }) => {
     const { setModal } = useModal();
-    const { blockId, groupId } = useBlock();
     const { setMenu } = useMenu();
     const ref = useRef<HTMLDivElement>(null);
 
