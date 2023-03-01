@@ -1,7 +1,7 @@
 import styles from './Group.module.scss';
 import { useAppSelector } from "@/redux/store";
 import { selectTaskInfo } from "@/redux/teams/selectors";
-import { useTask } from "./GroupTask"
+import { useTask } from './GroupTask';
 
 export const GroupTaskContent = () => {
     const { taskId } = useTask();

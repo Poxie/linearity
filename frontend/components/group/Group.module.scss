@@ -68,6 +68,11 @@
     padding-bottom: 0;
     max-height: 100%;
     overflow: auto;
+    user-select: none;
+
+    &.block-empty {
+        padding: 0;
+    }
 
     &::-webkit-scrollbar {
         width: 14px;
@@ -78,7 +83,7 @@
         border-radius: 120px;
     }
 }
-.block-task {
+.task-main {
     padding: var(--spacing-tertiary);
     background-color: var(--background-quaternary);
     border-radius: var(--border-radius-tertiary);
