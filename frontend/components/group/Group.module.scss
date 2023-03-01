@@ -86,6 +86,7 @@
     display: grid;
     gap: var(--spacing-tertiary);
     width: 100%;
+    cursor: pointer;
     position: relative;
     z-index: 3;
 }

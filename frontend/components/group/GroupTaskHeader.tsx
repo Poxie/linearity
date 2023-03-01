@@ -11,9 +11,12 @@ export const GroupTaskHeader = () => {
     return(
         <div className={styles['task-header']}>
             <GroupTaskAssignees />
-            <span className={styles['task-title']}>
+            <button 
+                className={styles['task-title']}
+                aria-label={'View task'}
+            >
                 {title}
-            </span>
+            </button>
         </div>
     )
 }

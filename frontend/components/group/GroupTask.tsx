@@ -1,3 +1,5 @@
+import { usePortal } from '@/contexts/portal';
+import { TaskPortal } from '@/portals/task';
 import React, { RefObject, useRef } from 'react';
 import { usePosition } from '.';
 import styles from './Group.module.scss';
@@ -5,7 +7,6 @@ import { useBlock } from './GroupBlock';
 import { GroupTaskContent } from './GroupTaskContent';
 import { GroupTaskHeader } from './GroupTaskHeader';
 import { GroupTaskLabels } from './GroupTaskLabels';
-import { GroupViewTaskButton } from './GroupViewTaskButton';
 
 const TaskContext = React.createContext({} as {
     taskId: number;
@@ -20,7 +21,8 @@ export const GroupTask: React.FC<{
     index: number;
     container: RefObject<HTMLUListElement>;
 }> = ({ taskId, index, container }) => {
-    const { blockId } = useBlock();
+    const { setPortal } = usePortal();
+    const { blockId, groupId } = useBlock();
     const { updateTaskPosition } = usePosition();
     
     const ref = useRef<HTMLLIElement>(null);
@@ -111,7 +113,7 @@ export const GroupTask: React.FC<{
         ref.current.style.zIndex = '2';
     }
     const onMouseDown = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-        if(!container.current) return;
+        if(!container.current || e.button !== 0) return;
         window.addEventListener('mousemove', onMouseMove);
     }
     const onMouseUp = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
@@ -155,21 +157,31 @@ export const GroupTask: React.FC<{
         currentPosition.current = null;
     }
 
+    const viewTask = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {        
+        reset();
+        setPortal(
+            <TaskPortal 
+                taskId={taskId}
+                blockId={blockId}
+                groupId={groupId}
+            />
+        )
+    }
+
     return(
         <TaskContext.Provider value={{ taskId }}>
             <li 
                 className={styles['block-task']}
                 onMouseDown={onMouseDown}
                 onMouseUp={onMouseUp}
-                onClick={reset}
                 data-task-index={index + 1}
                 data-task-id={taskId}
+                onClick={viewTask}
                 ref={ref}
             >
                 <GroupTaskHeader />
                 <GroupTaskContent />
                 <GroupTaskLabels />
-                <GroupViewTaskButton />
             </li>
         </TaskContext.Provider>
     )
