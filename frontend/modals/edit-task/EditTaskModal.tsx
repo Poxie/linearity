@@ -13,6 +13,8 @@ import { LabelList } from '@/components/label-list/LabelList';
 import { SelectTeamItem } from '@/components/select-team-item/SelectTeamItem';
 import { AssigneeList } from '@/components/assignee-list/AssigneeList';
 import { LabelIcon } from '@/assets/icons/LabelIcon';
+import { TimeIcon } from '@/assets/icons/TimeIcon';
+import { TimeSeletor } from '@/components/time-selector';
 
 export const EditTaskModal: React.FC<{
     taskId: number;
@@ -22,7 +24,7 @@ export const EditTaskModal: React.FC<{
     const dispatch = useAppDispatch();
     const labels = useAppSelector(state => selectTaskLabels(state, taskId));
     const assignees = useAppSelector(state => selectTaskAssignees(state, taskId));
-    const { title, description, team_id } = useAppSelector(state => selectTaskInfo(state, taskId));
+    const { title, description, team_id, due_at } = useAppSelector(state => selectTaskInfo(state, taskId));
     
     const [titleEdit, setTitleEdit] = useState(false);
     const [descriptionEdit, setDescriptionEdit] = useState(false);
@@ -53,6 +55,16 @@ export const EditTaskModal: React.FC<{
             description: newDescription
         }).catch(() => {
             dispatch(updateTask(taskId, 'description', description));
+        })
+    }
+    const updateDueAt = (date: Date | null) => {
+        const timestamp = date?.getTime();
+
+        dispatch(updateTask(taskId, 'due_at', timestamp));
+        patch(`/tasks/${taskId}`, {
+            due_at: date ? timestamp : null
+        }).catch(() => {
+            dispatch(updateTask(taskId, 'due_at', due_at));
         })
     }
 
@@ -166,6 +178,15 @@ export const EditTaskModal: React.FC<{
                                 type={'members'}
                             />
                         </div>
+                    </div>
+                </EditTaskGroup>
+                <EditTaskGroup header={'Due at'} icon={<TimeIcon />}>
+                    <div className={styles['item-container']}>
+                        <TimeSeletor 
+                            defaultTime={due_at}
+                            onChange={updateDueAt}
+                            emptyLabel={'Due date not selected'}
+                        />
                     </div>
                 </EditTaskGroup>
             </ModalMain>

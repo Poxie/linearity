@@ -47,6 +47,7 @@ export interface Task {
     title: string;
     assignees: Member[];
     labels: Label[];
+    due_at: number | null;
 }
 export interface Label {
     id: number;

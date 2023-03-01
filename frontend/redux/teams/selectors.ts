@@ -96,6 +96,7 @@ export const selectTaskInfo = createSelector(
     [selectTaskById],
     task => ({
         title: task?.title,
+        due_at: task?.due_at,
         description: task?.description,
         team_id: task?.team_id
     })
