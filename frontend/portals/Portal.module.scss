@@ -7,6 +7,7 @@
     position: fixed;
     top: calc(var(--navbar-height) + var(--team-header-height));
     height: calc(100vh - var(--navbar-height) - var(--team-header-height) - var(--spacing-primary));
+    z-index: 100000;
 }
 .header {
     border-bottom: 1px solid var(--background-quaternary);
