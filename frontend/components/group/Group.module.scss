@@ -12,9 +12,13 @@
         height: 25px;
     }
     &::-webkit-scrollbar-thumb {
-        background-color: var(--background-quaternary);
+        background-color: var(--background-tertiary);
         border: 7px solid var(--background-secondary);
         border-radius: 120px;
+
+        &:hover {
+            background-color: var(--background-quaternary);
+        }
     }
 }
 .create-block-button {
