@@ -1,0 +1,47 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000000;
+    background-color: rgba(0,0,0,.7);
+}
+.menu {
+    --padding: 8px;
+    position: fixed;
+    z-index: 1000002;
+    background-color: var(--background-secondary);
+    border-radius: var(--border-radius-tertiary);
+    padding: var(--padding);
+    min-width: 170px;
+
+    &::after {
+        --arrow-size: 8px;
+        content: '';
+        position: absolute;
+        top: var(--arrow-size);
+        border: var(--arrow-size) solid transparent;
+    }
+    &.left::after {
+        border-left-color: var(--background-secondary);
+        left: 100%;
+    }
+    &.right::after {
+        border-right-color: var(--background-secondary);
+        right: 100%;
+    }
+}
+.menu-item {
+    transition: background-color .2s;
+    border-radius: var(--border-radius-tertiary);
+    padding: var(--padding);
+    width: 100%;
+
+    &:hover {
+        background-color: var(--background-tertiary);
+    }
+    &:active {
+        background-color: var(--background-quaternary);
+    }
+}

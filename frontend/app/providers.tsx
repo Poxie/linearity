@@ -1,6 +1,7 @@
 "use client";
 
 import AuthProvider from "@/contexts/auth";
+import { MenuProvider } from "@/contexts/menu";
 import { ModalProvider } from "@/contexts/modal";
 import { PopoutProvider } from "@/contexts/popout";
 import { store } from "@/redux/store";
@@ -13,7 +14,9 @@ export function Providers({ children }: { children: ReactNode }) {
             <AuthProvider>
                 <PopoutProvider>
                     <ModalProvider>
-                        {children}
+                        <MenuProvider>
+                            {children}
+                        </MenuProvider>
                     </ModalProvider>
                 </PopoutProvider>
             </AuthProvider>
