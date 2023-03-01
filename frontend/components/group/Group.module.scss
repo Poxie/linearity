@@ -23,7 +23,7 @@
 }
 .create-block-button {
     font-size: 12px;
-    padding: var(--spacing-secondary);
+    padding: var(--spacing-secondary) !important;
     min-width: var(--block-width);
     width: var(--block-width);
 
