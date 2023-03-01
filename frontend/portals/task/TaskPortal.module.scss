@@ -12,6 +12,17 @@
     margin-bottom: var(--spacing-tertiary);
     display: block;
 }
+.block-dropdown {
+    button {
+        width: 100%;
+        justify-content: space-between;
+        background-color: var(--background-quaternary);
+
+        &:hover {
+            background-color: var(--background-quinary) !important;
+        }
+    }
+}
 .labels {
     display: flex;
     gap: var(--spacing-tertiary);

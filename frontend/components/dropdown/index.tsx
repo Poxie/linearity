@@ -7,8 +7,9 @@ export const Dropdown: React.FC<{
     onChange: (id: number) => void;
     defaultSelected?: number;
     allowSearch?: boolean;
+    className?: string;
     resultsPosition?: 'left' | 'center' | 'right';
-}> = ({ items, onChange, defaultSelected, allowSearch, resultsPosition='left' }) => {
+}> = ({ items, onChange, defaultSelected, allowSearch, className, resultsPosition='left' }) => {
     const [selected, setSelected] = useState(defaultSelected || items[0].id);
     const [search, setSearch] = useState('');
     const [open, setOpen] = useState(false);
@@ -37,7 +38,8 @@ export const Dropdown: React.FC<{
     const selectableItems = !search ? items : items.filter(item => item.text.toLowerCase().includes(search.toLowerCase()));
     const selectedItem = items.find(item => item.id === selected);
 
-    const className = [
+    className = [
+        className,
         styles['container'],
         styles[resultsPosition]
     ].join(' ')

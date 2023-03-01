@@ -41,7 +41,8 @@ export const selectPositionedBlocks = createSelector(
             .sort((a,b) => a.position - b.position)
             .map(block => ({
                 id: block.id,
-                position: block.position
+                position: block.position,
+                name: block.name
             }))
 )
 export const selectBlockById = createSelector(

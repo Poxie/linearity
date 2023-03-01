@@ -1,6 +1,6 @@
 import styles from './TaskPortal.module.scss';
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { selectTaskAssignees, selectTaskInfo, selectTaskLabels } from "@/redux/teams/selectors";
+import { selectPositionedBlocks, selectTaskAssignees, selectTaskInfo, selectTaskLabels } from "@/redux/teams/selectors";
 import { Portal } from "../Portal";
 import { TaskPortalGroup } from "./TaskPortalGroup";
 import { TaskPortalAssignee } from './TaskPortalAssignee';
@@ -10,16 +10,20 @@ import { TeamItems } from '@/popouts/team-items/TeamItems';
 import { usePopout } from '@/contexts/popout';
 import { RefObject, useRef } from 'react';
 import { useAuth } from '@/contexts/auth';
-import { addTaskAssignee, addTaskLabel, removeTaskAssignee, removeTaskLabel } from '@/redux/teams/actions';
+import { addTaskAssignee, addTaskLabel, removeTaskAssignee, removeTaskLabel, updateTaskPositionsAndBlocks } from '@/redux/teams/actions';
+import { Dropdown } from '@/components/dropdown';
 
 export const TaskPortal: React.FC<{
     taskId: number;
-}> = ({ taskId }) => {
+    blockId: number;
+    groupId: number;
+}> = ({ taskId, blockId, groupId }) => {
     const { setPopout } = usePopout();
-    const { put, destroy } = useAuth();
+    const { put, destroy, patch } = useAuth();
     const dispatch = useAppDispatch();
     
     const { title, description, team_id } = useAppSelector(state => selectTaskInfo(state, taskId));
+    const blocks = useAppSelector(state => selectPositionedBlocks(state, groupId));
     const labels = useAppSelector(state => selectTaskLabels(state, taskId));
     const assignees = useAppSelector(state => selectTaskAssignees(state, taskId));
 
@@ -62,11 +66,33 @@ export const TaskPortal: React.FC<{
         })
     }
 
+    const changeBlock = (newBlockId: number) => {
+        dispatch(updateTaskPositionsAndBlocks(taskId, newBlockId, 0));
+
+        patch(`/tasks/${taskId}`, {
+            block_id: newBlockId,
+            position: 0
+        }).catch(() => {
+            dispatch(updateTaskPositionsAndBlocks(taskId, blockId, 0));
+        })
+    }
+
     return(
         <Portal 
             header={title || ''} 
             subHeader={description || 'This issue is missing a description'}
         >
+            <TaskPortalGroup header={'Block'}>
+                <Dropdown 
+                    items={blocks.map(block => ({
+                        id: block.id,
+                        text: block.name
+                    }))}
+                    onChange={changeBlock}
+                    defaultSelected={blockId}
+                    className={styles['block-dropdown']}
+                />
+            </TaskPortalGroup>
             <TaskPortalGroup header={'Labels'}>
                 {labels && (
                     <ul className={styles['labels']}>
