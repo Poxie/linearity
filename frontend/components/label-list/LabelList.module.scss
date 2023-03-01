@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    gap: var(--spacing-quaternary);
+    flex-wrap: wrap;
+}
+.item {
+    padding: 5px 8px;
+    font-size: 12px;
+    background-color: var(--background-tertiary);
+    border: 1px solid var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+}

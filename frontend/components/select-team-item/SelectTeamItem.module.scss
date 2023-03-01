@@ -1,0 +1,15 @@
+.button {
+    background-color: var(--background-tertiary);
+    border: 2px solid var(--background-secondary);
+    border-radius: var(--border-radius-tertiary);
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+        width: 56%;
+        fill: var(--text-secondary);
+    }
+}
