@@ -4,9 +4,14 @@ import { Label } from "@/types"
 export const LabelList: React.FC<{
     labels: Label[];
     onLabelClick?: (label: Label) => void;
-}> = ({ labels, onLabelClick }) => {
+    small?: boolean;
+}> = ({ labels, onLabelClick, small }) => {
+    const className = [
+        styles['container'],
+        small ? styles['small'] : ''
+    ].join(' ');
     return(
-        <ul className={styles['container']}>
+        <ul className={className}>
             {labels.map(label => (
                 <li key={label.id}>
                     <button 
