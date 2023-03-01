@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { MenuArguments, MenuGroup, useMenu } from "."
 
 const SPACE_FROM_ELEMENT = 15;
+const ANIMATION_SPACING = 10;
 export const MenuGroups: React.FC<MenuArguments> = ({ groups, element, options }) => {
     const { close } = useMenu();
 
@@ -58,8 +59,8 @@ export const MenuGroups: React.FC<MenuArguments> = ({ groups, element, options }
     ].join(' ');
     return(
         <motion.div
-            exit={{ translateX: 10, opacity: 0 }}
-            initial={{ translateX: 10, opacity: 0 }}
+            exit={{ translateX: ANIMATION_SPACING, opacity: 0 }}
+            initial={{ translateX: ANIMATION_SPACING, opacity: 0 }}
             animate={{ translateX: 0, opacity: 1 }}
             style={{
                 top: `${position?.top}px`,
