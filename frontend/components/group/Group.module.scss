@@ -119,15 +119,6 @@
     font-size: 12px;
     color: var(--text-secondary);
 }
-.task-labels {
-    display: flex;
-    gap: calc(var(--spacing-tertiary) / 2);
-}
-.task-label {
-    padding: 4px 8px;
-    border-radius: 120px;
-    font-size: 10px;
-}
 .task-footer {
     display: flex;
     gap: var(--spacing-quaternary);
