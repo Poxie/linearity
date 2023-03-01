@@ -12,6 +12,8 @@ import { useModal } from '@/contexts/modal';
 import { useAuth } from '@/contexts/auth';
 import { Label, Member, Task } from '@/types';
 import { addTask } from '@/redux/teams/actions';
+import { TimeSeletor } from '@/components/time-selector';
+import { AddTaskGroup } from './AddTaskGroup';
 
 export const AddTaskModal: React.FC<{
     blockId: number;
@@ -22,6 +24,7 @@ export const AddTaskModal: React.FC<{
     const [loading, setLoading] = useState(false);
     const [assignees, setAssinees] = useState<Member[]>([]);
     const [labels, setLabels] = useState<Label[]>([]);
+    const [dueAt, setDueAt] = useState<null | number>(null);
 
     const dispatch = useAppDispatch();
     const block = useAppSelector(state => selectBlockInfo(state, blockId));
@@ -60,7 +63,8 @@ export const AddTaskModal: React.FC<{
                 title,
                 description,
                 assignees: assignees.map(assignee => assignee.id),
-                labels: labels.map(label => label.id)
+                labels: labels.map(label => label.id),
+                due_at: dueAt
             });
 
             // Adding task to redux
@@ -98,6 +102,12 @@ export const AddTaskModal: React.FC<{
                 labels={labels}
                 toggleLabel={toggleLabel}
             />
+            <AddTaskGroup header={'Due date'}>
+                <TimeSeletor 
+                    onChange={date => setDueAt(date ? date.getTime() : null)}
+                    emptyLabel={'Due date not selected'}
+                />
+            </AddTaskGroup>
         </ModalMain>
         <ModalFooter 
             cancelLabel={'Cancel'}
