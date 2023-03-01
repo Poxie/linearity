@@ -1,7 +1,8 @@
 .container {
     padding: var(--spacing-primary);
     padding-top: 0;
-    width: 245px;
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
 }
 .create-issue-button {
     width: 100%;
