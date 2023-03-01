@@ -35,6 +35,7 @@ export const TeamItems: React.FC<{
                 placeholder={'Search'} 
                 inputClassName={styles['input']}
                 onChange={setSearch}
+                focusOnMount
             />
             {filteredItems.length !== 0 && type === 'members' && (
                 <TeamItemsMembers 
