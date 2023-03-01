@@ -70,6 +70,10 @@ def update_task_route(task_id: int, token_id: int):
         # Making sure user can update property
         if key not in PATCH_TASK_ALLOWED_PROPERTIES: continue
 
+        # Checking if key is title, and if title value is valid
+        if key == 'title' and value == '':
+            return 'Title may not be empty', 400
+
         # Appending values
         keys.append(key)
         values += (value,)

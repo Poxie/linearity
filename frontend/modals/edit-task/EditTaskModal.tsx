@@ -32,6 +32,7 @@ export const EditTaskModal: React.FC<{
 
     const updateTitle = () => {
         const newTitle = titleRef.current?.value;
+        if(!newTitle) return setTitleEdit(false);
 
         dispatch(updateTask(taskId, 'title', newTitle));
         setTitleEdit(false);
