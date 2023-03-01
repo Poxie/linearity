@@ -121,6 +121,7 @@ export const EditTaskModal: React.FC<{
                             onBlur={updateDescription}
                             ref={descriptionRef}
                             focusOnMount
+                            textArea
                         />
                     )}
                 </EditTaskGroup>
