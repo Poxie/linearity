@@ -5,6 +5,16 @@
     padding: var(--spacing-primary);
     height: calc(100vh - var(--navbar-height) - var(--team-header-height) - var(--group-selector-height));
 }
+.create-block-button {
+    font-size: 12px;
+    padding: var(--spacing-secondary);
+    width: 300px;
+
+    svg {
+        width: 10px;
+        height: 10px;
+    }
+}
 .block {
     --border-radius: var(--border-radius-secondary);
     border-radius: var(--border-radius);

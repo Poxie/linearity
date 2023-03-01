@@ -5,6 +5,10 @@ import { selectAllPositionedTasks, selectPositionedBlocks } from "@/redux/teams/
 import { GroupBlock } from "./GroupBlock";
 import { updateBlockPositions, updateTaskPositions, updateTaskPositionsAndBlocks } from '@/redux/teams/actions';
 import { useAuth } from '@/contexts/auth';
+import Button from '../button';
+import { AddIcon } from '@/assets/icons/AddIcon';
+import { useModal } from '@/contexts/modal';
+import { AddBlockModal } from '@/modals/add-block/AddBlockModal';
 
 type PositionContextType = {
     updateBlockPosition: (blockId: number, prevPosition: number, position: number) => void;
@@ -19,6 +23,7 @@ export const Group: React.FC<{
     teamId: number;
 }> = ({ groupId, teamId }) => {
     const { patch } = useAuth();
+    const { setModal } = useModal();
 
     const blocks = useAppSelector(state => selectPositionedBlocks(state, groupId));
     const tasks = useAppSelector(selectAllPositionedTasks);
@@ -98,6 +103,9 @@ export const Group: React.FC<{
             })
         }
     }
+    const openBlockPortal = () => {
+        setModal(<AddBlockModal groupId={groupId} />);
+    }
     
     const value = {
         updateBlockPosition,
@@ -115,6 +123,14 @@ export const Group: React.FC<{
                         key={block.id}
                     />
                 ))}
+                <Button
+                    className={styles['create-block-button']}
+                    ariaLabel={'Create new block'}
+                    onClick={openBlockPortal}
+                >
+                    <AddIcon />
+                    Create new block
+                </Button>
             </div>
         </PositionContext.Provider>
     )
