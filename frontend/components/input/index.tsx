@@ -16,8 +16,9 @@ type InputProps = {
     textArea?: boolean;
     placeholder?: string;
     icon?: ReactElement;
+    defaultValue?: string;
 }
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMount, containerClassName, inputClassName, onChange, onSubmit, onFocus, onBlur, name, placeholder, icon, textArea=false, type='text' }, ref) => {
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMount, containerClassName, inputClassName, onChange, onSubmit, onFocus, onBlur, name, placeholder, icon, textArea=false, type='text', defaultValue='' }, ref) => {
     const inputRef = useRef<any>(null);
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
@@ -31,12 +32,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMo
             onSubmit && onSubmit(e.currentTarget.value);
         }
     }
-    // Focusing on mount
     useEffect(() => {
+        // Setting default value
+        inputRef.current.value = defaultValue;
+
+        // Focusing on mount
         if(focusOnMount) {
             inputRef.current?.focus();
         }
-    }, [focusOnMount]);
+    }, [focusOnMount, defaultValue]);
 
     // Creating general properties
     const props = {

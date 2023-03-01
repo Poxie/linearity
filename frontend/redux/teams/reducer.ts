@@ -1,7 +1,7 @@
 import { Block, Group, Label, Member, Task, Team } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK } from "./constants";
+import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -68,6 +68,18 @@ const addTask: ReducerAction = (state, action) => {
 
     return updateObject(state, {
         tasks: [...state.tasks, ...[task]]
+    })
+}
+
+const updateTask: ReducerAction = (state, action) => {
+    const taskId: number = action.payload.taskId;
+    const property: keyof Task = action.payload.property;
+    const value: any = action.payload.value;
+
+    return updateObject(state, {
+        tasks: updateItemInArray(state.tasks, taskId, task => updateObject(task, {
+            [property]: value
+        }))
     })
 }
 
@@ -216,6 +228,7 @@ export const teamsReducer = createReducer({
     [SET_GROUPS]: setGroups,
     [SET_TASKS]: setTasks,
     [ADD_TASK]: addTask,
+    [UPDATE_TASK]: updateTask,
     [UPDATE_BLOCK_POSITIONS]: updateBlockPositions,
     [UPDATE_TASK_POSITIONS]: updateTaskPositions,
     [UPDATE_TASK_POSITIONS_AND_BLOCKS]: updateTaskPositionsAndBlocks,

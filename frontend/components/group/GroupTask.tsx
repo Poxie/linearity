@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
 import styles from './Group.module.scss';
-import { usePortal } from '@/contexts/portal';
 import { TaskPortal } from '@/portals/task';
 import { useBlock } from './GroupBlock';
 import { GroupTaskContent } from './GroupTaskContent';
 import { GroupTaskHeader } from './GroupTaskHeader';
 import { GroupTaskLabels } from './GroupTaskLabels';
 import { MenuGroup, useMenu } from '@/contexts/menu';
+import { useModal } from '@/contexts/modal';
+import { EditTaskModal } from '@/modals/edit-task/EditTaskModal';
 
 const TaskContext = React.createContext({} as {
     taskId: number;
@@ -17,19 +18,13 @@ export const useTask = () => React.useContext(TaskContext);
 export const GroupTask = React.memo<{
     taskId: number;
 }>(({ taskId }) => {
-    const { setPortal } = usePortal();
+    const { setModal } = useModal();
     const { blockId, groupId } = useBlock();
     const { setMenu } = useMenu();
     const ref = useRef<HTMLDivElement>(null);
 
     const viewTask = () => {        
-        setPortal(
-            <TaskPortal 
-                taskId={taskId}
-                blockId={blockId}
-                groupId={groupId}
-            />
-        )
+        setModal(<EditTaskModal taskId={taskId} />)
     }
 
     const openMenu = (event: React.MouseEvent) => {
