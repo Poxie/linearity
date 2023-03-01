@@ -8,6 +8,7 @@ import { GroupTaskLabels } from './GroupTaskLabels';
 import { MenuGroup, useMenu } from '@/contexts/menu';
 import { useModal } from '@/contexts/modal';
 import { EditTaskModal } from '@/modals/edit-task/EditTaskModal';
+import { GroupTaskFooter } from './GroupTaskFooter';
 
 const TaskContext = React.createContext({} as {
     taskId: number;
@@ -52,6 +53,7 @@ export const GroupTask = React.memo<{
                 <GroupTaskHeader />
                 <GroupTaskContent />
                 <GroupTaskLabels />
+                <GroupTaskFooter />
             </div>
         </TaskContext.Provider>
     )
