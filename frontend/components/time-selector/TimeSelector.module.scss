@@ -1,0 +1,12 @@
+.container {
+    border-radius: var(--border-radius-tertiary);
+    background-color: var(--background-secondary);
+    transition: background-color .2s;
+    padding: var(--spacing-tertiary);
+    cursor: pointer;
+    font-size: 12px;
+
+    &:hover {
+        background-color: var(--background-tertiary);
+    }
+}
