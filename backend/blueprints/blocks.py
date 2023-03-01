@@ -79,6 +79,7 @@ def add_group_task_route(block_id: int, token_id: int):
     description = form.get('description')
     assignees = form.get('assignees')
     labels = form.get('labels')
+    due_at = form.get('due_at')
     
     # Checking if assinees is valid
     new_assignee_ids = []
@@ -113,8 +114,8 @@ def add_group_task_route(block_id: int, token_id: int):
 
     # Inserting task
     id = create_id('tasks')
-    query = "INSERT INTO tasks (id, team_id, block_id, title, description, position, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-    values = (id, block['team_id'], block_id, title, description, position, time())
+    query = "INSERT INTO tasks (id, team_id, block_id, title, description, position, created_at, due_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    values = (id, block['team_id'], block_id, title, description, position, time(), due_at)
     database.insert(query, values)
 
     # Inserting assignees
