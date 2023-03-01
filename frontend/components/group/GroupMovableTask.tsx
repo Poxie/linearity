@@ -136,10 +136,10 @@ export const GroupMovableTask: React.FC<{
         document.querySelector(`.${styles['task-placeholder']}`)?.remove();
         
         ref.current.style.position = 'relative';
-        ref.current.style.top = 'unset';
-        ref.current.style.left = 'unset';
-        ref.current.style.width = 'unset';
-        ref.current.style.zIndex = '3';
+        ref.current.style.top = '';
+        ref.current.style.left = '';
+        ref.current.style.width = '';
+        ref.current.style.zIndex = '';
         initialPos.current = null;
         
         currentBlockId.current = null;
