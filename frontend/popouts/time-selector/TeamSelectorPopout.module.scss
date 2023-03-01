@@ -46,10 +46,6 @@
         aspect-ratio: 1;
     }
 }
-.calendar {
-    border-radius: 0 0 var(--border-radius-secondary) var(--border-radius-secondary);
-    overflow: hidden;
-}
 .date {
     border: .1px solid var(--background-secondary);
     cursor: pointer;
