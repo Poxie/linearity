@@ -34,7 +34,7 @@ export const EditTaskModal: React.FC<{
 
     const updateTitle = () => {
         const newTitle = titleRef.current?.value;
-        if(!newTitle) return setTitleEdit(false);
+        if(!newTitle || newTitle === title) return setTitleEdit(false);
 
         dispatch(updateTask(taskId, 'title', newTitle));
         setTitleEdit(false);
@@ -47,6 +47,7 @@ export const EditTaskModal: React.FC<{
     }
     const updateDescription = () => {
         const newDescription = descriptionRef.current?.value;
+        if(newDescription === description) return setDescriptionEdit(false);
 
         dispatch(updateTask(taskId, 'description', newDescription));
         setDescriptionEdit(false);
@@ -59,6 +60,7 @@ export const EditTaskModal: React.FC<{
     }
     const updateDueAt = (date: Date | null) => {
         const timestamp = date?.getTime();
+        if(timestamp === due_at || date === due_at) return;
 
         dispatch(updateTask(taskId, 'due_at', timestamp));
         patch(`/tasks/${taskId}`, {
