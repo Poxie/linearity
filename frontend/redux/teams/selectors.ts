@@ -25,6 +25,14 @@ export const selectTeamMembers = createSelector(
     [selectMembers, selectId],
     (members, teamId) => members.filter(member => member.team_id === teamId)
 )
+export const selectTeamMemberIds = createSelector(
+    [selectTeamMembers],
+    members => members.map(member => member.id)
+)
+export const selectMemberById = createSelector(
+    [selectMembers, selectId, _selectId],
+    (members, teamId, memberId) => members.find(member => member.team_id === teamId && member.id === memberId)
+)
 
 const selectLabels = (state: RootState) => state.teams.labels;
 export const selectTeamLabels = createSelector(

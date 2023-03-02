@@ -11,6 +11,8 @@ import { useRef, useState } from 'react';
 import { Input } from '../input';
 import styles from './Settings.module.scss';
 import { SettingsLabels } from './SettingsLabels';
+import { SettingsMembers } from './SettingsMembers';
+import { MemberIcon } from '@/assets/icons/MemberIcon';
 
 const SettingsContext = React.createContext({} as {
     teamId: number;
@@ -81,6 +83,9 @@ export const Settings = ({ params: { teamId } }: {
                 </ModalGroup>
                 <ModalGroup header={'Team labels'} icon={<LabelIcon />}>
                     <SettingsLabels />
+                </ModalGroup>
+                <ModalGroup header={'Members'} icon={<MemberIcon />}>
+                    <SettingsMembers />
                 </ModalGroup>
             </div>
         </SettingsContext.Provider>

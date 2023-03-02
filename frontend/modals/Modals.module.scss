@@ -66,7 +66,7 @@
         fill: var(--text-secondary);
     }
 }
-.group:not(:first-of-type) {
+.group:not(:first-child) {
     margin-top: var(--spacing-primary);
     padding-top: var(--spacing-primary);
     border-top: 1px solid var(--background-tertiary);
