@@ -1,11 +1,11 @@
 import { useAuth } from "@/contexts/auth";
 import { useAppDispatch } from "@/redux/store";
-import { Task } from "@/types";
+import { Block, Task } from "@/types";
 import { useCallback } from "react"
-import { addTask as addBlockTask } from "@/redux/teams/actions";
+import { addTask as addBlockTask, updateBlock } from "@/redux/teams/actions";
 
 export const useBlock = (blockId: number) => {
-    const { post } = useAuth();
+    const { post, patch } = useAuth();
     const dispatch = useAppDispatch();
 
     const addTask = useCallback(async (task: {
@@ -18,6 +18,14 @@ export const useBlock = (blockId: number) => {
         const createdTask = await post<Task>(`/blocks/${blockId}/tasks`, task)
         dispatch(addBlockTask(createdTask));
     }, [blockId, post]);
+    const updateProperty = useCallback(async (property: keyof Block, value: any, prevValue: any) => {
+        dispatch(updateBlock(blockId, property, value));
+        patch(`/blocks/${blockId}`, {
+            [property]: value
+        }).catch(() => {
+            dispatch(updateBlock(blockId, property, prevValue))
+        });
+    }, [blockId, patch]);
 
-    return { addTask };
+    return { addTask, updateProperty };
 }

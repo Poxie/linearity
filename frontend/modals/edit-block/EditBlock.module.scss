@@ -1,0 +1,12 @@
+.container {
+    padding: var(--spacing-secondary);
+
+    h1 {
+        font-size: 22px;
+        margin: 0;
+    }
+}
+.header {
+    display: grid;
+    gap: var(--spacing-tertiary);
+}
