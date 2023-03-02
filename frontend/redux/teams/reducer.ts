@@ -1,7 +1,7 @@
 import { Block, Group, Label, Member, Task, Team } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK, UPDATE_BLOCK, UPDATE_TEAM } from "./constants";
+import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK, UPDATE_BLOCK, UPDATE_TEAM, REMOVE_TEAM_LABEL, ADD_TEAM_LABEL } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -27,6 +27,22 @@ const updateTeam: ReducerAction = (state, action) => {
         teams: updateItemInArray(state.teams, teamId, team => updateObject(team, {
             [property]: value
         }))
+    })
+}
+
+const addTeamLabel: ReducerAction = (state, action) => {
+    const label: Label = action.payload;
+
+    return updateObject(state, {
+        labels: [...state.labels, ...[label]]
+    })
+}
+
+const removeTeamLabel: ReducerAction = (state, action) => {
+    const labelId: number = action.payload;
+
+    return updateObject(state, {
+        labels: state.labels.filter(label => label.id !== labelId)
     })
 }
 
@@ -250,6 +266,8 @@ export const teamsReducer = createReducer({
 }, {
     [SET_TEAMS]: setTeams,
     [UPDATE_TEAM]: updateTeam,
+    [ADD_TEAM_LABEL]: addTeamLabel,
+    [REMOVE_TEAM_LABEL]: removeTeamLabel,
     [SET_MEMBERS]: setMembers,
     [SET_LABELS]: setLabels,
     [SET_GROUPS]: setGroups,

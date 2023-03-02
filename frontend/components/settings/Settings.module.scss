@@ -10,3 +10,22 @@
         margin: 0;
     }
 }
+.labels {
+    display: flex;
+    gap: var(--spacing-quaternary);
+}
+.add-label-button {
+    width: 26.5px;
+    height: 26.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-quaternary);
+    border: 2px solid var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+
+    svg {
+        width: 12px;
+        fill: var(--text-secondary);
+    }
+}

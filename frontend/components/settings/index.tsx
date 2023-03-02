@@ -1,18 +1,28 @@
 "use client";
 
+import React from 'react';
 import { InfoIcon } from '@/assets/icons/InfoIcon';
+import { LabelIcon } from '@/assets/icons/LabelIcon';
 import { useTeam } from '@/hooks/useTeam';
 import { ModalGroup } from '@/modals/ModalGroup';
 import { useAppSelector } from '@/redux/store';
-import { selectTeamById } from '@/redux/teams/selectors';
+import { selectTeamById, selectTeamLabels } from '@/redux/teams/selectors';
 import { useRef, useState } from 'react';
 import { Input } from '../input';
 import styles from './Settings.module.scss';
+import { SettingsLabels } from './SettingsLabels';
+
+const SettingsContext = React.createContext({} as {
+    teamId: number;
+})
+
+export const useSettings = () => React.useContext(SettingsContext);
 
 export const Settings = ({ params: { teamId } }: {
     params: { teamId: string }
 }) => {
     const team = useAppSelector(state => selectTeamById(state, parseInt(teamId)));
+    const labels = useAppSelector(state => selectTeamLabels(state, parseInt(teamId)));
     const { updateProperty } = useTeam(parseInt(teamId));
 
     const [nameEdit, setNameEdit] = useState(false);
@@ -36,38 +46,43 @@ export const Settings = ({ params: { teamId } }: {
     
     const { name, description } = team;
     return(
-        <div className={styles['container']}>
-            <ModalGroup header={'Team information'} icon={<InfoIcon />}>
-                <div className={styles['header']}>
-                    {!nameEdit ? (
-                        <h1 onClick={() => setNameEdit(true)}>
-                            {name}
-                        </h1>
-                    ) : (
-                        <Input 
-                            placeholder={'Name'}
-                            defaultValue={name}
-                            onBlur={updateName}
-                            ref={nameRef}
-                            focusOnMount
-                        />
-                    )}
-                    {!descriptionEdit && description ? (
-                        <span onClick={() => setDescriptionEdit(true)}>
-                            {description}
-                        </span>
-                    ) : (
-                        <Input 
-                            placeholder={'Add a better description'}
-                            defaultValue={description || ''}
-                            onBlur={updateDescription}
-                            ref={descriptionRef}
-                            focusOnMount
-                            textArea
-                        />
-                    )}
-                </div>
-            </ModalGroup>
-        </div>
+        <SettingsContext.Provider value={{ teamId: parseInt(teamId) }}>
+            <div className={styles['container']}>
+                <ModalGroup header={'Team information'} icon={<InfoIcon />}>
+                    <div className={styles['header']}>
+                        {!nameEdit ? (
+                            <h1 onClick={() => setNameEdit(true)}>
+                                {name}
+                            </h1>
+                        ) : (
+                            <Input 
+                                placeholder={'Name'}
+                                defaultValue={name}
+                                onBlur={updateName}
+                                ref={nameRef}
+                                focusOnMount
+                            />
+                        )}
+                        {!descriptionEdit && description ? (
+                            <span onClick={() => setDescriptionEdit(true)}>
+                                {description}
+                            </span>
+                        ) : (
+                            <Input 
+                                placeholder={'Add a better description'}
+                                defaultValue={description || ''}
+                                onBlur={updateDescription}
+                                ref={descriptionRef}
+                                focusOnMount
+                                textArea
+                            />
+                        )}
+                    </div>
+                </ModalGroup>
+                <ModalGroup header={'Team labels'} icon={<LabelIcon />}>
+                    <SettingsLabels />
+                </ModalGroup>
+            </div>
+        </SettingsContext.Provider>
     )
 }

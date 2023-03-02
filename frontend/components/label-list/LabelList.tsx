@@ -1,11 +1,14 @@
 import styles from './LabelList.module.scss';
 import { Label } from "@/types"
+import { MenuGroup, useMenu } from '@/contexts/menu';
+import { LabelListItem } from './LabelListItem';
 
 export const LabelList: React.FC<{
     labels: Label[];
     onLabelClick?: (label: Label) => void;
     small?: boolean;
-}> = ({ labels, onLabelClick, small }) => {
+    hasContextMenu?: boolean;
+}> = ({ labels, onLabelClick, small, hasContextMenu }) => {
     const className = [
         styles['container'],
         small ? styles['small'] : ''
@@ -13,20 +16,12 @@ export const LabelList: React.FC<{
     return(
         <ul className={className}>
             {labels.map(label => (
-                <li key={label.id}>
-                    <button 
-                        className={styles['item']}
-                        onClick={() => {
-                            if(onLabelClick) onLabelClick(label);
-                        }}
-                        style={label.color ? {
-                            backgroundColor: label.color,
-                            borderColor: label.color
-                        } : undefined}
-                    >
-                        {label.name}
-                    </button>
-                </li>
+                <LabelListItem 
+                    label={label}
+                    hasContextMenu={hasContextMenu}
+                    onLabelClick={onLabelClick}
+                    key={label.id}
+                />
             ))}
         </ul>
     )

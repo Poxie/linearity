@@ -1,5 +1,7 @@
 export const SET_TEAMS = 'SET_TEAMS';
 export const UPDATE_TEAM = 'UPDATE_TEAM';
+export const ADD_TEAM_LABEL = 'ADD_TEAM_LABEL';
+export const REMOVE_TEAM_LABEL = 'REMOVE_TEAM_LABEL';
 export const SET_MEMBERS = 'SET_MEMBERS';
 export const SET_LABELS = 'SET_LABELS';
 export const SET_GROUPS = 'SET_GROUPS';

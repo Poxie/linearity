@@ -49,4 +49,15 @@
     &:active {
         background-color: var(--background-quaternary);
     }
+
+    &.danger {
+        --red: #930000;
+        color: var(--red);
+        transition: background-color .2s, color .2s;
+
+        &:hover {
+            background-color: var(--red);
+            color: #fff;
+        }
+    }
 }

@@ -71,16 +71,22 @@ export const MenuGroups: React.FC<MenuArguments> = ({ groups, element, options }
         >
             {groups.map((items, key) => (
                 <ul key={key} className={styles['group']}>
-                    {items.map(item => (
-                        <li key={item.text}>
-                            <button 
-                                className={styles['menu-item']}
-                                onClick={() => handleClick(item.onClick)}
-                            >
-                                {item.text}
-                            </button>
-                        </li>
-                    ))}
+                    {items.map(item => {
+                        const taskName = [
+                            styles['menu-item'],
+                            styles[item.type]
+                        ].join(' ');
+                        return(
+                            <li key={item.text}>
+                                <button 
+                                    className={taskName}
+                                    onClick={() => handleClick(item.onClick)}
+                                >
+                                    {item.text}
+                                </button>
+                            </li>
+                        )
+                    })}
                 </ul>
             ))}
         </motion.div>
