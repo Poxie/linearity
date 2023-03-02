@@ -291,7 +291,17 @@ def get_team_labels_route(team_id: int, token_id: int):
         return 'Unauthorized', 401
 
     # Fetching labels
-    query = "SELECT * FROM labels WHERE team_id = %s"
+    query = """
+    SELECT
+        l.*,
+        COUNT(DISTINCT tl.task_id) AS task_count
+    FROM labels l
+        LEFT JOIN task_labels tl ON tl.id = l.id
+    WHERE
+        l.team_id = %s
+    GROUP BY
+        l.id
+    """
     values = (team_id,)
     labels = database.fetch_many(query, values)
 

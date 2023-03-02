@@ -45,6 +45,7 @@ class Label(TypedDict):
     name: str
     color: str
     created_at: int
+    task_count: int
 
 class TaskLabel(TypedDict):
     id: int
