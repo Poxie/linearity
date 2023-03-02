@@ -54,7 +54,16 @@ const updateTeamLabel: ReducerAction = (state, action) => {
     const properties: {[key: string]: any} = action.payload.properties;
 
     return updateObject(state, {
-        labels: updateItemInArray(state.labels, labelId, label => updateObject(label, properties))
+        labels: updateItemInArray(state.labels, labelId, label => updateObject(label, properties)),
+        tasks: state.tasks.map(task => updateObject(task, {
+            labels: task.labels.map(label => {
+                if(label.id !== labelId) return label;
+
+                return updateObject(label, {
+                    ...properties
+                })
+            })
+        }))
     })
 }
 
