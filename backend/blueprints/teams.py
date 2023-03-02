@@ -296,3 +296,30 @@ def get_team_labels_route(team_id: int, token_id: int):
     labels = database.fetch_many(query, values)
 
     return jsonify(labels)
+
+@teams.delete('/labels/<int:label_id>')
+@token_required
+def delete_label_route(label_id: int, token_id: int):
+    # Checking if label exists
+    label = get_label_by_id(label_id)
+    if not label:
+        return 'Label not found', 404
+    
+    # Checking if team exists
+    team = get_team_by_id(label['team_id'])
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, label['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+    
+    # Deleting label
+    query = "DELETE FROM labels WHERE id = %s"
+    task_label_query = "DELTE FROM task_labels WHERE id = %s"
+    
+    values = (label_id,)
+    database.delete(query, values)
+
+    return jsonify({})
