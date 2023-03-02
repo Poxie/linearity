@@ -6,25 +6,6 @@
         margin: 0;
     }
 }
-.group-header {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-primary);
-    display: flex;
-    gap: var(--spacing-tertiary);
-    align-items: center;
-
-    svg {
-        width: 18px;
-        fill: var(--text-secondary);
-    }
-}
-.group:not(:first-of-type) {
-    margin-top: var(--spacing-primary);
-    padding-top: var(--spacing-primary);
-    border-top: 1px solid var(--background-tertiary);
-}
 .header {
     display: grid;
     gap: var(--spacing-tertiary);

@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
-import styles from './EditTaskModal.module.scss';
+import styles from './Modals.module.scss';
 
-export const EditTaskGroup: React.FC<{
+export const ModalGroup: React.FC<{
     header: string;
     icon: ReactElement;
     children: any;

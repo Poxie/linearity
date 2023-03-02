@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { selectTaskAssignees, selectTaskInfo, selectTaskLabels } from "@/redux/teams/selectors";
 import { useRef, useState } from "react";
 import { ModalMain } from "../ModalMain";
-import { EditTaskGroup } from './EditTaskGroup';
 import { InfoIcon } from '@/assets/icons/InfoIcon';
 import { Label, Member } from '@/types';
 import { addTaskAssignee, addTaskLabel, removeTaskAssignee, removeTaskLabel, updateTask } from '@/redux/teams/actions';
@@ -16,6 +15,7 @@ import { LabelIcon } from '@/assets/icons/LabelIcon';
 import { TimeIcon } from '@/assets/icons/TimeIcon';
 import { TimeSeletor } from '@/components/time-selector';
 import { useTask } from '@/hooks/useTask';
+import { ModalGroup } from '../ModalGroup';
 
 export const EditTaskModal: React.FC<{
     taskId: number;
@@ -67,7 +67,7 @@ export const EditTaskModal: React.FC<{
     return(
         <>
             <ModalMain className={styles['container']}>
-                <EditTaskGroup 
+                <ModalGroup 
                     header={'Issue information'} 
                     icon={<InfoIcon />}
                     className={styles['header']}
@@ -99,8 +99,8 @@ export const EditTaskModal: React.FC<{
                             textArea
                         />
                     )}
-                </EditTaskGroup>
-                <EditTaskGroup 
+                </ModalGroup>
+                <ModalGroup 
                     header={'Labels & Assignees'} 
                     icon={<LabelIcon />}
                     className={styles['items']}
@@ -141,8 +141,8 @@ export const EditTaskModal: React.FC<{
                             />
                         </div>
                     </div>
-                </EditTaskGroup>
-                <EditTaskGroup header={'Due at'} icon={<TimeIcon />}>
+                </ModalGroup>
+                <ModalGroup header={'Due at'} icon={<TimeIcon />}>
                     <div className={styles['item-container']}>
                         <TimeSeletor 
                             defaultTime={due_at}
@@ -150,7 +150,7 @@ export const EditTaskModal: React.FC<{
                             emptyLabel={'Due date not selected'}
                         />
                     </div>
-                </EditTaskGroup>
+                </ModalGroup>
             </ModalMain>
         </>
     )
