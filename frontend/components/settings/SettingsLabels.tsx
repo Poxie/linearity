@@ -18,10 +18,12 @@ export const SettingsLabels = () => {
 
     return(
         <div className={styles['labels']}>
-            <LabelList 
-                labels={labels}
-                hasContextMenu
-            />
+            {labels.length !== 0 && (
+                <LabelList 
+                    labels={labels}
+                    hasContextMenu
+                />
+            )}
             <button 
                 className={styles['add-label-button']}
                 onClick={openModal}
