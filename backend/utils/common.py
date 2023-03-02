@@ -169,7 +169,17 @@ def get_task_assignees(task_id: int) -> Union[None, User]:
     return assignees
 
 def get_label_by_id(label_id: int) -> Union[None, Label]:
-    query = "SELECT * FROM labels WHERE id = %s"
+    query = """
+    SELECT
+        l.*,
+        COUNT(DISTINCT lt.task_id) AS task_count
+    FROM labels l
+        LEFT JOIN task_labels lt ON lt.id = l.id
+    WHERE
+        l.id = %s
+    GROUP BY
+        l.id 
+    """
     values = (label_id,)
 
     label = database.fetch_one(query, values)
