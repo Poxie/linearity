@@ -1,7 +1,3 @@
-export default function Settings() {
-    return(
-        <div>
-            settings
-        </div>
-    )
-}
+import { Settings } from "@/components/settings";
+
+export default Settings;
