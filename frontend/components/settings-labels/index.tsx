@@ -7,7 +7,6 @@ import { Input } from '../input';
 import { SearchIcon } from '@/assets/icons/SearchIcon';
 import { useAppSelector } from '@/redux/store';
 import { selectTeamLabels } from '@/redux/teams/selectors';
-import { LabelList } from '../label-list/LabelList';
 import { useState } from 'react';
 import Button from '../button';
 import { useModal } from '@/contexts/modal';
@@ -44,25 +43,43 @@ export const SettingsLabels: React.FC<{
                     </Button>
                 </div>
 
-                {!filteredLabels.length && (
-                    <span className={styles['empty']}>	
-                        No labels found
-                    </span>
-                )}
+                <div className={styles['list-container']}>
+                    <div className={styles['list-header']}>
+                        <span>
+                            Labels — {filteredLabels.length}
+                        </span>
+                        <span>
+                            Issues with label
+                        </span>
+                    </div>
 
-                <ul className={styles['list']}>
-                    {filteredLabels.map(label => (
-                        <li className={styles['list-item']} key={label.id}>
-                            <div 
-                                className={styles['list-item-dot']}
-                                style={label.color ? {
-                                    backgroundColor: label.color
-                                } : undefined}
-                            />
-                            {label.name}
-                        </li>
-                    ))}
-                </ul>
+                    {!filteredLabels.length && (
+                        <span className={styles['empty']}>	
+                            No labels found
+                        </span>
+                    )}
+                    
+                    <ul className={styles['list']}>
+                        {filteredLabels.map(label => (
+                            <li className={styles['list-item']} key={label.id}>
+                                <div className={styles['list-item-main']}>
+                                    <div 
+                                        className={styles['list-item-dot']}
+                                        style={label.color ? {
+                                            backgroundColor: label.color
+                                        } : undefined}
+                                    />
+                                    {label.name}
+                                </div>
+                                <span className={styles['item-task-count']}>
+                                    {label.task_count}
+                                    {' '}
+                                    issues
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </ModalGroup>
         </div>
     )

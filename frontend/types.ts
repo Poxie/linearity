@@ -55,4 +55,5 @@ export interface Label {
     name: string;
     color: string | null;
     created_at: number;
+    task_count: number;
 }
