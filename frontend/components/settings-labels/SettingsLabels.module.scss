@@ -1,7 +1,21 @@
 .container {
     padding: var(--spacing-primary);
 }
+.header {
+    display: flex;
+    gap: var(--spacing-secondary);
+}
+.button {
+    background-color: var(--background-tertiary) !important;
+    border-color: var(--background-quaternary) !important;
+
+    &:hover {
+        background-color: var(--background-quaternary) !important;
+    }
+}
 .input-container {
+    flex: 1;
+
     svg {
         height: 100%;
         margin-left: var(--spacing-secondary) !important;
