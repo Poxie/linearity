@@ -2,7 +2,16 @@
     padding: var(--spacing-primary);
     border-bottom: 1px solid var(--background-tertiary);
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header-content {
+    display: flex;
     gap: var(--spacing-primary);
+
+    &:first-of-type {
+        flex: 1;
+    }
 }
 .input {
     padding: 0 !important;
@@ -16,5 +25,24 @@
     svg {
         margin: 0;
         margin-left: var(--spacing-tertiary);
+    }
+}
+.tab {
+    border-radius: var(--border-radius-tertiary);
+    transition: background-color .2s;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+        width: 20px;
+        fill: var(--text-secondary);
+        display: block;
+    }
+
+    &:hover {
+        background-color: var(--background-tertiary);
     }
 }

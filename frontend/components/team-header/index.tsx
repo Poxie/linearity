@@ -1,6 +1,8 @@
+import { GearIcon } from '@/assets/icons/GearIcon';
 import { SearchIcon } from '@/assets/icons/SearchIcon';
 import { useAppSelector } from '@/redux/store';
 import { selectTeamById, selectTeams } from '@/redux/teams/selectors';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Dropdown } from '../dropdown';
 import { Input } from '../input';
@@ -27,15 +29,25 @@ export const TeamHeader: React.FC<{
     }))
     return(
         <div className={styles['header']}>
-            <Dropdown 
-                items={dropdownItems}
-                onChange={goToTeam}
-            />
-            <Input 
-                containerClassName={styles['input']}
-                placeholder={`Search in ${team?.name}`}
-                icon={<SearchIcon />}
-            />
+            <div className={styles['header-content']}>
+                <Dropdown 
+                    items={dropdownItems}
+                    onChange={goToTeam}
+                />
+                <Input 
+                    containerClassName={styles['input']}
+                    placeholder={`Search in ${team?.name}`}
+                    icon={<SearchIcon />}
+                />
+            </div>
+            <div className={styles['header-content']}>
+                <Link 
+                    href={`/teams/${teamId}/settings`}
+                    className={styles['tab']}
+                >
+                    <GearIcon />
+                </Link>
+            </div>
         </div>
     )
 }
