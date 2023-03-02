@@ -11,15 +11,16 @@ import { useRef, useState } from 'react';
 import { useModal } from '@/contexts/modal';
 import { useAuth } from '@/contexts/auth';
 import { Label, Member, Task } from '@/types';
-import { addTask } from '@/redux/teams/actions';
 import { TimeSeletor } from '@/components/time-selector';
 import { AddTaskGroup } from './AddTaskGroup';
+import { useBlock } from '@/hooks/useBlock';
 
 export const AddTaskModal: React.FC<{
     blockId: number;
 }> = ({ blockId }) => {
     const { close } = useModal();
     const { post } = useAuth();
+    const { addTask } = useBlock(blockId);
 
     const [loading, setLoading] = useState(false);
     const [assignees, setAssinees] = useState<Member[]>([]);
@@ -57,24 +58,19 @@ export const AddTaskModal: React.FC<{
         if(!title) return;        
 
         // Creating task
-        try {
-            setLoading(true);
-            const task = await post<Task>(`/blocks/${blockId}/tasks`, {
-                title,
-                description,
-                assignees: assignees.map(assignee => assignee.id),
-                labels: labels.map(label => label.id),
-                due_at: dueAt
-            });
-
-            // Adding task to redux
-            dispatch(addTask(task));
-
-            close();
-        } catch(error) {
+        setLoading(true);
+        await addTask({
+            title,
+            description,
+            assignees: assignees.map(assignee => assignee.id),
+            labels: labels.map(label => label.id),
+            due_at: dueAt
+        }).catch(error => {
             console.log(error);
             setLoading(false);
-        }
+        })
+
+        close();
     }
 
     return(
