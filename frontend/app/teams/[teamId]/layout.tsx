@@ -49,12 +49,7 @@ export default function TeamLayout({
     return(
         <>
             <TeamHeader teamId={parseInt(teamId)} />
-            <PortalProvider>
-                <div style={{ flex: 1 }}>
-                    <GroupSelector teamId={parseInt(teamId)} /> 
-                    {children}
-                </div>
-            </PortalProvider>
+            {children}
         </>
     )
 }
