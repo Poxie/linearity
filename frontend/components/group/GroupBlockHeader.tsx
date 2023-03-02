@@ -25,7 +25,7 @@ export const GroupBlockHeader: React.FC<{
         setModal(<AddTaskModal blockId={blockId} />);
     }
     const editBlock = () => {
-        setModal(<EditBlockModal groupId={groupId} blockId={blockId} />)
+        setModal(<EditBlockModal blockId={blockId} />)
     }
     const openMenu = (e: React.MouseEvent) => {
         const groups: MenuGroup[] = [
