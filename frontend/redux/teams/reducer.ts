@@ -42,7 +42,10 @@ const removeTeamLabel: ReducerAction = (state, action) => {
     const labelId: number = action.payload;
 
     return updateObject(state, {
-        labels: state.labels.filter(label => label.id !== labelId)
+        labels: state.labels.filter(label => label.id !== labelId),
+        tasks: state.tasks.map(task => updateObject(task, {
+            labels: task.labels.filter(label => label.id !== labelId)
+        }))
     })
 }
 
