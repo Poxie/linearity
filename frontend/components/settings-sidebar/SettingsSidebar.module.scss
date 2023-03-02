@@ -1,0 +1,19 @@
+.container {
+    width: 245px;
+    border-right: 1px solid var(--background-tertiary);
+    padding: var(--spacing-secondary);
+}
+.tab {
+    display: block;
+    padding: var(--spacing-tertiary);
+    border-radius: var(--border-radius-tertiary);
+    transition: background-color .2s;
+    font-size: 14px;
+
+    &:hover, &.active {
+        background-color: var(--background-tertiary);
+    }
+    &:active {
+        background-color: var(--background-quaternary);
+    }
+}
