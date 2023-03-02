@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
 from utils.common import create_id, get_block_by_id, get_member, get_task_by_id, get_block_tasks
+from utils.constants import PATCH_BLOCK_ALLOWED_PROPERTIES
 from database import database
 from time import time
 import json
@@ -19,6 +20,51 @@ def get_block_route(block_id: int, token_id: int):
     member = get_member(token_id, block['team_id'])
     if not member:
         return 'Unauthorized', 401
+
+    return jsonify(block)
+
+@blocks.patch('/blocks/<int:block_id>')
+@token_required
+def update_block_route(block_id: int, token_id: int):
+    # Checking if block exists
+    block = get_block_by_id(block_id, hydrate=True)
+    if not block:
+        return 'Block not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, block['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+    
+    # Deciding what properties should update
+    keys = []
+    values = ()
+    for key, value in request.form.items():
+        # Making sure user can update property
+        if key not in PATCH_BLOCK_ALLOWED_PROPERTIES: continue
+
+        # Checking if key is name, and if name value is valid
+        if key == 'name' and value == '':
+            return 'name may not be empty', 400
+
+        # Appending values
+        keys.append(key)
+        values += (value,)
+
+    # If not properties are updated
+    if not len(keys):
+        return 'No properties to update were provided', 400
+
+    # Creating update query
+    keys_str = [f'{key} = %s' for key in keys]
+    query = f"UPDATE blocks SET {','.join(keys_str)} WHERE id = %s"
+    values += (block_id,)
+    
+    # Updating block properties
+    database.update(query, values)
+
+    # Fetching updated block
+    block = get_block_by_id(block_id, hydrate=True)
 
     return jsonify(block)
 
