@@ -10,42 +10,55 @@ import { useRef, useState } from 'react';
 import { AddLabelColorSelector } from './AddLabelColorSelector';
 import { LabelIcon } from '@/assets/icons/LabelIcon';
 import { useTeam } from '@/hooks/useTeam';
+import { Label } from '@/types';
 
 export const AddLabelModal: React.FC<{
     teamId: number;
-}> = ({ teamId }) => {
+    label?: Label;
+}> = ({ teamId, label }) => {
     const { close } = useModal();
-    const { addLabel } = useTeam(teamId);
+    const { addLabel, updateLabel } = useTeam(teamId);
 
-    const [color, setColor] = useState<string | null>(null);
-    const [name, setName] = useState('');
+    const [color, setColor] = useState<string | null>(label?.color || null);
+    const [name, setName] = useState(label?.name || null);
     const [loading, setLoading] = useState(false);
 
     const onConfirm = () => {
         if(!name) return;
 
         setLoading(true);
-        addLabel({ name, color })
-            .then(close)
-            .catch(error => {
-                console.log(error);
-                setLoading(false);
-            })
+        if(label) {
+            updateLabel(label.id, { name, color }, label)
+                .then(close)
+                .catch(error => {
+                    console.log(error)
+                    setLoading(false);
+                })
+        } else {
+            addLabel({ name, color })
+                .then(close)
+                .catch(error => {
+                    console.log(error);
+                    setLoading(false);
+                })
+        }
     }
 
     return(
         <>
         <ModalHeader>
-            Create Team Label
+            {label ? 'Edit' : 'Create'} Team Label
         </ModalHeader>
         <ModalMain className={styles['container']}>
             <ModalGroup header={'Label information'} icon={<InfoIcon />}>
                 <Input 
                     placeholder={'Label name'}
                     onChange={setName}
+                    defaultValue={name || ''}
                 />
                 <AddLabelColorSelector
-                    onClick={setColor}    
+                    onClick={setColor}
+                    defaultActive={color}
                 />
             </ModalGroup>
             <ModalGroup header={'Label preview'} icon={<LabelIcon />} className={styles['preview']}>
@@ -62,8 +75,8 @@ export const AddLabelModal: React.FC<{
         </ModalMain>
         <ModalFooter 
             cancelLabel={'Cancel'}
-            confirmLabel={'Create label'}
-            confirmLoadingLabel={'Creating label...'}
+            confirmLabel={label ? 'Edit label' : 'Create label'}
+            confirmLoadingLabel={label ? 'Editing label...' : 'Creating label...'}
             confirmLoading={loading}
             onCancel={close}
             onConfirm={onConfirm}

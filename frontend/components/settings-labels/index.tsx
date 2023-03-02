@@ -13,6 +13,8 @@ import { useModal } from '@/contexts/modal';
 import { AddLabelModal } from '@/modals/add-label/AddLabelModal';
 import { useTeam } from '@/hooks/useTeam';
 import { TrashIcon } from '@/assets/icons/TrashIcon';
+import { EditIcon } from '@/assets/icons/EditIcon';
+import { Label } from '@/types';
 
 export const SettingsLabels: React.FC<{
     params: { teamId: string };
@@ -24,6 +26,7 @@ export const SettingsLabels: React.FC<{
     const [search, setSearch] = useState('');
 
     const openModal = () => setModal(<AddLabelModal teamId={parseInt(teamId)} />);
+    const editLabel = (label: Label) => setModal(<AddLabelModal teamId={parseInt(teamId)} label={label} />)
 
     const filteredLabels = labels.filter(label => label.name.toLowerCase().includes(search.toLowerCase()));
     return(
@@ -80,7 +83,18 @@ export const SettingsLabels: React.FC<{
                                     issues
                                 </span>
                                 <div className={styles['item-buttons']}>
-                                    <Button onClick={() => removeLabel(label)} icon={<TrashIcon />}>
+                                    <Button 
+                                        onClick={() => editLabel(label)}
+                                        icon={<EditIcon />}
+                                        ariaLabel={'Edit label'}
+                                    >
+
+                                    </Button>
+                                    <Button 
+                                        onClick={() => removeLabel(label)} 
+                                        icon={<TrashIcon />}
+                                        ariaLabel={'Delete label'}
+                                    >
 
                                     </Button>
                                 </div>

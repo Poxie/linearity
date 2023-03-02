@@ -3,7 +3,7 @@ import React, { AnchorHTMLAttributes, ReactElement } from 'react';
 import styles from './Button.module.scss';
 
 export default function Button({ children, style, onClick, href, ariaLabel, target, icon, buttonType='button', external=false, disabled=false, className='', type='default' }: {
-    children: any;
+    children?: any;
     buttonType?: 'button' | 'submit';
     type?: 'default' | 'hollow' | 'transparent';
     className?: string;

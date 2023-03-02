@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/auth"
 import { useAppDispatch } from "@/redux/store";
-import { addTeamLabel, removeTeamLabel, updateTeam } from "@/redux/teams/actions";
+import { addTeamLabel, removeTeamLabel, updateTeam, updateTeamLabel } from "@/redux/teams/actions";
 import { Label, Team } from "@/types";
 import { useCallback } from "react";
 
@@ -32,6 +32,13 @@ export const useTeam = (teamId: number) => {
                 dispatch(addTeamLabel(label));
             })
     }, [teamId, post]);
+    const updateLabel = useCallback(async (labelId: number, label: { name?: string, color?: string | null }, prevLabel: Label) => {
+        dispatch(updateTeamLabel(labelId, label));
+        patch<Label>(`/labels/${labelId}`, label)
+            .catch(() => {
+                dispatch(updateTeamLabel(labelId, { name: prevLabel.name, color: prevLabel.color }));
+            })
+    }, [teamId, patch]);
 
-    return { updateProperty, removeLabel, addLabel };
+    return { updateProperty, removeLabel, addLabel, updateLabel };
 }
