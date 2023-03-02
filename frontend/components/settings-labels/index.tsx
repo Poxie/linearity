@@ -11,11 +11,14 @@ import { useState } from 'react';
 import Button from '../button';
 import { useModal } from '@/contexts/modal';
 import { AddLabelModal } from '@/modals/add-label/AddLabelModal';
+import { useTeam } from '@/hooks/useTeam';
+import { TrashIcon } from '@/assets/icons/TrashIcon';
 
 export const SettingsLabels: React.FC<{
     params: { teamId: string };
 }> = ({ params: { teamId } }) => {
     const { setModal } = useModal();
+    const { removeLabel } = useTeam(parseInt(teamId));
 
     const labels = useAppSelector(state => selectTeamLabels(state, parseInt(teamId)));
     const [search, setSearch] = useState('');
@@ -76,6 +79,11 @@ export const SettingsLabels: React.FC<{
                                     {' '}
                                     issues
                                 </span>
+                                <div className={styles['item-buttons']}>
+                                    <Button onClick={() => removeLabel(label)} icon={<TrashIcon />}>
+
+                                    </Button>
+                                </div>
                             </li>
                         ))}
                     </ul>

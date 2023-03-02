@@ -24,9 +24,12 @@
 .input{
     padding-left: var(--spacing-secondary) !important;
 }
+.list-container {
+    --columns: 3;
+}
 .list-header {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(var(--columns), 1fr);
     font-size: 14px;
     padding: var(--spacing-primary) 0;
     margin-bottom: var(--spacing-primary);
@@ -38,12 +41,12 @@
     display: grid;
 }
 .list-item {
-    padding: var(--spacing-quaternary);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(var(--columns), 1fr);
     align-items: center;
 }
 .list-item-main {
+    padding: var(--spacing-quaternary);
     display: flex;
     align-items: center;
     gap: var(--spacing-tertiary);
@@ -57,6 +60,20 @@
 }
 .item-task-count {
     font-size: 12px;
+}
+.item-buttons {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+        width: 32px;
+        height: 32px;
+        padding: 0 !important;
+
+        svg {
+            margin: 0;
+        }
+    }
 }
 .empty {
     color: var(--text-secondary);
