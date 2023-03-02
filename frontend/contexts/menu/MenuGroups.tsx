@@ -70,7 +70,7 @@ export const MenuGroups: React.FC<MenuArguments> = ({ groups, element, options }
             ref={ref}
         >
             {groups.map((items, key) => (
-                <ul key={key}>
+                <ul key={key} className={styles['group']}>
                     {items.map(item => (
                         <li key={item.text}>
                             <button 

@@ -32,6 +32,11 @@
         right: 100%;
     }
 }
+.group:not(:first-child) {
+    margin-top: var(--spacing-quaternary);
+    padding-top: var(--spacing-quaternary);
+    border-top: 1px solid var(--background-tertiary);
+}
 .menu-item {
     transition: background-color .2s;
     border-radius: var(--border-radius-tertiary);
