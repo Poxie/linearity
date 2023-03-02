@@ -15,11 +15,13 @@ import { AssigneeList } from '@/components/assignee-list/AssigneeList';
 import { LabelIcon } from '@/assets/icons/LabelIcon';
 import { TimeIcon } from '@/assets/icons/TimeIcon';
 import { TimeSeletor } from '@/components/time-selector';
+import { useTask } from '@/hooks/useTask';
 
 export const EditTaskModal: React.FC<{
     taskId: number;
 }> = ({ taskId }) => {
     const { patch, put, destroy } = useAuth();
+    const { addLabel, removeLabel, addAssignee, removeAssignee, updateProperty } = useTask(taskId);
     
     const dispatch = useAppDispatch();
     const labels = useAppSelector(state => selectTaskLabels(state, taskId));
@@ -33,73 +35,31 @@ export const EditTaskModal: React.FC<{
     const descriptionRef = useRef<HTMLInputElement>(null);
 
     const updateTitle = () => {
-        const newTitle = titleRef.current?.value;
-        if(!newTitle || newTitle === title) return setTitleEdit(false);
-
-        dispatch(updateTask(taskId, 'title', newTitle));
+        if(!titleRef.current?.value || title === titleRef.current?.value) return setTitleEdit(false);
+        updateProperty('title', titleRef.current?.value, title);
         setTitleEdit(false);
-        
-        patch(`/tasks/${taskId}`, {
-            title: newTitle
-        }).catch(() => {
-            dispatch(updateTask(taskId, 'title', title));
-        })
     }
     const updateDescription = () => {
-        const newDescription = descriptionRef.current?.value;
-        if(newDescription === description) return setDescriptionEdit(false);
-
-        dispatch(updateTask(taskId, 'description', newDescription));
+        if(description === descriptionRef.current?.value) return setDescriptionEdit(false);
+        updateProperty('description', descriptionRef.current?.value, description);
         setDescriptionEdit(false);
-        
-        patch(`/tasks/${taskId}`, {
-            description: newDescription
-        }).catch(() => {
-            dispatch(updateTask(taskId, 'description', description));
-        })
     }
-    const updateDueAt = (date: Date | null) => {
-        const timestamp = date?.getTime();
-        if(timestamp === due_at || date === due_at) return;
-
-        dispatch(updateTask(taskId, 'due_at', timestamp));
-        patch(`/tasks/${taskId}`, {
-            due_at: date ? timestamp : null
-        }).catch(() => {
-            dispatch(updateTask(taskId, 'due_at', due_at));
-        })
-    }
-
     const toggleLabel = (label: Label) => {
         const exists = labels?.find(l => l.id === label.id);
-        
-        const addLabel = () => dispatch(addTaskLabel(taskId, label));
-        const removeLabel = () => dispatch(removeTaskLabel(taskId, label.id));
 
         if(!exists) {
-            addLabel();
-            put(`/tasks/${taskId}/labels/${label.id}`)
-                .catch(removeLabel);
+            addLabel(label);
         } else {
-            removeLabel();
-            destroy(`/tasks/${taskId}/labels/${label.id}`)
-                .catch(addLabel);
+            removeLabel(label);
         }
     }
     const toggleAssignee = (assignee: Member) => {
         const exists = assignees?.find(l => l.id === assignee.id);
-        
-        const addAssignee = () => dispatch(addTaskAssignee(taskId, assignee));
-        const removeAssignee = () => dispatch(removeTaskAssignee(taskId, assignee.id));
 
         if(!exists) {
-            addAssignee();
-            put(`/tasks/${taskId}/assignees/${assignee.id}`)
-                .catch(removeAssignee);
+            addAssignee(assignee);
         } else {
-            removeAssignee();
-            destroy(`/tasks/${taskId}/assignees/${assignee.id}`)
-                .catch(addAssignee);
+            removeAssignee(assignee);
         }
     }
 
@@ -186,7 +146,7 @@ export const EditTaskModal: React.FC<{
                     <div className={styles['item-container']}>
                         <TimeSeletor 
                             defaultTime={due_at}
-                            onChange={updateDueAt}
+                            onChange={date => updateProperty('due_at', date?.getTime(), due_at)}
                             emptyLabel={'Due date not selected'}
                         />
                     </div>
