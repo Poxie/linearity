@@ -1,6 +1,7 @@
 .app-content {
     display: flex;
     height: calc(100vh - var(--navbar-height));
+    overflow: hidden;
 }
 .container {
     flex: 1;
