@@ -245,7 +245,7 @@ const removeTaskLabel: ReducerAction = (state, action) => {
                 labels: task.labels.filter(label => label.id !== labelId)
             }
         )),
-        labels: updateItemInArray(state.labels, label.id, label => updateObject(label, {
+        labels: updateItemInArray(state.labels, labelId, label => updateObject(label, {
             task_count: label.task_count - 1
         }))
     })
