@@ -4,7 +4,7 @@ import { selectTeamMemberIds } from "@/redux/teams/selectors";
 import { useSettings } from "."
 import { SettingsMember } from "./SettingsMember";
 
-export const SettingsMembers = () => {
+export const SettingsMemberList = () => {
     const { teamId } = useSettings();
     const memberIds = useAppSelector(state => selectTeamMemberIds(state, teamId));
 

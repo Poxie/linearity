@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import styles from './SettingsSidebar.module.scss';
 
 const TABS = [
-    { text: 'Overview', path: '' }
+    { text: 'Overview', path: '' },
+    { text: 'Labels', path: '/labels' }
 ]
 export const SettingsSidebar: React.FC<{
     teamId: number;

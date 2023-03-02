@@ -7,7 +7,7 @@ import { LabelList } from "../label-list/LabelList";
 import { useModal } from '@/contexts/modal';
 import { AddLabelModal } from '@/modals/add-label/AddLabelModal';
 
-export const SettingsLabels = () => {
+export const SettingsLabelList = () => {
     const { teamId } = useSettings();
     const { setModal } = useModal();
     const labels = useAppSelector(state => selectTeamLabels(state, teamId));

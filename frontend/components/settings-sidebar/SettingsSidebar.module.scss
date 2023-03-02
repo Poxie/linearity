@@ -2,6 +2,9 @@
     width: 245px;
     border-right: 1px solid var(--background-tertiary);
     padding: var(--spacing-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 .tab {
     display: block;

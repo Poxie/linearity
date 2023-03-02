@@ -10,9 +10,9 @@ import { selectTeamById, selectTeamLabels } from '@/redux/teams/selectors';
 import { useRef, useState } from 'react';
 import { Input } from '../input';
 import styles from './Settings.module.scss';
-import { SettingsLabels } from './SettingsLabels';
-import { SettingsMembers } from './SettingsMembers';
 import { MemberIcon } from '@/assets/icons/MemberIcon';
+import { SettingsLabelList } from './SettingsLabelList';
+import { SettingsMemberList } from './SettingsMemberList';
 
 const SettingsContext = React.createContext({} as {
     teamId: number;
@@ -82,10 +82,10 @@ export const Settings = ({ params: { teamId } }: {
                     </div>
                 </ModalGroup>
                 <ModalGroup header={'Team labels'} icon={<LabelIcon />}>
-                    <SettingsLabels />
+                    <SettingsLabelList />
                 </ModalGroup>
                 <ModalGroup header={'Members'} icon={<MemberIcon />}>
-                    <SettingsMembers />
+                    <SettingsMemberList />
                 </ModalGroup>
             </div>
         </SettingsContext.Provider>
