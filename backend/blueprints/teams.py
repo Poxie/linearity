@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
 from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_label_by_id, get_group_by_id
-from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_GROUP_ALLOWED_PROPERTIES
+from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_LABEL_ALLOWED_PROPERTIES
 from database import database
 from time import time
 
@@ -333,3 +333,53 @@ def delete_label_route(label_id: int, token_id: int):
     database.delete(query, values)
 
     return jsonify({})
+
+@teams.patch('/labels/<int:label_id>')
+@token_required
+def update_label_route(label_id: int, token_id: int):
+    # Checking if label exists
+    label = get_label_by_id(label_id)
+    if not label:
+        return 'Label not found', 404
+    
+    # Checking if team exists
+    team = get_team_by_id(label['team_id'])
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, label['team_id'])
+    if not member:
+        return 'Unauthorized', 401
+    
+    # Deciding what properties should update
+    keys = []
+    values = ()
+    for key, value in request.form.items():
+        # Making sure user can update property
+        if key not in PATCH_LABEL_ALLOWED_PROPERTIES: continue
+
+        # Checking if key is name
+        if key == 'name' and value == '':
+            return 'Name may not be empty', 400
+
+        # Appending values
+        keys.append(key)
+        values += (value,)
+
+    # If not properties are updated
+    if not len(keys):
+        return 'No properties to update were provided', 400
+
+    # Creating update query
+    keys_str = [f'{key} = %s' for key in keys]
+    query = f"UPDATE labels SET {','.join(keys_str)} WHERE id = %s"
+    values += (label_id,)
+    
+    # Updating team properties
+    database.update(query, values)
+
+    # Fetching updated label
+    label = get_label_by_id(label_id)
+
+    return jsonify(label)
