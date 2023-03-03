@@ -24,6 +24,9 @@ export const LabelInfoTasks: React.FC<{
                     Assignees
                 </span>
                 <span>
+                    Due at
+                </span>
+                <span>
                     Actions
                 </span>
             </div>

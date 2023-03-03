@@ -4,7 +4,7 @@
     border-bottom: 1px solid var(--background-tertiary);
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(4, 1fr) .4fr;
+    grid-template-columns: repeat(5, 1fr) .4fr;
     transition: background-color .2s;
     position: relative;
 
@@ -45,6 +45,10 @@
     font-size: 12px;
     font-weight: 700;
     margin-right: -18px;
+}
+.due-at {
+    padding: 0 !important;
+    background-color: transparent !important;
 }
 .buttons {
     display: flex;

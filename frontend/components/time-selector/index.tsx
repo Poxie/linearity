@@ -1,4 +1,4 @@
-import { usePopout } from '@/contexts/popout';
+import { PopoutArgs, usePopout } from '@/contexts/popout';
 import { TimeSelectorPopout } from '@/popouts/time-selector/TimeSelectorPopout';
 import { useRef, useState } from 'react';
 import styles from './TimeSelector.module.scss';
@@ -11,7 +11,9 @@ export const TimeSeletor: React.FC<{
     onChange: (timestamp: null | Date) => void;
     defaultTime?: number | null;
     emptyLabel?: string;
-}> = ({ defaultTime, onChange, emptyLabel }) => {
+    popoutPosition?: PopoutArgs['position'];
+    className?: string;
+}> = ({ defaultTime, onChange, emptyLabel, popoutPosition, className }) => {
     const { setPopout } = usePopout();
 
     const [date, setDate] = useState<null | Date>(defaultTime ? new Date(defaultTime) : null);
@@ -28,13 +30,18 @@ export const TimeSeletor: React.FC<{
                     closeOnSelect 
                 />
             ),
+            position: popoutPosition,
             ref
         })
     }
 
+    className = [
+        styles['container'],
+        className
+    ].join(' ');
     return(
         <button 
-            className={styles['container']}
+            className={className}
             onClick={openPopout}
             ref={ref}
         >

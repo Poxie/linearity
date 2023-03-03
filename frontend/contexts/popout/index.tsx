@@ -6,7 +6,7 @@ type PopoutContextType = {
     setPopout: (popout: PopoutArgs) => void;
     close: () => void;
 }
-type PopoutArgs = {
+export type PopoutArgs = {
     popout: ReactElement | null;
     ref: RefObject<HTMLElement> | null;
     position?: 'up' | 'left'

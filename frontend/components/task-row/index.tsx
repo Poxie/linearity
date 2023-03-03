@@ -3,6 +3,7 @@ import { selectTaskInfo } from '@/redux/teams/selectors';
 import styles from './TaskRow.module.scss';
 import { TaskRowAssignees } from './TaskRowAssignees';
 import { TaskRowButtons } from './TaskRowButtons';
+import { TaskRowDueAt } from './TaskRowDueAt';
 import { TaskRowLabels } from './TaskRowLabels';
 import { TaskRowView } from './TaskRowView';
 
@@ -22,6 +23,7 @@ export const TaskRow: React.FC<{
             </span>
             <TaskRowLabels taskId={taskId} teamId={task.team_id as number} />
             <TaskRowAssignees taskId={taskId} teamId={task.team_id as number} />
+            <TaskRowDueAt taskId={taskId} />
             <TaskRowButtons taskId={taskId} />
         </div>
     )
