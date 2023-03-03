@@ -15,6 +15,7 @@ import { useTeam } from '@/hooks/useTeam';
 import { TrashIcon } from '@/assets/icons/TrashIcon';
 import { EditIcon } from '@/assets/icons/EditIcon';
 import { Label } from '@/types';
+import Link from 'next/link';
 
 export const SettingsLabels: React.FC<{
     params: { teamId: string };
@@ -77,11 +78,14 @@ export const SettingsLabels: React.FC<{
                                     />
                                     {label.name}
                                 </div>
-                                <span className={styles['item-task-count']}>
+                                <Link 
+                                    className={styles['item-task-count']}
+                                    href={`/teams/${teamId}/settings/labels/${label.id}`}
+                                >
                                     {label.task_count}
                                     {' '}
                                     issues
-                                </span>
+                                </Link>
                                 <div className={styles['item-buttons']}>
                                     <Button 
                                         onClick={() => editLabel(label)}

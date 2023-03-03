@@ -17,9 +17,10 @@ export const SettingsSidebar: React.FC<{
             {TABS.map(tab => {
                 const path = `/teams/${teamId}/settings${tab.path}`;
 
+                const active = (pathname?.startsWith(path) && tab.path) || (path === pathname);
                 const className = [
                     styles['tab'],
-                    path === pathname ? styles['active'] : ''
+                    active ? styles['active'] : ''
                 ].join(' ');
                 return(
                     <li key={tab.path}>

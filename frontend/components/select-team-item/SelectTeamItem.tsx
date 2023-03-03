@@ -9,7 +9,8 @@ export const SelectTeamItem: React.FC<{
     teamId: number;
     type: 'members' | 'labels';
     onSelect: (item: Member | Label) => void;
-}> = ({ teamId, type, onSelect }) => {
+    className?: string;
+}> = ({ teamId, type, onSelect, className }) => {
     const { setPopout } = usePopout();
     const ref = useRef<HTMLButtonElement>(null);
 
@@ -27,9 +28,13 @@ export const SelectTeamItem: React.FC<{
         })
     }
 
+    className = [
+        styles['button'],
+        className
+    ].join(' ');
     return(
         <button 
-            className={styles['button']}
+            className={className}
             aria-label={'Add label'}
             onClick={openPopout}
             ref={ref}
