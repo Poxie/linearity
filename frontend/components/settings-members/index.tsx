@@ -25,7 +25,7 @@ export const SettingsMembers: React.FC<{
                 />
                 <div className={styles['list-header']}>
                     <span>
-                        Members — {members.length}
+                        Members — {filteredMembers.length}
                     </span>
                     <span>
                         Active Issues
