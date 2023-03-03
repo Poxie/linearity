@@ -18,11 +18,16 @@
         gap: var(--spacing-secondary);
     }
 }
+.input {
+    svg {
+        margin: var(--spacing-secondary);
+    }
+}
 .form-options {
     display: flex;
     justify-content: space-between;
 
-    button {
+    button, a {
         color: var(--text-secondary);
         transition: color .2s;
         font-size: 12.5px;

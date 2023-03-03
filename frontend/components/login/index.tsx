@@ -5,6 +5,7 @@ import { GoogleIcon } from '@/assets/icons/GoogleIcon';
 import { PasswordIcon } from "@/assets/icons/PasswordIcon";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { useAuth } from "@/contexts/auth";
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from "react";
 import Button from "../button";
@@ -70,6 +71,7 @@ export default function Login() {
                     placeholder={'Username'}
                     icon={<UserIcon />}
                     ref={usernameRef}
+                    containerClassName={styles['input']}
                 />
                 <Input 
                     name={'password'}
@@ -77,6 +79,7 @@ export default function Login() {
                     icon={<PasswordIcon />}
                     type={'password'}
                     onSubmit={() => login()}
+                    containerClassName={styles['input']} 
                     ref={passwordRef}
                 />
                 <Button buttonType={'submit'} disabled={loading}>
@@ -93,9 +96,9 @@ export default function Login() {
                     <button type="button">
                         Forgot your password?
                     </button>
-                    <button type="button">
+                    <Link href={'/register'}>
                         Don't have an account? Create one here.
-                    </button>
+                    </Link>
                 </div>
             </form>
             <span className={styles.divider}>
