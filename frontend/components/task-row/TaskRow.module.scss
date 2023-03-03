@@ -47,6 +47,17 @@
     margin-right: -18px;
 }
 .due-at {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-quaternary);
+
+    svg {
+        width: 15px;
+        display: block;
+        fill: var(--text-secondary);
+    }
+}
+.time-selector {
     padding: 0 !important;
     background-color: transparent !important;
 }
