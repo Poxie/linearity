@@ -124,13 +124,10 @@ export const EditTaskModal: React.FC<{
                                 <AssigneeList 
                                     members={assignees || []}
                                     onMemberClick={toggleAssignee}
+                                    onMemberSelected={toggleAssignee}
+                                    teamId={team_id}
                                 />
                             )}
-                            <SelectTeamItem 
-                                teamId={team_id}
-                                onSelect={item => toggleAssignee(item as Member)}
-                                type={'members'}
-                            />
                         </div>
                     </div>
                 </ModalGroup>
