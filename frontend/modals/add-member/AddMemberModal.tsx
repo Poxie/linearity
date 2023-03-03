@@ -10,6 +10,7 @@ import { useModal } from '@/contexts/modal';
 import { useAuth } from '@/contexts/auth';
 import { MailIcon } from '@/assets/icons/MailIcon';
 import { InfoIcon } from '@/assets/icons/InfoIcon';
+import Link from 'next/link';
 
 const DROPDOWN_ITEMS = [
     { text: 'Member', id: 0 }
@@ -81,10 +82,20 @@ export const AddMemberModal: React.FC<{
                 )}
                 {error && (
                     <div className={styles['error']}>
-                        <InfoIcon />
-                        <span>
-                            {error}
-                        </span>
+                        <div className={styles['main']}>
+                            <InfoIcon />
+                            <span>
+                                {error}
+                            </span>
+                        </div>
+                        {error.includes('already invited') && (
+                            <Link 
+                                href={`/teams/${teamId}/settings/invites`}
+                                className={styles['go-to-invites']}
+                            >
+                                Go to invites
+                            </Link>
+                        )}
                     </div>
                 )}
                 <div className={styles['buttons']}>

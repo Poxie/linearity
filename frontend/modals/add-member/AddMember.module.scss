@@ -40,4 +40,18 @@
     @extend .success;
     background-color: var(--color-danger-muted);
     border-color: var(--color-danger-accent);
+    justify-content: space-between;
+
+    .main {
+        display: flex;
+        gap: var(--spacing-tertiary);
+    }
+}
+.go-to-invites {
+    font-size: 12px;
+    color: var(--text-secondary);
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
