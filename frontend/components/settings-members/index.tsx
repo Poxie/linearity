@@ -1,6 +1,7 @@
 "use client";
 
 import { MemberIcon } from '@/assets/icons/MemberIcon';
+import { SearchIcon } from '@/assets/icons/SearchIcon';
 import { ModalGroup } from '@/modals/ModalGroup';
 import { useAppSelector } from '@/redux/store';
 import { selectTeamMembers } from '@/redux/teams/selectors';
@@ -21,7 +22,10 @@ export const SettingsMembers: React.FC<{
             <ModalGroup header={'Members'} icon={<MemberIcon />}>
                 <Input 
                     placeholder={'Search for member'}
+                    icon={<SearchIcon />}
                     onChange={setSearch}
+                    inputClassName={styles['input']}
+                    containerClassName={styles['input-container']}
                 />
                 <div className={styles['list-header']}>
                     <span>

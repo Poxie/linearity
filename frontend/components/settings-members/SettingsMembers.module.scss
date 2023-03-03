@@ -1,6 +1,17 @@
 .container {
     padding: var(--spacing-primary);
 }
+.input-container {
+    flex: 1;
+
+    svg {
+        height: 100%;
+        margin-left: var(--spacing-secondary) !important;
+    }
+}
+.input{
+    padding-left: var(--spacing-secondary) !important;
+}
 .list {
     display: grid;
     gap: var(--spacing-tertiary);
