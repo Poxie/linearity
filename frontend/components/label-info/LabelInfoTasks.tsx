@@ -7,29 +7,44 @@ import { TaskRow } from "../task-row";
 
 export const LabelInfoTasks: React.FC<{
     taskIds: number[];
-}> = ({ taskIds }) => {
+    loading: boolean;
+}> = ({ taskIds, loading }) => {
     return(
         <ModalGroup header={'Issues marked with label'} icon={<IssueIcon />}>
-            <div className={styles['row']}>
-                <span>
-                    Title
+            {!loading && taskIds.length !== 0 && (
+                <div className={styles['row']}>
+                    <span>
+                        Title
+                    </span>
+                    <span>
+                        Description
+                    </span>
+                    <span>
+                        Labels
+                    </span>
+                    <span>
+                        Assignees
+                    </span>
+                    <span>
+                        Due at
+                    </span>
+                    <span>
+                        Actions
+                    </span>
+                </div>
+            )}
+
+            {loading && (
+                Array.from(Array(4)).map((_,key) => (
+                    <div className={styles['placeholder']} key={key} />
+                ))
+            )}
+
+            {!loading && taskIds.length === 0 && (
+                <span className={styles['empty']}>
+                    There are no issues with this label.
                 </span>
-                <span>
-                    Description
-                </span>
-                <span>
-                    Labels
-                </span>
-                <span>
-                    Assignees
-                </span>
-                <span>
-                    Due at
-                </span>
-                <span>
-                    Actions
-                </span>
-            </div>
+            )}
             {taskIds.map(taskId => <TaskRow taskId={taskId} />)}
         </ModalGroup>
     )
