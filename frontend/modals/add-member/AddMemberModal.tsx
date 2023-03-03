@@ -92,6 +92,7 @@ export const AddMemberModal: React.FC<{
                             <Link 
                                 href={`/teams/${teamId}/settings/invites`}
                                 className={styles['go-to-invites']}
+                                onClick={close}
                             >
                                 Go to invites
                             </Link>
