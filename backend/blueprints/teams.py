@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
 from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_label_by_id, get_group_by_id, get_task_by_id
-from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_LABEL_ALLOWED_PROPERTIES
+from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_LABEL_ALLOWED_PROPERTIES, ALLOWED_MEMBER_ROLES
 from database import database
 from time import time
 
@@ -26,8 +26,8 @@ def create_team_route(token_id: int):
     database.insert(query, values)
 
     # Creating owner member
-    member_query = "INSERT INTO members (id, team_id, joined_at) VALUES (%s, %s, %s)"
-    member_values = (token_id, id, time())
+    member_query = "INSERT INTO members (id, team_id, role, joined_at) VALUES (%s, %s, %s, %s)"
+    member_values = (token_id, id, 'owner', time())
     database.insert(member_query, member_values)
 
     # Fetching created team
@@ -126,10 +126,15 @@ def get_team_members_route(team_id: int, token_id: int):
 
     return jsonify(members)
 
-@teams.post('/teams/<int:team_id>/members/<int:user_id>')
+@teams.put('/teams/<int:team_id>/members/<int:user_id>')
 @token_required
 def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
     team = get_team_by_id(team_id)
+
+    # Role is allowed argument
+    role = request.form.get('role')
+    if role and role not in ALLOWED_MEMBER_ROLES:
+        return 'Unsupported role', 400
 
     # Checking if team exists
     if not team:
@@ -151,8 +156,8 @@ def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
         return 'User is already a member of this team', 409
 
     # Creating team member
-    query = "INSERT INTO members (id, team_id, joined_at) VALUES (%s, %s, %s)"
-    values = (user_id, team_id, time())
+    query = "INSERT INTO members (id, team_id, role, joined_at) VALUES (%s, %s, %s, %s)"
+    values = (user_id, team_id, role or 'member', time())
     database.insert(query, values)
 
     # Fetching created member

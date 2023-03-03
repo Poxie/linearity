@@ -44,7 +44,7 @@ class Database():
             # Creating database tables
             cursor.execute('CREATE TABLE IF NOT EXISTS users (id BIGINT(20), username VARCHAR(255), password VARCHAR(255), email VARCHAR(255) DEFAULT NULL, name VARCHAR(255) DEFAULT NULL, avatar VARCHAR(255) DEFAULT NULL, created_at BIGINT(20))')
             cursor.execute('CREATE TABLE IF NOT EXISTS teams (id BIGINT(20), owner_id BIGINT(20), name VARCHAR(255), description TEXT DEFAULT NULL, icon VARCHAR(255) DEFAULT NULL, created_at BIGINT(20))')
-            cursor.execute('CREATE TABLE IF NOT EXISTS members (id BIGINT(20), team_id BIGINT(20), joined_at BIGINT(20))')
+            cursor.execute('CREATE TABLE IF NOT EXISTS members (id BIGINT(20), team_id BIGINT(20), role VARCHAR(255), joined_at BIGINT(20))')
             cursor.execute('CREATE TABLE IF NOT EXISTS groups (id BIGINT(20), team_id BIGINT(20), name VARCHAR(255), description TEXT DEFAULT NULL, created_at BIGINT(20))')
             cursor.execute('CREATE TABLE IF NOT EXISTS blocks (id BIGINT(20), team_id BIGINT(20), group_id BIGINT(20), name VARCHAR(255), description TEXT DEFAULT NULL, position BIGINT(20), created_at BIGINT(20))')
             cursor.execute('CREATE TABLE IF NOT EXISTS tasks (id BIGINT(20), team_id BIGINT(20), group_id BIGINT(20), title VARCHAR(255), description TEXT DEFAULT NULL, position BIGINT(20), created_at BIGINT(20), due_at BIGINT(20) DEFAULT NULL)')
