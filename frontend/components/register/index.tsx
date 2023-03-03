@@ -28,6 +28,7 @@ export const Register = () => {
         const username = usernameRef.current?.value;
         const password = passwordRef.current?.value;
         const repeatPassword = repeatPasswordRef.current?.value;
+        
         if(!name || !username || !password) return;
         if(password !== repeatPassword) return setError('Passwords don\'t match')
 
