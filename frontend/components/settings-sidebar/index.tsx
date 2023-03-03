@@ -6,7 +6,8 @@ import styles from './SettingsSidebar.module.scss';
 
 const TABS = [
     { text: 'Overview', path: '' },
-    { text: 'Labels', path: '/labels' }
+    { text: 'Labels', path: '/labels' },
+    { text: 'Members', path: '/members' }
 ]
 export const SettingsSidebar: React.FC<{
     teamId: number;

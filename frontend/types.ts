@@ -8,6 +8,8 @@ export interface User {
 export interface Member extends User {
     team_id: number;
     joined_at: number;
+    task_count: number;
+    role: 'owner' | 'member';
 }
 export interface Team {
     created_at: number;
