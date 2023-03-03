@@ -39,6 +39,10 @@ export const selectTeamLabels = createSelector(
     [selectLabels, selectId],
     (labels, teamId) => labels.filter(label => label.team_id === teamId)
 )
+export const selectLabelById = createSelector(
+    [selectLabels, selectId],
+    (labels, labelId) => labels.find(label => label.id === labelId)
+)
 
 const selectBlocks = (state: RootState) => state.teams.blocks;
 export const selectPositionedBlocks = createSelector(
@@ -116,6 +120,14 @@ export const selectTaskAssignees = createSelector(
 export const selectTaskLabels = createSelector(
     [selectTaskById],
     task => task?.labels
+)
+export const selectTasksByLabel = createSelector(
+    [selectTasks, selectId, _selectId],
+    (tasks, teamId, labelId) => tasks.filter(task => {
+        const hasLabel = task.labels.find(label => label.id === labelId);
+        console.log(hasLabel);
+        return !!hasLabel;
+    }).map(item => item.id)
 )
 
 export const selectGroupHasFetchedBlocks = createSelector(

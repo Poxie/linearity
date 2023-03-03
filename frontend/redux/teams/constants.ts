@@ -11,6 +11,7 @@ export const ADD_BLOCK = 'ADD_BLOCK';
 export const UPDATE_BLOCK = 'UPDATE_BLOCK';
 export const SET_TASKS = 'SET_TASKS';
 export const ADD_TASK = 'ADD_TASK';
+export const REMOVE_TASK = 'REMOVE_TASK';
 export const UPDATE_TASK = 'UPDATE_TASK';
 export const UPDATE_BLOCK_POSITIONS = 'UPDATE_BLOCK_POSITIONS';
 export const UPDATE_TASK_POSITIONS = 'UPDATE_TASK_POSITIONS';

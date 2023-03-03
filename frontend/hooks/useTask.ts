@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/auth"
 import { useAppDispatch, useAppSelector } from "@/redux/store"
-import { addTaskAssignee, addTaskLabel, removeTaskAssignee, removeTaskLabel, updateTask } from "@/redux/teams/actions"
+import { addTaskAssignee, addTaskLabel, removeTask, removeTaskAssignee, removeTaskLabel, updateTask } from "@/redux/teams/actions"
 import { Label, Member, Task } from "@/types"
 import { useCallback } from "react"
 
@@ -8,6 +8,15 @@ export const useTask = (taskId: number) => {
     const { put, destroy, patch } = useAuth();
     const dispatch = useAppDispatch();
 
+    const removeSelf = useCallback(async () => {
+        destroy(`/tasks/${taskId}`)
+            .then(() => {
+                dispatch(removeTask(taskId));
+            })
+            .catch(error =>{
+                console.log(error);
+            })
+    }, [taskId, destroy]);
     const addLabel = useCallback(async (label: Label) => {
         dispatch(addTaskLabel(taskId, label))
         put(`/tasks/${taskId}/labels/${label.id}`)
@@ -35,5 +44,5 @@ export const useTask = (taskId: number) => {
         }).catch(() => updateTask(taskId, property, prevValue));
     }, [taskId, patch]);
 
-    return { addLabel, removeLabel, addAssignee, removeAssignee, updateProperty };
+    return { addLabel, removeLabel, addAssignee, removeAssignee, updateProperty, removeSelf };
 }

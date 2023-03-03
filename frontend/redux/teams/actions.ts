@@ -1,5 +1,5 @@
 import { Block, Group, Label, Member, Task, Team, User } from "@/types";
-import { SET_GROUPS, SET_TEAMS, SET_BLOCKS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK, UPDATE_BLOCK, UPDATE_TEAM, REMOVE_TEAM_LABEL, ADD_TEAM_LABEL, UPDATE_TEAM_LABEL } from "./constants";
+import { SET_GROUPS, SET_TEAMS, SET_BLOCKS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK, UPDATE_BLOCK, UPDATE_TEAM, REMOVE_TEAM_LABEL, ADD_TEAM_LABEL, UPDATE_TEAM_LABEL, REMOVE_TASK } from "./constants";
 
 export const setTeams = (teams: Team[]) => ({
     type: SET_TEAMS,
@@ -52,6 +52,10 @@ export const setTasks = (tasks: Task[]) => ({
 export const addTask = (task: Task) => ({
     type: ADD_TASK,
     payload: task
+})
+export const removeTask = (taskId: number) => ({
+    type: REMOVE_TASK,
+    payload: taskId
 })
 export const updateTask = (taskId: number, property: keyof Task, value: any) => ({
     type: UPDATE_TASK,
