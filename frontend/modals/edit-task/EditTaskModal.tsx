@@ -1,12 +1,10 @@
 import styles from './EditTaskModal.module.scss';
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import { selectTaskAssignees, selectTaskInfo, selectTaskLabels } from "@/redux/teams/selectors";
 import { ModalMain } from "../ModalMain";
 import { InfoIcon } from '@/assets/icons/InfoIcon';
 import { Label, Member } from '@/types';
-import { useAuth } from '@/contexts/auth';
 import { LabelList } from '@/components/label-list/LabelList';
-import { SelectTeamItem } from '@/components/select-team-item/SelectTeamItem';
 import { AssigneeList } from '@/components/assignee-list/AssigneeList';
 import { LabelIcon } from '@/assets/icons/LabelIcon';
 import { TimeIcon } from '@/assets/icons/TimeIcon';
@@ -18,10 +16,8 @@ import { EditableText } from '@/components/editable-text';
 export const EditTaskModal: React.FC<{
     taskId: number;
 }> = ({ taskId }) => {
-    const { patch, put, destroy } = useAuth();
     const { addLabel, removeLabel, addAssignee, removeAssignee, updateProperty } = useTask(taskId);
     
-    const dispatch = useAppDispatch();
     const labels = useAppSelector(state => selectTaskLabels(state, taskId));
     const assignees = useAppSelector(state => selectTaskAssignees(state, taskId));
     const { title, description, team_id, due_at } = useAppSelector(state => selectTaskInfo(state, taskId));

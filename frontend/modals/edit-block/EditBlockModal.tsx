@@ -4,8 +4,6 @@ import { useAppSelector } from "@/redux/store";
 import { selectBlockInfo } from "@/redux/teams/selectors";
 import { ModalGroup } from "../ModalGroup";
 import { ModalMain } from "../ModalMain";
-import { useRef, useState } from 'react';
-import { Input } from '@/components/input';
 import { useBlock } from '@/hooks/useBlock';
 import { EditableText } from '@/components/editable-text';
 
