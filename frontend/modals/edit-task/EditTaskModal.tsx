@@ -93,26 +93,20 @@ export const EditTaskModal: React.FC<{
                         <span className={styles['item-header']}>
                             Assignees
                         </span>
-                        <div className={styles['item-container']}>
-                            {assignees?.length !== 0 && (
-                                <AssigneeList 
-                                    members={assignees || []}
-                                    onMemberClick={toggleAssignee}
-                                    onMemberSelected={toggleAssignee}
-                                    teamId={team_id}
-                                />
-                            )}
-                        </div>
+                        <AssigneeList 
+                            members={assignees || []}
+                            onMemberClick={toggleAssignee}
+                            onMemberSelected={toggleAssignee}
+                            teamId={team_id}
+                        />
                     </div>
                 </ModalGroup>
                 <ModalGroup header={'Due at'} icon={<TimeIcon />}> 
-                    <div className={styles['item-container']}>
-                        <TimeSeletor 
-                            defaultTime={due_at}
-                            onChange={date => updateProperty('due_at', date?.getTime(), due_at)}
-                            emptyLabel={'Due date not selected'}
-                        />
-                    </div>
+                    <TimeSeletor 
+                        defaultTime={due_at}
+                        onChange={date => updateProperty('due_at', date?.getTime(), due_at)}
+                        emptyLabel={'Due date not selected'}
+                    />
                 </ModalGroup>
             </ModalMain>
         </>
