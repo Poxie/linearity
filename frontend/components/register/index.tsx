@@ -12,7 +12,7 @@ import { Input } from '../input';
 export const Register = () => {
     const { setToken } = useAuth();
     const { push } = useRouter();
-    
+
     const [error, setError] = useState<null | string>(null);
     const [loading, setLoading] = useState(false);
 
@@ -41,7 +41,7 @@ export const Register = () => {
             method: 'POST',
             body: formData
         }).then(async res => {
-            if(!res.ok) throw new Error(await res.text());
+            if(!res.ok) throw new Error(res.status === 500 ? 'Internal error' : await res.text());
             return await res.json();
         }).then(({ token }: { token: string }) => {
             window.localStorage.setItem('token', token);
