@@ -31,6 +31,7 @@
     display: grid;
     grid-template-columns: repeat(var(--columns), 1fr);
     font-size: 14px;
+    color: var(--text-secondary);
     padding: var(--spacing-primary) 0;
     margin-bottom: var(--spacing-primary);
     border-bottom: 1px solid var(--background-tertiary);
