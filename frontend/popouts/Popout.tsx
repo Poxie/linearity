@@ -5,6 +5,7 @@ import { usePopout } from '@/contexts/popout';
 
 const SPACE_FROM_ELEMENT = 20;
 const ANIMATE_TRANSLATE_VALUE = -10;
+const ARROW_OFFSET_MIN = 30;
 export const Popout: React.FC<{
     children: any;
     element: RefObject<HTMLElement>;
@@ -43,8 +44,17 @@ export const Popout: React.FC<{
                 left -= width + SPACE_FROM_ELEMENT;
             }
 
-            // Checking offset based on element ref
-            setPopoutOffset(_height / 2);
+            // Determining arrow offset
+            // If element is smaller than offset, position popout accordingly
+            if(_height < ARROW_OFFSET_MIN) {
+                top -= ARROW_OFFSET_MIN - _height;
+            };
+            const offset = _height < ARROW_OFFSET_MIN ? (
+                ARROW_OFFSET_MIN - _height / 2
+            ) : (
+                _height / 2
+            )
+            setPopoutOffset(offset);
             
             // Updating popout top and left
             popout.current.style.top = `${top}px`;
