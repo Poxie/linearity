@@ -2,31 +2,47 @@
 
 import { MemberIcon } from '@/assets/icons/MemberIcon';
 import { SearchIcon } from '@/assets/icons/SearchIcon';
+import { useModal } from '@/contexts/modal';
+import { AddMemberModal } from '@/modals/add-member/AddMemberModal';
 import { ModalGroup } from '@/modals/ModalGroup';
 import { useAppSelector } from '@/redux/store';
 import { selectTeamMembers } from '@/redux/teams/selectors';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import Button from '../button';
 import { Input } from '../input';
 import styles from './SettingsMembers.module.scss';
 
 export const SettingsMembers: React.FC<{
     params: { teamId: string };
 }> = ({ params: { teamId } }) => {
+    const { setModal } = useModal();
     const members = useAppSelector(state => selectTeamMembers(state, parseInt(teamId)));
 
     const [search, setSearch] = useState('');
+
+    const openModal = () => setModal(<AddMemberModal teamId={parseInt(teamId)} />)
     
-    const filteredMembers = members.filter(member => member.name.toLowerCase().includes(search.toLowerCase()));
+    const filteredMembers = useMemo(() => (
+        members.filter(member => member.name.toLowerCase().includes(search.toLowerCase()))
+    ), [search, members]);
     return(
         <div className={styles['container']}>
             <ModalGroup header={'Members'} icon={<MemberIcon />}>
-                <Input 
-                    placeholder={'Search for member'}
-                    icon={<SearchIcon />}
-                    onChange={setSearch}
-                    inputClassName={styles['input']}
-                    containerClassName={styles['input-container']}
-                />
+                <div className={styles['header']}>
+                    <Input 
+                        placeholder={'Search for member'}
+                        icon={<SearchIcon />}
+                        onChange={setSearch}
+                        inputClassName={styles['input']}
+                        containerClassName={styles['input-container']}
+                    />
+                    <Button 
+                        className={styles['add-button']}
+                        onClick={openModal}
+                    >
+                        Add member
+                    </Button>
+                </div>
                 <div className={styles['list-header']}>
                     <span>
                         Members — {filteredMembers.length}

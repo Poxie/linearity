@@ -1,6 +1,18 @@
 .container {
     padding: var(--spacing-primary);
 }
+.header {
+    display: flex;
+    gap: var(--spacing-secondary);
+}
+.add-button {
+    background-color: var(--background-tertiary) !important;
+    border: 1px solid var(--background-quaternary) !important;
+
+    &:hover {
+        background-color: var(--background-quaternary) !important;
+    }
+}
 .input-container {
     flex: 1;
 

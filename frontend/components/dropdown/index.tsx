@@ -48,6 +48,7 @@ export const Dropdown: React.FC<{
             <button 
                 className={styles['selected']}
                 onClick={() => setOpen(!open)}
+                type="button"
             >
                 {selectedItem?.text}
             </button>
@@ -64,7 +65,10 @@ export const Dropdown: React.FC<{
                     )}
                     {selectableItems.map(item => (
                         <li key={item.id}>
-                            <button onClick={() => selectItem(item.id)}>
+                            <button 
+                                onClick={() => selectItem(item.id)}
+                                type="button"
+                            >
                                 {item.text}
                             </button>
                         </li>
