@@ -44,7 +44,41 @@ def create_user_route():
     query = "INSERT INTO users (id, username, password, name, email, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
     values = (id, username, encrypted_password, name, email, int(time()))
 
+    # Creating user default team
+    team_id = create_id('teams')
+    team_query = "INSERT INTO teams (id, owner_id, name, description, created_at) VALUES (%s, %s, %s, %s, %s)"
+    team_values = (
+        team_id,
+        id,
+        'My Team',
+        'This is my first team.',
+        time()
+    )
+
+    # Inserting default group
+    group_id = create_id('groups')
+    group_query = "INSERT INTO groups (id, team_id, name, description, created_at) VALUES (%s, %s, %s, %s, %s)"
+    group_values = (
+        group_id,
+        team_id,
+        'My Issues',
+        'Current issues will be displayed here.',
+        time()
+    )
+    
+    # Inserting user as team owner
+    member_query = "INSERT INTO members (id, team_id, role, joined_at) VALUES (%s, %s, %s, %s)"
+    member_values = (
+        id,
+        team_id,
+        'owner',
+        time()
+    )
+
     database.insert(query, values)
+    database.insert(team_query, team_values)
+    database.insert(group_query, group_values)
+    database.insert(member_query, member_values)
     
     # Creating token for user
     token = jwt.encode({ 'id': id }, JWT_SECRET_KEY)
