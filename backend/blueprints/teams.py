@@ -108,9 +108,11 @@ def get_team_members_route(team_id: int, token_id: int):
     query = """
     SELECT
         m.*,
-        u.*
+        u.*,
+        COUNT(DISTINCT a.task_id) AS task_count
     FROM members m
         LEFT JOIN users u ON u.id = m.id
+        LEFT JOIN assignees a ON a.id = m.id
     WHERE
         m.team_id = %s
     GROUP BY

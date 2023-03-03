@@ -66,7 +66,17 @@ def get_user_teams(user_id: int) -> Union[None, List[Team]]:
     return teams
 
 def get_member(id: int, team_íd: int) -> Union[None, Member]:
-    query = "SELECT * FROM members WHERE id = %s AND team_id = %s"
+    query = """
+    SELECT
+        m.*,
+        COUNT(DISTINCT a.task_id) AS task_count
+    FROM members m
+        LEFT JOIN assignees a ON a.id = m.id
+    WHERE
+        m.id = %s AND m.team_id = %s
+    GROUP BY
+        m.id
+    """
     values = (id, team_íd)
 
     member = database.fetch_one(query, values)

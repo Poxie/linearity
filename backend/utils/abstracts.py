@@ -22,6 +22,7 @@ class Member(TypedDict):
     id: int
     team_id: int
     joined_at: int
+    task_count: int
 
 class Group(TypedDict):
     id: int
