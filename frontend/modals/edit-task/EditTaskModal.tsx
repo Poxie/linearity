@@ -1,8 +1,6 @@
 import styles from './EditTaskModal.module.scss';
-import { Input } from "@/components/input";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { selectTaskAssignees, selectTaskInfo, selectTaskLabels } from "@/redux/teams/selectors";
-import { useRef, useState } from "react";
 import { ModalMain } from "../ModalMain";
 import { InfoIcon } from '@/assets/icons/InfoIcon';
 import { Label, Member } from '@/types';
@@ -15,6 +13,7 @@ import { TimeIcon } from '@/assets/icons/TimeIcon';
 import { TimeSeletor } from '@/components/time-selector';
 import { useTask } from '@/hooks/useTask';
 import { ModalGroup } from '../ModalGroup';
+import { EditableText } from '@/components/editable-text';
 
 export const EditTaskModal: React.FC<{
     taskId: number;
@@ -26,22 +25,12 @@ export const EditTaskModal: React.FC<{
     const labels = useAppSelector(state => selectTaskLabels(state, taskId));
     const assignees = useAppSelector(state => selectTaskAssignees(state, taskId));
     const { title, description, team_id, due_at } = useAppSelector(state => selectTaskInfo(state, taskId));
-    
-    const [titleEdit, setTitleEdit] = useState(false);
-    const [descriptionEdit, setDescriptionEdit] = useState(false);
 
-    const titleRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLInputElement>(null);
-
-    const updateTitle = () => {
-        if(!titleRef.current?.value || title === titleRef.current?.value) return setTitleEdit(false);
-        updateProperty('title', titleRef.current?.value, title);
-        setTitleEdit(false);
+    const updateTitle = (text: string) => {
+        updateProperty('title', text, title);
     }
-    const updateDescription = () => {
-        if(description === descriptionRef.current?.value) return setDescriptionEdit(false);
-        updateProperty('description', descriptionRef.current?.value, description);
-        setDescriptionEdit(false);
+    const updateDescription = (text: string) => {
+        updateProperty('description', text, description);
     }
     const toggleLabel = (label: Label) => {
         const exists = labels?.find(l => l.id === label.id);
@@ -71,33 +60,18 @@ export const EditTaskModal: React.FC<{
                     icon={<InfoIcon />}
                     className={styles['header']}
                 >
-                    {!titleEdit ? (
-                        <h1 onClick={() => setTitleEdit(true)}>
-                            {title}
-                        </h1>
-                    ) : (
-                        <Input 
-                            placeholder={'Title'}
-                            defaultValue={title}
-                            onBlur={updateTitle}
-                            ref={titleRef}
-                            focusOnMount
-                        />
-                    )}
-                    {!descriptionEdit && description ? (
-                        <span onClick={() => setDescriptionEdit(true)}>
-                            {description}
-                        </span>
-                    ) : (
-                        <Input 
-                            placeholder={'Add a better description'}
-                            defaultValue={description}
-                            onBlur={updateDescription}
-                            ref={descriptionRef}
-                            focusOnMount
-                            textArea
-                        />
-                    )}
+                    <EditableText 
+                        onChange={updateTitle}
+                        placeholder={'Title'}
+                        defaultValue={title}
+                        size={'large'}
+                        requiresValue
+                    />
+                    <EditableText 
+                        defaultValue={description || ''}
+                        onChange={updateDescription}
+                        placeholder={'Add a better description'}
+                    />
                 </ModalGroup>
                 <ModalGroup 
                     header={'Labels & Assignees'} 
@@ -131,7 +105,7 @@ export const EditTaskModal: React.FC<{
                         </div>
                     </div>
                 </ModalGroup>
-                <ModalGroup header={'Due at'} icon={<TimeIcon />}>
+                <ModalGroup header={'Due at'} icon={<TimeIcon />}> 
                     <div className={styles['item-container']}>
                         <TimeSeletor 
                             defaultTime={due_at}

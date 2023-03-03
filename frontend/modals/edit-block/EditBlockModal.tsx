@@ -7,6 +7,7 @@ import { ModalMain } from "../ModalMain";
 import { useRef, useState } from 'react';
 import { Input } from '@/components/input';
 import { useBlock } from '@/hooks/useBlock';
+import { EditableText } from '@/components/editable-text';
 
 export const EditBlockModal: React.FC<{
     blockId: number;
@@ -14,21 +15,11 @@ export const EditBlockModal: React.FC<{
     const { updateProperty } = useBlock(blockId);
     const { name, description } = useAppSelector(state => selectBlockInfo(state, blockId));
 
-    const [nameEdit, setNameEdit] = useState(false);
-    const [descriptionEdit, setDescriptionEdit] = useState(false);
-
-    const nameRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLInputElement>(null);
-
-    const updateName = () => {
-        if(!nameRef.current?.value || name === nameRef.current?.value) return setNameEdit(false);
-        updateProperty('name', nameRef.current?.value, name);
-        setNameEdit(false);
+    const updateName = (text: string) => {
+        updateProperty('name', text, name);
     }
-    const updateDescription = () => {
-        if(description === descriptionRef.current?.value) return setDescriptionEdit(false);
-        updateProperty('description', descriptionRef.current?.value, description);
-        setDescriptionEdit(false);
+    const updateDescription = (text: string) => {
+        updateProperty('description', text, description);
     }
 
     return(
@@ -38,33 +29,19 @@ export const EditBlockModal: React.FC<{
                 icon={<InfoIcon />}
             >
                 <div className={styles['header']}>
-                    {!nameEdit ? (
-                        <h1 onClick={() => setNameEdit(true)}>
-                            {name}
-                        </h1>
-                    ) : (
-                        <Input 
-                            placeholder={'Name'}
-                            defaultValue={name}
-                            onBlur={updateName}
-                            ref={nameRef}
-                            focusOnMount
-                        />
-                    )}
-                    {!descriptionEdit && description ? (
-                        <span onClick={() => setDescriptionEdit(true)}>
-                            {description}
-                        </span>
-                    ) : (
-                        <Input 
-                            placeholder={'Add a better description'}
-                            defaultValue={description || ''}
-                            onBlur={updateDescription}
-                            ref={descriptionRef}
-                            focusOnMount
-                            textArea
-                        />
-                    )}
+                    <EditableText 
+                        onChange={updateName}
+                        placeholder={'Name'}
+                        defaultValue={name}
+                        size={'large'}
+                        requiresValue
+                    />
+                    <EditableText 
+                        placeholder={'Add a better description'}
+                        onChange={updateDescription}
+                        defaultValue={description}
+                        requiresValue
+                    />
                 </div>
             </ModalGroup>
         </ModalMain>
