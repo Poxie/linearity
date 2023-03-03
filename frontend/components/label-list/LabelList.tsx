@@ -1,14 +1,18 @@
 import styles from './LabelList.module.scss';
 import { Label } from "@/types"
-import { MenuGroup, useMenu } from '@/contexts/menu';
 import { LabelListItem } from './LabelListItem';
+import { SelectTeamItem } from '../select-team-item/SelectTeamItem';
 
 export const LabelList: React.FC<{
     labels: Label[];
     onLabelClick?: (label: Label) => void;
     small?: boolean;
     hasContextMenu?: boolean;
-}> = ({ labels, onLabelClick, small, hasContextMenu }) => {
+    teamId?: number;
+    onLabelSelected?: (label: Label) => void;
+}> = ({ labels, onLabelClick, small, hasContextMenu, teamId, onLabelSelected }) => {
+    if(onLabelSelected && !teamId) throw new Error('onLabelSelected requires teamId prop');
+
     const className = [
         styles['container'],
         small ? styles['small'] : ''
@@ -23,6 +27,13 @@ export const LabelList: React.FC<{
                     key={label.id}
                 />
             ))}
+            {onLabelSelected && (
+                <SelectTeamItem 
+                    teamId={teamId as number}
+                    onSelect={item => onLabelSelected(item as Label)}
+                    type={'labels'}
+                />
+            )}
         </ul>
     )
 }

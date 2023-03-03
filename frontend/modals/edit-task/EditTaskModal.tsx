@@ -6,7 +6,6 @@ import { useRef, useState } from "react";
 import { ModalMain } from "../ModalMain";
 import { InfoIcon } from '@/assets/icons/InfoIcon';
 import { Label, Member } from '@/types';
-import { addTaskAssignee, addTaskLabel, removeTaskAssignee, removeTaskLabel, updateTask } from '@/redux/teams/actions';
 import { useAuth } from '@/contexts/auth';
 import { LabelList } from '@/components/label-list/LabelList';
 import { SelectTeamItem } from '@/components/select-team-item/SelectTeamItem';
@@ -109,19 +108,12 @@ export const EditTaskModal: React.FC<{
                         <span className={styles['item-header']}>
                             Labels
                         </span>
-                        <div className={styles['item-container']}>
-                            {labels?.length !== 0 && (
-                                <LabelList 
-                                    labels={labels || []}
-                                    onLabelClick={toggleLabel}
-                                />
-                            )}
-                            <SelectTeamItem 
-                                teamId={team_id}
-                                onSelect={item => toggleLabel(item as Label)}
-                                type={'labels'}
-                            />
-                        </div>
+                        <LabelList 
+                            labels={labels || []}
+                            onLabelClick={toggleLabel}
+                            onLabelSelected={toggleLabel}
+                            teamId={team_id}
+                        />
                     </div>
                     <div>
                         <span className={styles['item-header']}>

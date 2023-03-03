@@ -23,11 +23,8 @@ export const TaskRowLabels: React.FC<{
             <LabelList 
                 labels={labels || []}
                 onLabelClick={onSelect}
-            />
-            <SelectTeamItem 
-                type={'labels'} 
-                teamId={teamId} 
-                onSelect={onSelect}
+                onLabelSelected={onSelect}
+                teamId={teamId}
             />
         </div>
     )
