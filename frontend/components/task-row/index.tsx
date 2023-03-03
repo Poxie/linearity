@@ -13,6 +13,7 @@ export const TaskRow: React.FC<{
 
     return(
         <div className={styles['container']}>
+            <TaskRowView taskId={taskId} />
             <span>
                 {task?.title}
             </span>
@@ -22,7 +23,6 @@ export const TaskRow: React.FC<{
             <TaskRowLabels taskId={taskId} teamId={task.team_id as number} />
             <TaskRowAssignees taskId={taskId} teamId={task.team_id as number} />
             <TaskRowButtons taskId={taskId} />
-            <TaskRowView taskId={taskId} />
         </div>
     )
 }
