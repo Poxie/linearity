@@ -25,6 +25,13 @@ class Member(TypedDict):
     task_count: int
     role: str
 
+class Invitation(TypedDict):
+    sender_id: int
+    team_id: int
+    user_id: int
+    role: str
+    created_at: int
+
 class Group(TypedDict):
     id: int
     team_id: int
