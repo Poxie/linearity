@@ -33,6 +33,9 @@ export interface Invite {
     sender: User;
     created_at: number;
 }
+export interface InboxInvite extends Invite {
+    team: Team;
+}
 export interface Group {
     id: number;
     team_id: number;

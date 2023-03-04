@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { AnchorHTMLAttributes, ReactElement } from 'react';
 import styles from './Button.module.scss';
 
-export default function Button({ children, style, onClick, href, ariaLabel, target, icon, buttonType='button', external=false, disabled=false, className='', type='default' }: {
+type ButtonProps = {
     children?: any;
     buttonType?: 'button' | 'submit';
     type?: 'default' | 'hollow' | 'transparent';
@@ -15,7 +15,8 @@ export default function Button({ children, style, onClick, href, ariaLabel, targ
     disabled?: boolean;
     external?: boolean;
     icon?: ReactElement;
-}) {
+}
+export default React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, style, onClick, href, ariaLabel, target, icon, buttonType='button', external=false, disabled=false, className='', type='default' }, ref) => {
     className = [
         className,
         styles['container'],
@@ -28,7 +29,8 @@ export default function Button({ children, style, onClick, href, ariaLabel, targ
         style,
         onClick,
         disabled,
-        'aria-label': ariaLabel
+        'aria-label': ariaLabel,
+        ref: ref as any
     }
 
     return href ? (
@@ -59,4 +61,4 @@ export default function Button({ children, style, onClick, href, ariaLabel, targ
             {children}
         </button>
     )
-}
+});

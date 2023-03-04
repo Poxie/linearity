@@ -1,7 +1,7 @@
-import { User } from "@/types";
+import { InboxInvite, User } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateObject } from "../utils";
-import { SET_TOKEN, SET_USER } from "./constants";
+import { SET_TOKEN, SET_USER, SET_USER_INVITES, SET_USER_INVITE_STATUS } from "./constants";
 import { UserState } from "./types";
 
 // Reducer actions
@@ -24,12 +24,37 @@ const setUser: ReducerAction = (state, action) => {
     })
 }
 
+const setUserInvites: ReducerAction = (state, action) => {
+    const invites: InboxInvite[] = action.payload;
+
+    return updateObject(state, {
+        invites
+    })
+}
+
+const setUserInviteStatus: ReducerAction = (state, action) => {
+    const teamId: number = action.payload.teamId;
+    const status: InboxInvite['status'] = action.payload.status;
+
+    return updateObject(state, {
+        invites: state.invites.map(invite => {
+            if(invite.team_id !== teamId) return invite;
+            return updateObject(invite, {
+                status
+            })
+        })
+    })
+}
+
 // Creating reducer
 export const userReducer = createReducer({
     user: null,
     token: null,
+    invites: [],
     loading: true
 }, {
     [SET_TOKEN]: setToken,
-    [SET_USER]: setUser
+    [SET_USER]: setUser,
+    [SET_USER_INVITES]: setUserInvites,
+    [SET_USER_INVITE_STATUS]: setUserInviteStatus
 })

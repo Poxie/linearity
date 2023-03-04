@@ -1,10 +1,10 @@
 "use client";
 
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
-import { User } from '@/types';
+import { InboxInvite, Invite, User } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectToken } from '@/redux/user/selectors';
-import { setToken, setUser } from '@/redux/user/actions';
+import { setToken, setUser, setUserInvites } from '@/redux/user/actions';
 
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type AuthContextType = {
@@ -56,6 +56,18 @@ export default function AuthProvider({
             .catch(() => {
                 dispatch(setUser(null));
             })
+
+        // Fetching user's team invites
+        fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/@me/invites`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(res => res.json())
+            .then((invites: InboxInvite[]) => {
+                dispatch(setUserInvites(invites));
+            })
+            .catch(console.error);
     }, [token]);
 
     // Function to make http request
