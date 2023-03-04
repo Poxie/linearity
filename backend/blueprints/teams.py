@@ -166,8 +166,17 @@ def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
     database.insert(query, values)
 
     # Updating invite status
-    status_query = "UPDATE invitations SET status = 'accepted' WHERE user_id = %s AND team_id = %s"
-    database.update(status_query, (user_id, team_id))
+    status_query = """
+        UPDATE 
+            invitations
+        SET 
+            status = 'accepted', 
+            updated_at = %s 
+        WHERE 
+            user_id = %s AND team_id = %s
+    """
+    status_values = (time(), user_id, team_id)
+    database.update(status_query, status_values)
 
     # Fetching created member
     member = get_member(user_id, team_id)
@@ -281,8 +290,16 @@ def update_invite_status_route(team_id: int, user_id: int, token_id: int):
         return 'Unauthorized', 401
     
     # Updating status
-    query = "UPDATE invitations SET status = %s WHERE user_id = %s AND team_id = %s"
-    values = (status, user_id, team_id)
+    query = """
+        UPDATE 
+            invitations 
+        SET 
+            status = %s,
+            updated_at = %s
+        WHERE 
+            user_id = %s AND team_id = %s
+    """
+    values = (status, time(), user_id, team_id)
     database.update(query, values)
 
     return jsonify({})
