@@ -10,8 +10,9 @@ import { AddLabelModal } from '@/modals/add-label/AddLabelModal';
 export const LabelListItem: React.FC<{
     label: Label;
     hasContextMenu?: boolean;
+    contextMenuOnClick?: boolean;
     onLabelClick?: (label: Label) => void;
-}> = ({ label, hasContextMenu, onLabelClick }) => {
+}> = ({ label, hasContextMenu, onLabelClick, contextMenuOnClick }) => {
     const { setMenu } = useMenu();
     const { setModal } = useModal();
     const { removeLabel } = useTeam(label.team_id);
@@ -41,7 +42,8 @@ export const LabelListItem: React.FC<{
         <li key={label.id}>
             <button 
                 className={styles['item']}
-                onClick={() => {
+                onClick={(e) => {
+                    if(contextMenuOnClick) handleContextMenu(e);
                     if(onLabelClick) onLabelClick(label);
                 }}
                 onContextMenu={handleContextMenu}
