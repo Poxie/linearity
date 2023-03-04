@@ -27,7 +27,7 @@ export const TeamSelectionInbox = () => {
         >
             <InboxIcon />
 
-            {inviteCount && (
+            {inviteCount !== 0 && (
                 <span className={styles['invite-count']}>
                     {inviteCount}
                 </span>
