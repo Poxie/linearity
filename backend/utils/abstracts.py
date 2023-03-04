@@ -26,6 +26,7 @@ class Member(TypedDict):
     role: str
 
 class Invitation(TypedDict):
+    id: int
     sender_id: int
     team_id: int
     user_id: int

@@ -173,7 +173,7 @@ def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
             status = 'accepted', 
             updated_at = %s 
         WHERE 
-            user_id = %s AND team_id = %s
+            user_id = %s AND team_id = %s AND status = 'pending'
     """
     status_values = (time(), user_id, team_id)
     database.update(status_query, status_values)
@@ -235,18 +235,19 @@ def send_user_invitation_route(team_id, username: str, token_id: int):
         return 'User is part of team', 409
     
     # Checking if member is already invited
-    invite_query = "SELECT user_id FROM invitations WHERE team_id = %s AND user_id = %s"
+    invite_query = "SELECT user_id FROM invitations WHERE team_id = %s AND user_id = %s AND status = 'pending'"
     invite = database.fetch_one(invite_query, (team_id, user['id']))
     if invite:
         return 'User is already invited', 409
     
     # Creating invite
-    query = "INSERT INTO invitations (sender_id, team_id, user_id, role, status, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
-    database.insert(query, (token_id, team_id, user['id'], role, 'pending', time()))
+    id = create_id('invitations')
+    query = "INSERT INTO invitations (id, sender_id, team_id, user_id, role, status, created_at) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    database.insert(query, (id, token_id, team_id, user['id'], role, 'pending', time()))
 
     # Fetching created invite
-    query = "SELECT * FROM invitations WHERE team_id = %s AND user_id = %s"
-    invite = database.fetch_one(query, (team_id, user['id']))
+    query = "SELECT * FROM invitations WHERE id = %s"
+    invite = database.fetch_one(query, (id,))
 
     # Fetching involved users
     if invite:
@@ -260,9 +261,9 @@ def send_user_invitation_route(team_id, username: str, token_id: int):
 
     return jsonify(invite)
 
-@teams.patch('/teams/<int:team_id>/invites/<int:user_id>')
+@teams.patch('/teams/<int:team_id>/invites/<int:invite_id>')
 @token_required
-def update_invite_status_route(team_id: int, user_id: int, token_id: int):
+def update_invite_status_route(team_id: int, invite_id: int, token_id: int):
     form = request.form
     status = form.get('status')
 
@@ -270,10 +271,15 @@ def update_invite_status_route(team_id: int, user_id: int, token_id: int):
     if not status:
         return 'Status is a required argument', 400
     
-    
     # Checking if status is allowed
     if status not in ALLOWED_INVITE_STATUSES:
         return 'Status is unsupported', 400
+    
+    # Checking if invite exists
+    invite_query = "SELECT * FROM invitations WHERE id = %s"
+    invite = database.fetch_one(invite_query, (invite_id,))
+    if not invite:
+        return 'Invite not found', 404
     
     # Checking if team exists
     team = get_team_by_id(team_id)
@@ -281,7 +287,7 @@ def update_invite_status_route(team_id: int, user_id: int, token_id: int):
         return 'Team not found', 404
 
     # If status is rejected - only invited user can update to this status
-    if status == 'rejected' and user_id != token_id:
+    if status == 'rejected' and invite['user_id'] != token_id:
         return 'Unauthorized', 401
     
     # If status is expired - only team members can update to this status
@@ -297,9 +303,9 @@ def update_invite_status_route(team_id: int, user_id: int, token_id: int):
             status = %s,
             updated_at = %s
         WHERE 
-            user_id = %s AND team_id = %s
+            id = %s
     """
-    values = (status, time(), user_id, team_id)
+    values = (status, time(), invite_id)
     database.update(query, values)
 
     return jsonify({})
