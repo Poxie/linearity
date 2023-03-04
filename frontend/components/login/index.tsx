@@ -72,7 +72,6 @@ export default function Login() {
                     placeholder={'Password'}
                     icon={<PasswordIcon />}
                     type={'password'}
-                    onSubmit={() => login()}
                     containerClassName={styles['input']} 
                     ref={passwordRef}
                 />
