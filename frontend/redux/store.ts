@@ -5,9 +5,12 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import { teamsReducer } from './teams/reducer';
 import { TeamsState } from './teams/types';
+import { UserState } from './user/types';
+import { userReducer } from './user/reducer';
 
 const combinedReducers = combineReducers({
-    teams: teamsReducer
+    teams: teamsReducer,
+    user: userReducer
 });
 
 const reducer = (state: ReturnType<typeof combinedReducers>, action: AnyAction) => {
@@ -51,6 +54,7 @@ export type RootState = {
     readonly [$CombinedState]?: undefined;
 } & {
     teams: TeamsState;
+    user: UserState;
 }
 
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}

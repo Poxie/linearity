@@ -5,6 +5,8 @@ import { GoogleIcon } from '@/assets/icons/GoogleIcon';
 import { PasswordIcon } from "@/assets/icons/PasswordIcon";
 import { UserIcon } from "@/assets/icons/UserIcon";
 import { useAuth } from "@/contexts/auth";
+import { useAppDispatch } from '@/redux/store';
+import { setToken } from '@/redux/user/actions';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { FormEvent, useRef, useState } from "react";
@@ -12,8 +14,8 @@ import Button from "../button";
 import { Input } from "../input";
 
 export default function Login() {
-    const { setToken } = useAuth();
     const { push } = useRouter();
+    const dispatch = useAppDispatch();
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -54,7 +56,7 @@ export default function Login() {
         const { token } = await res.json();
         
         localStorage.token = token;
-        setToken(token);
+        dispatch(setToken(token));
 
         // Redirecting user to app
         push('/teams');

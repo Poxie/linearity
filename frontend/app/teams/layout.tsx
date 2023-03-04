@@ -3,20 +3,25 @@
 import styles from './page.module.scss';
 import { Sidebar } from "@/components/sidebar";
 import { useAuth } from "@/contexts/auth";
-import { useAppDispatch } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setTeams } from "@/redux/teams/actions";
 import { Team } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { selectToken, selectUser, selectUserLoading } from '@/redux/user/selectors';
 
 export default function TeamLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    const { profile, get, loading, token } = useAuth();
+    const { get } = useAuth();
     const { push } = useRouter();
     const dispatch = useAppDispatch();
+
+    const token = useAppSelector(selectToken);
+    const profile = useAppSelector(selectUser);
+    const loading = useAppSelector(selectUserLoading);
 
     // Fetching teams on mount
     useEffect(() => {

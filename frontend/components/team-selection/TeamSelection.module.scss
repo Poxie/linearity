@@ -62,7 +62,24 @@
 }
 .footer {
     padding: 0 var(--spacing-primary);
+    gap: var(--spacing-tertiary);
+    display: flex;
 }
 .footer-button {
-    padding: var(--spacing-secondary) 100px;
+    padding: var(--spacing-tertiary) !important;
+    font-size: 12px;
+
+    svg {
+        width: 12px;
+        height: 12px
+    }
+}
+.inbox-button {
+    @extend .footer-button;
+
+    svg {
+        margin: 0;
+        width: 16px;
+        height: 16px;
+    }
 }

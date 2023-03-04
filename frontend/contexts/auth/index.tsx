@@ -2,13 +2,12 @@
 
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { User } from '@/types';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { selectToken } from '@/redux/user/selectors';
+import { setToken, setUser } from '@/redux/user/actions';
 
 export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type AuthContextType = {
-    profile: User | null;
-    setToken: (token: string) => void;
-    token: string | null;
-    loading: boolean;
     get: <T>(query: string, signal?: AbortSignal) => Promise<T>;
     post: <T>(query: string, values: Object, signal?: AbortSignal) => Promise<T>;
     put: <T>(query: string, values?: Object, signal?: AbortSignal) => Promise<T>;
@@ -25,24 +24,24 @@ export default function AuthProvider({
 }: {
     children: ReactNode;
 }) {
-    const [token, setToken] = useState<string | null>(null);
-    const [profile, setProfile] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
+    const token = useAppSelector(selectToken);
 
     // Checking if there is a token in localStorage
     useEffect(() => {
         // Checking if token is stored
         const token = localStorage.getItem('token');
-        if(!token) return setLoading(false);
-        setToken(token);
+        if(!token) {
+            dispatch(setUser(null));
+            return;
+        }
+        
+        dispatch(setToken(token));
     }, []);
 
     // On token change, fetch profile
     useEffect(() => {
         if(!token) return;
-
-        setLoading(true);
-        setProfile(null);
 
         // Fetching user data
         fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/users/@me`, {
@@ -52,10 +51,10 @@ export default function AuthProvider({
         })
             .then(res => res.json())
             .then(user => {
-                setProfile(user);
+                dispatch(setUser(user));
             })
-            .finally(() => {
-                setLoading(false);
+            .catch(() => {
+                dispatch(setUser(null));
             })
     }, [token]);
 
@@ -127,15 +126,11 @@ export default function AuthProvider({
     }, [token]);
 
     const value = {
-        profile,
-        setToken,
         get,
         put,
         post,
         patch,
-        destroy,
-        token,
-        loading,
+        destroy
     }
     return(
         <AuthContext.Provider value={value}>

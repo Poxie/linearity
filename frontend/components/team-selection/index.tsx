@@ -1,6 +1,7 @@
 "use client";
 
 import { AddIcon } from '@/assets/icons/AddIcon';
+import { InboxIcon } from '@/assets/icons/InboxIcon';
 import { useAppSelector } from '@/redux/store';
 import { selectTeams, selectTeamsLoading } from '@/redux/teams/selectors';
 import Button from '../button';
@@ -55,6 +56,9 @@ export const TeamSelection = () => {
                         className={styles['footer-button']}
                     >
                         Add Team
+                    </Button>
+                    <Button className={styles['inbox-button']}>
+                        <InboxIcon />
                     </Button>
                 </div>
             )}

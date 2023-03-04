@@ -7,6 +7,7 @@ import { PortalProvider } from "@/contexts/portal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setGroups, setLabels, setMembers } from "@/redux/teams/actions";
 import { selectTeamMembers } from "@/redux/teams/selectors";
+import { selectToken } from "@/redux/user/selectors";
 import { Group, Label, User } from "@/types";
 import { useEffect } from "react";
 
@@ -17,12 +18,12 @@ export default function TeamLayout({
     children: React.ReactNode;
     params: { teamId?: string, groupId?: string };
 }) {
-    const { get, token } = useAuth();
-
+    const { get } = useAuth();
     const dispatch = useAppDispatch();
 
+    const token = useAppSelector(selectToken);
+
     useEffect(() => {
-        console.log(teamId, token);
         if(!teamId || !token) return;
 
         // Fetching team groups
