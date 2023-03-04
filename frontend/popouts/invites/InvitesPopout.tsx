@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/auth';
 import { setUserInviteStatus } from '@/redux/user/actions';
 import { addTeam } from '@/redux/teams/actions';
 import { Team } from '@/types';
+import { HasTooltip } from '@/contexts/tooltip/HasTooltip';
 
 export const InvitesPopout = () => {
     const { get, put, patch } = useAuth();
@@ -63,18 +64,22 @@ export const InvitesPopout = () => {
                         </div>
                         {invite.status === 'pending' ? (
                             <div className={styles['item-buttons']}>
-                                <Button 
-                                    type={'hollow'} 
-                                    onClick={() => rejectInvite(invite.team_id)}
-                                >
-                                    <CloseIcon />
-                                </Button>
-                                <Button 
-                                    type={'hollow'}
-                                    onClick={() => acceptInvite(invite.team_id)}
-                                >
-                                    <CheckmarkIcon />
-                                </Button>
+                                <HasTooltip tooltip={'Reject invite'}>
+                                    <Button 
+                                        type={'hollow'} 
+                                        onClick={() => rejectInvite(invite.team_id)}
+                                    >
+                                        <CloseIcon />
+                                    </Button>
+                                </HasTooltip>
+                                <HasTooltip tooltip={'Accept invite'}>
+                                    <Button 
+                                        type={'hollow'}
+                                        onClick={() => acceptInvite(invite.team_id)}
+                                    >
+                                        <CheckmarkIcon />
+                                    </Button>
+                                </HasTooltip>
                             </div>
                         ) : (
                             <span className={styles[invite.status]}>
