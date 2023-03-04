@@ -281,6 +281,10 @@ def update_invite_status_route(team_id: int, invite_id: int, token_id: int):
     if not invite:
         return 'Invite not found', 404
     
+    # Checking if invite status has changed already
+    if invite['status'] != 'pending':
+        return f'Invite is already {invite["status"]}', 403
+    
     # Checking if team exists
     team = get_team_by_id(team_id)
     if not team:
