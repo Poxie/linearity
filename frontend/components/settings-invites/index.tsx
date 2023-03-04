@@ -15,6 +15,7 @@ import { selectTeamFetchedInvites, selectTeamInvites } from '@/redux/teams/selec
 import { setInvites, updateInviteStatus } from '@/redux/teams/actions';
 import { useModal } from '@/contexts/modal';
 import { AddMemberModal } from '@/modals/add-member/AddMemberModal';
+import { HasTooltip } from '@/contexts/tooltip/HasTooltip';
 
 const PLACEHOLDER_AMOUNT = 4;
 export const SettingsInvites = ({
@@ -104,6 +105,8 @@ export const SettingsInvites = ({
                         <li className={styles['item-placeholder']} aria-hidden="true" key={key} />
                     ))}
                     {fetchedInvites && filteredInvites.map(invite => {
+                        const statusString = invite.status.slice(0, 1).toUpperCase() + invite.status.slice(1);
+
                         const statusClassName = [
                             styles['status'],
                             styles[invite.status]
@@ -128,11 +131,25 @@ export const SettingsInvites = ({
                                     {new Date(invite.created_at * 1000).toLocaleString('en', { dateStyle: 'medium', timeStyle: 'short' })}
                                 </span>
                                 <div className={styles['main']}>
-                                    <span 
-                                        className={statusClassName}
+                                    <HasTooltip
+                                        tooltip={!invite.updated_at ? (
+                                            'Invite is pending'
+                                        ) : (
+                                            `${statusString} on ${
+                                                new Date(invite.updated_at * 1000)
+                                                    .toLocaleString('en', { 
+                                                        dateStyle: 'medium', 
+                                                        timeStyle: 'short' 
+                                                    })}
+                                            `
+                                        )}
                                     >
-                                        {invite.status.slice(0, 1).toUpperCase() + invite.status.slice(1)}
-                                    </span>
+                                        <span 
+                                            className={statusClassName}
+                                        >
+                                            {statusString}
+                                        </span>
+                                    </HasTooltip>
                                 </div>
                                 <div className={styles['buttons']}>
                                     {invite.status === 'pending' && (

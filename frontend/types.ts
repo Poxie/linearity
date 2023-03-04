@@ -32,6 +32,7 @@ export interface Invite {
     user: User;
     sender: User;
     created_at: number;
+    updated_at: number | null;
 }
 export interface InboxInvite extends Invite {
     team: Team;
