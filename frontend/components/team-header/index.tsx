@@ -32,6 +32,7 @@ export const TeamHeader: React.FC<{
             <div className={styles['header-content']}>
                 <Dropdown 
                     items={dropdownItems}
+                    defaultSelected={teamId}
                     onChange={goToTeam}
                 />
                 <Input 
