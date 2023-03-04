@@ -24,6 +24,7 @@ export interface Team {
     primary_group_id: number;
 }
 export interface Invite {
+    id: number;
     user_id: number;
     team_id: number;
     sender_id: number;

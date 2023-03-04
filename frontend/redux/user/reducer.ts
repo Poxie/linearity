@@ -33,12 +33,12 @@ const setUserInvites: ReducerAction = (state, action) => {
 }
 
 const setUserInviteStatus: ReducerAction = (state, action) => {
-    const teamId: number = action.payload.teamId;
+    const inviteId: number = action.payload.inviteId;
     const status: InboxInvite['status'] = action.payload.status;
 
     return updateObject(state, {
         invites: state.invites.map(invite => {
-            if(invite.team_id !== teamId) return invite;
+            if(invite.id !== inviteId) return invite;
             return updateObject(invite, {
                 status
             })

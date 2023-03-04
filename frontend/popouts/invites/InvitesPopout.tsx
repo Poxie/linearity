@@ -19,16 +19,16 @@ export const InvitesPopout = () => {
     const user = useAppSelector(selectUser);
     const invites = useAppSelector(selectUserInvites);
 
-    const rejectInvite = (teamId: number) => {
-        dispatch(setUserInviteStatus(teamId, 'rejected'));
-        patch(`/teams/${teamId}/invites/${user?.id}`, {
+    const rejectInvite = (teamId: number, inviteId: number) => {
+        dispatch(setUserInviteStatus(inviteId, 'rejected'));
+        patch(`/teams/${teamId}/invites/${inviteId}`, {
             status: 'rejected'
         }).catch(() => {
-            dispatch(setUserInviteStatus(teamId, 'pending'));
+            dispatch(setUserInviteStatus(inviteId, 'pending'));
         })
     }
-    const acceptInvite = (teamId: number) => {
-        dispatch(setUserInviteStatus(teamId, 'accepted'));
+    const acceptInvite = (teamId: number, inviteId: number) => {
+        dispatch(setUserInviteStatus(inviteId, 'accepted'));
         put(`/teams/${teamId}/members/${user?.id}`)
             .then(async () => {
                 const team = await get<Team>(`/teams/${teamId}`);
@@ -36,7 +36,7 @@ export const InvitesPopout = () => {
                 close();
             })
             .catch(() => {
-                dispatch(setUserInviteStatus(teamId, 'pending'));
+                dispatch(setUserInviteStatus(inviteId, 'pending'));
             })
     }
     
@@ -47,7 +47,7 @@ export const InvitesPopout = () => {
             </span>
             <ul className={styles['items']}>
                 {invites.map(invite => (
-                    <li className={styles['item']} key={invite.team_id}>
+                    <li className={styles['item']} key={invite.id}>
                         <div className={styles['item-main']}>
                             <div className={styles['item-icon']}>
                                 {invite.team.name[0]}
@@ -70,7 +70,7 @@ export const InvitesPopout = () => {
                                 <HasTooltip tooltip={'Reject invite'}>
                                     <Button 
                                         type={'hollow'} 
-                                        onClick={() => rejectInvite(invite.team_id)}
+                                        onClick={() => rejectInvite(invite.team_id, invite.id)}
                                     >
                                         <CloseIcon />
                                     </Button>
@@ -78,7 +78,7 @@ export const InvitesPopout = () => {
                                 <HasTooltip tooltip={'Accept invite'}>
                                     <Button 
                                         type={'hollow'}
-                                        onClick={() => acceptInvite(invite.team_id)}
+                                        onClick={() => acceptInvite(invite.team_id, invite.id)}
                                     >
                                         <CheckmarkIcon />
                                     </Button>

@@ -13,7 +13,7 @@ export const setUserInvites = (invites: InboxInvite[]) => ({
     type: SET_USER_INVITES,
     payload: invites
 })
-export const setUserInviteStatus = (teamId: number, status: InboxInvite['status']) => ({
+export const setUserInviteStatus = (inviteId: number, status: InboxInvite['status']) => ({
     type: SET_USER_INVITE_STATUS,
-    payload: { teamId, status }
+    payload: { inviteId, status }
 })

@@ -101,9 +101,9 @@ export const addInvite = (invite: Invite) => ({
     type: ADD_INVITE,
     payload: invite
 })
-export const updateInviteStatus = (teamId: number, userId: number, status: Invite['status']) => ({
+export const updateInviteStatus = (inviteId: number, status: Invite['status']) => ({
     type: UPDATE_INVITE_STATUS,
-    payload: { teamId, userId, status }
+    payload: { inviteId, status }
 })
 export const setTeamDataLoaded = (teamId: number) => ({
     type: SET_TEAM_DATA_LOADED,

@@ -43,13 +43,13 @@ export const SettingsInvites = ({
     }, [fetchedInvites]);
 
     const openModal = () => setModal(<AddMemberModal teamId={parseInt(teamId)} />);
-    const expireInvite = (userId: number) => {
-        dispatch(updateInviteStatus(parseInt(teamId), userId, 'expired'));
-        patch(`/teams/${teamId}/invites/${userId}`, {
+    const expireInvite = (inviteId: number) => {
+        dispatch(updateInviteStatus(inviteId, 'expired'));
+        patch(`/teams/${teamId}/invites/${inviteId}`, {
             status: 'expired'
         }).catch(error => {
             console.log(error);
-            dispatch(updateInviteStatus(parseInt(teamId), userId, 'pending'));
+            dispatch(updateInviteStatus(inviteId, 'pending'));
         })
     }
 
@@ -112,7 +112,7 @@ export const SettingsInvites = ({
                             styles[invite.status]
                         ].join(' ');
                         return(
-                            <li key={invite.user.id} className={styles['item']}>
+                            <li key={invite.id} className={styles['item']}>
                                 <div className={styles['main']}>
                                     <div className={styles['icon']}>
                                         {invite.user.name[0]}
@@ -155,7 +155,7 @@ export const SettingsInvites = ({
                                     {invite.status === 'pending' && (
                                         <HasTooltip tooltip={'Expire invite'}>
                                             <Button 
-                                                onClick={() => expireInvite(invite.user.id)}
+                                                onClick={() => expireInvite(invite.id)}
                                                 ariaLabel={'Expire invite'}
                                             >
                                                 <CloseIcon />

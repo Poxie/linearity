@@ -328,16 +328,15 @@ const addInvite: ReducerAction = (state, action) => {
 }
 
 const updateInviteStatus: ReducerAction = (state, action) => {
-    const { teamId, userId, status }: {
-        teamId: number;
-        userId: number;
+    const { inviteId, status }: {
+        inviteId: number;
         status: Invite['status'];
     } = action.payload;
 
     return updateObject(state, {
         invites: updateObject(state.invites, {
             items: state.invites.items.map(invite => {
-                if(invite.user.id !== userId || invite.team_id !== teamId) return invite;
+                if(invite.id !== inviteId) return invite;
                 return updateObject(invite, {
                     status
                 })
