@@ -1,0 +1,55 @@
+.container {
+    --tooltip-offset: 0px;
+    position: fixed;
+    z-index: 14141411414;
+    background-color: var(--background-primary);
+    padding: var(--spacing-quaternary) var(--spacing-tertiary);
+    font-size: 12px !important;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    pointer-events: none;
+
+    &::after {
+        --arrow-size: 6px;
+        content: '';
+        border: solid var(--arrow-size) transparent;
+        position: absolute;
+    }
+
+    &:is([data-position="top"]) {
+        &::after {
+            border-top-color: var(--background-primary);
+            top: 100%;
+            left: calc(50% + var(--tooltip-offset));
+            transform: translateX(-50%);
+        }
+    }
+
+    &:is([data-position="bottom"]) {
+        &::after {
+            border-bottom-color: var(--background-primary);
+            bottom: 100%;
+            left: calc(50% + var(--tooltip-offset));
+            transform: translateX(-50%);
+        }
+    }
+
+    &:is([data-position="left"]) {
+        &::after {
+            border-left-color: var(--background-primary);
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+
+    &:is([data-position="right"]) {
+        &::after {
+            border-right-color: var(--background-primary);
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
