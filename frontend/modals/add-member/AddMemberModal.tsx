@@ -69,6 +69,7 @@ export const AddMemberModal: React.FC<{
                         placeholder={'Member username'}
                         containerClassName={styles['input']}
                         ref={usernameRef}
+                        focusOnMount
                     />
                     <Dropdown 
                         items={DROPDOWN_ITEMS}
