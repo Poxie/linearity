@@ -22,6 +22,7 @@ export const SettingsLabelList = () => {
                 <LabelList 
                     labels={labels}
                     hasContextMenu
+                    contextMenuOnClick
                 />
             )}
             <button 
