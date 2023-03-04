@@ -9,7 +9,8 @@ import { setGroups, setLabels, setMembers, setTeamDataLoaded } from "@/redux/tea
 import { selectTeamDataLoaded, selectTeamMembers } from "@/redux/teams/selectors";
 import { selectToken } from "@/redux/user/selectors";
 import { Group, Label, Member, User } from "@/types";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function TeamLayout({
     children,
@@ -18,6 +19,7 @@ export default function TeamLayout({
     children: React.ReactNode;
     params: { teamId: string, groupId: string };
 }) {
+    const { replace } = useRouter();
     const { get } = useAuth();
     const dispatch = useAppDispatch();
 
@@ -42,8 +44,11 @@ export default function TeamLayout({
 
                 // Updating team data loaded status
                 dispatch(setTeamDataLoaded(parseInt(teamId)));
-            });
-    }, [teamId, get, token, dataLoaded]);
+            })
+            .catch(error => {
+                if([404, 401].includes(error.code)) replace(`/teams`);
+            })
+    }, [teamId, get, token, dataLoaded])
 
     return(
         <>
