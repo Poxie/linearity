@@ -12,7 +12,7 @@ import Button from '../button';
 import { CloseIcon } from '@/assets/icons/CloseIcon';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectTeamInvites } from '@/redux/teams/selectors';
-import { setInvites } from '@/redux/teams/actions';
+import { setInvites, updateInviteStatus } from '@/redux/teams/actions';
 import { useModal } from '@/contexts/modal';
 import { AddMemberModal } from '@/modals/add-member/AddMemberModal';
 
@@ -22,7 +22,7 @@ export const SettingsInvites = ({
 }: {
     params: { teamId: string };
 }) => {
-    const { get } = useAuth();
+    const { get, patch } = useAuth();
     const { setModal } = useModal();
     const dispatch = useAppDispatch();
 
@@ -41,6 +41,15 @@ export const SettingsInvites = ({
     }, [invites.length]);
 
     const openModal = () => setModal(<AddMemberModal teamId={parseInt(teamId)} />);
+    const expireInvite = (userId: number) => {
+        dispatch(updateInviteStatus(parseInt(teamId), userId, 'expired'));
+        patch(`/teams/${teamId}/invites/${userId}`, {
+            status: 'expired'
+        }).catch(error => {
+            console.log(error);
+            dispatch(updateInviteStatus(parseInt(teamId), userId, 'pending'));
+        })
+    }
 
     const filteredInvites = useMemo(() => (
         invites.filter(invite => 
@@ -126,7 +135,9 @@ export const SettingsInvites = ({
                                 </div>
                                 <div className={styles['buttons']}>
                                     {invite.status === 'pending' && (
-                                        <Button>
+                                        <Button 
+                                            onClick={() => expireInvite(invite.user.id)}
+                                        >
                                             <CloseIcon />
                                         </Button>
                                     )}

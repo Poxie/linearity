@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
 from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_label_by_id, get_group_by_id, get_task_by_id
-from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_LABEL_ALLOWED_PROPERTIES, ALLOWED_MEMBER_ROLES
+from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_LABEL_ALLOWED_PROPERTIES, ALLOWED_MEMBER_ROLES, ALLOWED_INVITE_STATUSES
 from database import database
 from time import time
 
@@ -225,6 +225,42 @@ def send_user_invitation_route(team_id, username: str, token_id: int):
     # Creating invite
     query = "INSERT INTO invitations (sender_id, team_id, user_id, role, status, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
     database.insert(query, (token_id, team_id, user['id'], role, 'pending', time()))
+
+    return jsonify({})
+
+@teams.patch('/teams/<int:team_id>/invites/<int:user_id>')
+@token_required
+def update_invite_status_route(team_id: int, user_id: int, token_id: int):
+    form = request.form
+    status = form.get('status')
+
+    # Checking if status is present
+    if not status:
+        return 'Status is a required argument', 400
+    
+    
+    # Checking if status is allowed
+    if status not in ALLOWED_INVITE_STATUSES:
+        return 'Status is unsupported', 400
+    
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # If status is rejected - only invited user can update to this status
+    if status == 'rejected' and user_id != token_id:
+        return 'Unauthorized', 401
+    
+    # If status is expired - only team members can update to this status
+    member = get_member(token_id, team_id)
+    if status == 'expired' and not member:
+        return 'Unauthorized', 401
+    
+    # Updating status
+    query = "UPDATE invitations SET status = %s WHERE user_id = %s AND team_id = %s"
+    values = (status, user_id, team_id)
+    database.update(query, values)
 
     return jsonify({})
 
