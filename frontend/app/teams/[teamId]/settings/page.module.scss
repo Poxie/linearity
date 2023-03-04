@@ -6,3 +6,16 @@
         flex: 1;
     }
 }
+.content {
+    overflow: auto;
+    padding-bottom: var(--spacing-primary);
+
+    &::-webkit-scrollbar {
+        width: 30px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--background-quaternary);
+        border: 10px solid var(--background-secondary);
+        border-radius: 120px;
+    }
+}

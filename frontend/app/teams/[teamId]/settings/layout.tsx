@@ -12,7 +12,9 @@ export default function SettingsLayout({
     return(
         <div className={styles['container']}>
             <SettingsSidebar teamId={parseInt(teamId)} />
-            {children}
+            <div className={styles['content']}>
+                {children}
+            </div>
         </div>
     )
 }
