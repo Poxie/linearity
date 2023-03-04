@@ -53,13 +53,13 @@
         height: 10px;
     }
 }
-.accepted, .rejected {
+.accepted, .rejected, .expired {
     font-size: 9px;
     border: 1px solid transparent;
     padding: var(--spacing-quaternary) var(--spacing-tertiary);
     border-radius: var(--border-radius-tertiary);
 }
-.rejected {
+.rejected, .expired {
     border-color: var(--color-danger-accent);
     background-color: var(--color-danger-muted);
 }
