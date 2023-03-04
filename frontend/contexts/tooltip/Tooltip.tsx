@@ -45,7 +45,7 @@ export const Tooltip: React.FC<{
         // Checking if position exceeds viewport
         let offset = 0;
         if(left + width > window.innerWidth - SPACE_FROM_ORIGIN) {
-            const newLeft = window.innerWidth - width - refWidth - SPACE_FROM_ORIGIN;
+            const newLeft = window.innerWidth - width - SPACE_FROM_ORIGIN;
             offset = left - newLeft;
             left = newLeft
         }
