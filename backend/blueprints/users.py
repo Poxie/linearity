@@ -193,7 +193,7 @@ def get_my_invites_route(token_id: int):
         return 'User not found', 404
     
     # Fetching invites
-    query = "SELECT * FROM invitations WHERE user_id = %s"
+    query = "SELECT * FROM invitations WHERE user_id = %s ORDER BY created_at DESC"
     invites = database.fetch_many(query, (token_id,))
 
     # Fetching users and team involved

@@ -328,7 +328,7 @@ def get_team_invites_route(team_id: int, token_id: int):
         return 'Unauthorized', 401
     
     # Fetching invites
-    query = "SELECT * FROM invitations WHERE team_id = %s"
+    query = "SELECT * FROM invitations WHERE team_id = %s ORDER BY created_at DESC"
     invites = database.fetch_many(query, (team_id, ))
 
     # Fetching involved users
