@@ -226,7 +226,21 @@ def send_user_invitation_route(team_id, username: str, token_id: int):
     query = "INSERT INTO invitations (sender_id, team_id, user_id, role, status, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
     database.insert(query, (token_id, team_id, user['id'], role, 'pending', time()))
 
-    return jsonify({})
+    # Fetching created invite
+    query = "SELECT * FROM invitations WHERE team_id = %s AND user_id = %s"
+    invite = database.fetch_one(query, (team_id, user['id']))
+
+    # Fetching involved users
+    if invite:
+        # Fetching receiving user
+        user = get_user_by_id(invite['user_id'])
+        invite['user'] = user
+
+        # Fetching sending user
+        sender = get_user_by_id(invite['sender_id'])
+        invite['sender'] = sender
+
+    return jsonify(invite)
 
 @teams.patch('/teams/<int:team_id>/invites/<int:user_id>')
 @token_required
