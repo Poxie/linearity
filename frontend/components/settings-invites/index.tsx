@@ -9,13 +9,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Input } from '../input';
 import { SearchIcon } from '@/assets/icons/SearchIcon';
 import Button from '../button';
-import { CloseIcon } from '@/assets/icons/CloseIcon';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectTeamFetchedInvites, selectTeamInvites } from '@/redux/teams/selectors';
-import { setInvites, updateInviteStatus } from '@/redux/teams/actions';
+import { setInvites } from '@/redux/teams/actions';
 import { useModal } from '@/contexts/modal';
 import { AddMemberModal } from '@/modals/add-member/AddMemberModal';
-import { HasTooltip } from '@/contexts/tooltip/HasTooltip';
+import { SettingsInvite } from './SettingsInvite';
 
 const PLACEHOLDER_AMOUNT = 4;
 export const SettingsInvites = ({
@@ -43,15 +42,6 @@ export const SettingsInvites = ({
     }, [fetchedInvites]);
 
     const openModal = () => setModal(<AddMemberModal teamId={parseInt(teamId)} />);
-    const expireInvite = (inviteId: number) => {
-        dispatch(updateInviteStatus(inviteId, 'expired'));
-        patch(`/teams/${teamId}/invites/${inviteId}`, {
-            status: 'expired'
-        }).catch(error => {
-            console.log(error);
-            dispatch(updateInviteStatus(inviteId, 'pending'));
-        })
-    }
 
     const filteredInvites = useMemo(() => (
         invites.filter(invite => 
@@ -104,68 +94,12 @@ export const SettingsInvites = ({
                     {loading && Array.from(Array(PLACEHOLDER_AMOUNT)).map((_,key) => (
                         <li className={styles['item-placeholder']} aria-hidden="true" key={key} />
                     ))}
-                    {fetchedInvites && filteredInvites.map(invite => {
-                        const statusString = invite.status.slice(0, 1).toUpperCase() + invite.status.slice(1);
-
-                        const statusClassName = [
-                            styles['status'],
-                            styles[invite.status]
-                        ].join(' ');
-                        return(
-                            <li key={invite.id} className={styles['item']}>
-                                <div className={styles['main']}>
-                                    <div className={styles['icon']}>
-                                        {invite.user.name[0]}
-                                    </div>
-                                    <span>
-                                        {invite.user.name}
-                                    </span>
-                                </div>
-                                <span>
-                                    {invite.role.slice(0,1).toUpperCase() + invite.role.slice(1)}
-                                </span>
-                                <span>
-                                    {invite.sender.name}
-                                </span>
-                                <span>
-                                    {new Date(invite.created_at * 1000).toLocaleString('en', { dateStyle: 'medium', timeStyle: 'short' })}
-                                </span>
-                                <div className={styles['main']}>
-                                    <HasTooltip
-                                        tooltip={!invite.updated_at ? (
-                                            `Invite is ${invite.status}`
-                                        ) : (
-                                            `${statusString} on ${
-                                                new Date(invite.updated_at * 1000)
-                                                    .toLocaleString('en', { 
-                                                        dateStyle: 'medium', 
-                                                        timeStyle: 'short' 
-                                                    })}
-                                            `
-                                        )}
-                                    >
-                                        <span 
-                                            className={statusClassName}
-                                        >
-                                            {statusString}
-                                        </span>
-                                    </HasTooltip>
-                                </div>
-                                <div className={styles['buttons']}>
-                                    {invite.status === 'pending' && (
-                                        <HasTooltip tooltip={'Expire invite'}>
-                                            <Button 
-                                                onClick={() => expireInvite(invite.id)}
-                                                ariaLabel={'Expire invite'}
-                                            >
-                                                <CloseIcon />
-                                            </Button>
-                                        </HasTooltip>
-                                    )}
-                                </div>
-                            </li>
-                        )
-                    })}
+                    {fetchedInvites && filteredInvites.map(invite => (
+                        <SettingsInvite 
+                            invite={invite}
+                            key={invite.id}
+                        />
+                    ))}
                 </ul>
             </ModalGroup>
         </div>
