@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Dropdown } from '../dropdown';
 import { Input } from '../input';
 import styles from './TeamHeader.module.scss';
+import { TeamHeaderPlaceholder } from './TeamHeaderPlaceholder';
 
 export const TeamHeader: React.FC<{
     teamId: number;
@@ -16,7 +17,7 @@ export const TeamHeader: React.FC<{
     const teams = useAppSelector(selectTeams);
     const team = useAppSelector(state => selectTeamById(state, teamId));
 
-    if(!teams.length) return null;
+    if(!teams.length) return <TeamHeaderPlaceholder />;
 
     const goToTeam = (id: number) => {
         const team = teams.find(team => team.id === id);

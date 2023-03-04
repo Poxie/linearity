@@ -11,7 +11,7 @@
     border: 1px solid var(--background-tertiary);
     border-radius: var(--border-radius-tertiary);
     padding: var(--spacing-tertiary);
-    padding-right: 60px;
+    min-width: 120px;
     transition: background-color .2s;
     cursor: pointer;
     font-size: 12px;
@@ -24,8 +24,7 @@
 .create-group-button {
     @extend .group-item;
     height: 100%;
-    aspect-ratio: 1;
-    padding-right: var(--spacing-tertiary);
+    min-width: unset;
     
     svg {
         --size: 14px;
@@ -34,5 +33,24 @@
         fill: var(--text-secondary);
         opacity: .7;
         display: block;
+    }
+}
+
+.group-selector-placeholder {
+    @extend .group-selector;
+}
+.selector-item-placeholder {
+    @extend .group-item;
+    background-color: var(--background-tertiary);
+    height: 36px;
+
+    &:nth-of-type(1) {
+        opacity: .7;
+    }
+    &:nth-of-type(2) {
+        opacity: .5;
+    }
+    &:nth-of-type(3) {
+        opacity: .3;
     }
 }

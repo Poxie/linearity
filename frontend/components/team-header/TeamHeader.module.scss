@@ -46,3 +46,31 @@
         background-color: var(--background-tertiary);
     }
 }
+
+.placeholder {
+    @extend .header;
+    height: var(--team-header-height);
+}
+.placeholder-main {
+    flex: 1;
+    display: flex;
+    gap: var(--spacing-primary);
+}
+.placeholder-selector {
+    border: 1px solid var(--background-tertiary);
+    border-radius: var(--border-radius-secondary);
+    height: 37px;
+    width: 180px;
+}
+.placeholder-input {
+    @extend .input;
+    height: 37px;
+    border: 1px solid var(--background-tertiary);
+    border-radius: var(--border-radius-secondary);
+}
+.placeholder-tab {
+    @extend .tab;
+    background-color: var(--background-tertiary);
+    opacity: .5;
+    border-radius: 50%;
+}

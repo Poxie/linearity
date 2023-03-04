@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Group.module.scss';
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { selectAllPositionedTasks, selectPositionedBlocks } from "@/redux/teams/selectors";
+import { selectAllPositionedTasks, selectPositionedBlocks, selectTeamDataLoaded } from "@/redux/teams/selectors";
 import { GroupBlock } from "./GroupBlock";
 import { updateBlockPositions, updateTaskPositions, updateTaskPositionsAndBlocks } from '@/redux/teams/actions';
 import { useAuth } from '@/contexts/auth';
@@ -25,9 +25,12 @@ export const Group: React.FC<{
     const { patch } = useAuth();
     const { setModal } = useModal();
 
+    const loaded = useAppSelector(state => selectTeamDataLoaded(state, teamId));
     const blocks = useAppSelector(state => selectPositionedBlocks(state, groupId));
     const tasks = useAppSelector(selectAllPositionedTasks);
     const dispatch = useAppDispatch();
+
+    if(!loaded) return null;
 
     const updateBlockPosition: PositionContextType['updateBlockPosition'] = (blockId, prevPosition, position) => {
         // Determining the new positions of the blocks
