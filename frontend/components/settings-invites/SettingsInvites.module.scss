@@ -2,9 +2,23 @@
     --columns: repeat(5, 1fr) .2fr;
     padding: var(--spacing-primary);
 }
+.header {
+    display: flex;
+    gap: var(--spacing-secondary);
+}
 .input {
+    flex: 1;
+    
     svg {
         margin: var(--spacing-secondary) !important;
+    }
+}
+.header-button {
+    background-color: var(--background-tertiary) !important;
+    border-color: var(--background-quaternary) !important;
+
+    &:hover {
+        background-color: var(--background-quaternary) !important;
     }
 }
 .list-header {

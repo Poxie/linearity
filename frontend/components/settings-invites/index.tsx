@@ -13,6 +13,8 @@ import { CloseIcon } from '@/assets/icons/CloseIcon';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { selectTeamInvites } from '@/redux/teams/selectors';
 import { setInvites } from '@/redux/teams/actions';
+import { useModal } from '@/contexts/modal';
+import { AddMemberModal } from '@/modals/add-member/AddMemberModal';
 
 const PLACEHOLDER_AMOUNT = 4;
 export const SettingsInvites = ({
@@ -21,6 +23,7 @@ export const SettingsInvites = ({
     params: { teamId: string };
 }) => {
     const { get } = useAuth();
+    const { setModal } = useModal();
     const dispatch = useAppDispatch();
 
     const invites = useAppSelector(state => selectTeamInvites(state, parseInt(teamId)));
@@ -37,6 +40,8 @@ export const SettingsInvites = ({
             });
     }, [invites.length]);
 
+    const openModal = () => setModal(<AddMemberModal teamId={parseInt(teamId)} />);
+
     const filteredInvites = useMemo(() => (
         invites.filter(invite => 
             invite.user.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -46,12 +51,20 @@ export const SettingsInvites = ({
     return(
         <div className={styles['container']}>
             <ModalGroup header={'Invites'} icon={<InviteIcon />}>
-                <Input 
-                    placeholder={'Search for invite'}
-                    icon={<SearchIcon />}
-                    onChange={setSearch}
-                    containerClassName={styles['input']}
-                />
+                <div className={styles['header']}>
+                    <Input 
+                        placeholder={'Search for invite'}
+                        icon={<SearchIcon />}
+                        onChange={setSearch}
+                        containerClassName={styles['input']}
+                    />
+                    <Button 
+                        className={styles['header-button']}
+                        onClick={openModal}
+                    >
+                        Send invite
+                    </Button>
+                </div>
                 {!loading && (
                     <div className={styles['list-header']}>
                         <span>
