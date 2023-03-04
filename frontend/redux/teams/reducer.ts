@@ -1,7 +1,7 @@
 import { Block, Group, Invite, Label, Member, Task, Team } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK, UPDATE_BLOCK, UPDATE_TEAM, REMOVE_TEAM_LABEL, ADD_TEAM_LABEL, UPDATE_TEAM_LABEL, REMOVE_TASK, SET_INVITES, UPDATE_INVITE_STATUS } from "./constants";
+import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK, UPDATE_BLOCK, UPDATE_TEAM, REMOVE_TEAM_LABEL, ADD_TEAM_LABEL, UPDATE_TEAM_LABEL, REMOVE_TASK, SET_INVITES, UPDATE_INVITE_STATUS, ADD_INVITE } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -298,6 +298,14 @@ const setInvites: ReducerAction = (state, action) => {
     })
 }
 
+const addInvite: ReducerAction = (state, action) => {
+    const invite: Invite = action.payload;
+
+    return updateObject(state, {
+        invites: state.invites.concat(invite)
+    })
+}
+
 const updateInviteStatus: ReducerAction = (state, action) => {
     const { teamId, userId, status }: {
         teamId: number;
@@ -327,6 +335,7 @@ export const teamsReducer = createReducer({
     loading: true
 }, {
     [SET_INVITES]: setInvites,
+    [ADD_INVITE]: addInvite,
     [UPDATE_INVITE_STATUS]: updateInviteStatus,
     [SET_TEAMS]: setTeams,
     [UPDATE_TEAM]: updateTeam,

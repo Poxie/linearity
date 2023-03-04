@@ -11,6 +11,9 @@ import { useAuth } from '@/contexts/auth';
 import { MailIcon } from '@/assets/icons/MailIcon';
 import { InfoIcon } from '@/assets/icons/InfoIcon';
 import Link from 'next/link';
+import { Invite } from '@/types';
+import { addInvite } from '@/redux/teams/actions';
+import { useAppDispatch } from '@/redux/store';
 
 const DROPDOWN_ITEMS = [
     { text: 'Member', id: 0 }
@@ -24,6 +27,7 @@ export const AddMemberModal: React.FC<{
 }> = ({ teamId }) => {
     const { put } = useAuth();
     const { close } = useModal();
+    const dispatch = useAppDispatch();
 
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -38,12 +42,13 @@ export const AddMemberModal: React.FC<{
         if(!usernameRef.current) return;
 
         setLoading(true);
-        put(`/teams/${teamId}/invites/${usernameRef.current.value}`, {
+        put<Invite>(`/teams/${teamId}/invites/${usernameRef.current.value}`, {
             role: getRoleFromId(roleRef.current),
             team_id: teamId
-        }).then(() => {
+        }).then(invite => {
             setSuccess(true);
             setError(null);
+            dispatch(addInvite(invite));
         }).catch(error => {
             setSuccess(false);
             setError(error.code === 500 ? 'Internal error' : error.message);
