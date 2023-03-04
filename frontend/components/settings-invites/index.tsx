@@ -101,7 +101,7 @@ export const SettingsInvites = ({
                 )}
                 <ul className={styles['list']}>
                     {loading && Array.from(Array(PLACEHOLDER_AMOUNT)).map((_,key) => (
-                        <li className={styles['item-placeholder']} aria-hidden="true" />
+                        <li className={styles['item-placeholder']} aria-hidden="true" key={key} />
                     ))}
                     {fetchedInvites && filteredInvites.map(invite => {
                         const statusClassName = [
