@@ -322,7 +322,7 @@ const addInvite: ReducerAction = (state, action) => {
 
     return updateObject(state, {
         invites: updateObject(state.invites, {
-            items: state.invites.items.concat(invite)
+            items: [...[invite], ...state.invites.items]
         })
     })
 }
