@@ -1,7 +1,7 @@
 import os, jwt
 from flask import Blueprint, jsonify, request
 from database import database
-from utils.common import create_id, get_user_by_id, get_user_teams, get_member
+from utils.common import create_id, get_user_by_id, get_user_teams, get_member, get_team_by_id
 from utils.auth import token_required
 from utils.constants import PATCH_USER_ALLOWED_PROPERTIES
 from time import time
@@ -184,3 +184,22 @@ def get_me_route(token_id: int):
         return 'User not found', 404
 
     return jsonify(user)
+
+@users.get('/users/@me/invites')
+@token_required
+def get_my_invites_route(token_id: int):
+    user = get_user_by_id(token_id)
+    if not user:
+        return 'User not found', 404
+    
+    # Fetching invites
+    query = "SELECT * FROM invitations WHERE user_id = %s"
+    invites = database.fetch_many(query, (token_id,))
+
+    # Fetching users and team involved
+    for invite in invites:
+        invite['sender'] = get_user_by_id(invite['sender_id'])
+        invite['user'] = get_user_by_id(invite['user_id'])
+        invite['team'] = get_team_by_id(invite['team_id'])
+
+    return jsonify(invites)
