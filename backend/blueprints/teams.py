@@ -131,6 +131,10 @@ def get_team_members_route(team_id: int, token_id: int):
 def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
     team = get_team_by_id(team_id)
 
+    # Checking if user is self
+    if user_id != token_id:
+        return 'Unauthorized', 401
+
     # Role is allowed argument
     role = request.form.get('role')
     if role and role not in ALLOWED_MEMBER_ROLES:
@@ -139,26 +143,31 @@ def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
     # Checking if team exists
     if not team:
         return 'Team not found', 404
-
-    # Checking if user has access to add member
-    # Currently only owner is allowed, allow with member permissions later
-    if token_id != team['owner_id']:
-        return 'Unauthorized', 401
-
+    
     # Checking if user exists
     user = get_user_by_id(user_id)
     if not user:
         return 'User not found', 404
-
+    
     # Checking if member already exists
     member = get_member(user_id, team_id)
     if member:
         return 'User is already a member of this team', 409
 
+    # Checking if user has been invited to the team
+    invite_query = "SELECT * FROM invitations WHERE user_id = %s AND team_id = %s AND status = 'pending'"
+    invite = database.fetch_one(invite_query, (user_id, team_id))
+    if not invite:
+        return 'You need an invite to join this team', 401
+
     # Creating team member
     query = "INSERT INTO members (id, team_id, role, joined_at) VALUES (%s, %s, %s, %s)"
     values = (user_id, team_id, role or 'member', time())
     database.insert(query, values)
+
+    # Updating invite status
+    status_query = "UPDATE invitations SET status = 'accepted' WHERE user_id = %s AND team_id = %s"
+    database.update(status_query, (user_id, team_id))
 
     # Fetching created member
     member = get_member(user_id, team_id)
