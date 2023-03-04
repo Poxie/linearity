@@ -9,8 +9,10 @@ import { setUserInviteStatus } from '@/redux/user/actions';
 import { addTeam } from '@/redux/teams/actions';
 import { Team } from '@/types';
 import { HasTooltip } from '@/contexts/tooltip/HasTooltip';
+import { usePopout } from '@/contexts/popout';
 
 export const InvitesPopout = () => {
+    const { close } = usePopout();
     const { get, put, patch } = useAuth();
     const dispatch = useAppDispatch();
 
@@ -31,6 +33,7 @@ export const InvitesPopout = () => {
             .then(async () => {
                 const team = await get<Team>(`/teams/${teamId}`);
                 dispatch(addTeam(team));
+                close();
             })
             .catch(() => {
                 dispatch(setUserInviteStatus(teamId, 'pending'));
