@@ -163,8 +163,8 @@ def send_user_invitation_route(username: str, token_id: int):
         return 'User is already invited', 409
     
     # Creating invite
-    query = "INSERT INTO invitations (sender_id, team_id, user_id, role, created_at) VALUES (%s, %s, %s, %s, %s)"
-    database.insert(query, (token_id, team_id, user['id'], role, time()))
+    query = "INSERT INTO invitations (sender_id, team_id, user_id, role, status, created_at) VALUES (%s, %s, %s, %s, %s)"
+    database.insert(query, (token_id, team_id, user['id'], role, 'pending', time()))
 
     return jsonify({})
 

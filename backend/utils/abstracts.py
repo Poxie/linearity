@@ -31,6 +31,7 @@ class Invitation(TypedDict):
     user_id: int
     role: str
     created_at: int
+    status: str
 
 class Group(TypedDict):
     id: int

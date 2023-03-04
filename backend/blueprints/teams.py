@@ -196,6 +196,34 @@ def remove_member_from_team_route(team_id: int, user_id: int, token_id: int):
 
     return jsonify({})
 
+@teams.get('/teams/<int:team_id>/invites')
+@token_required
+def get_team_invites_route(team_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, team_id)
+    if not member:
+        return 'Unauthorized', 401
+    
+    # Fetching invites
+    query = "SELECT * FROM invitations WHERE team_id = %s"
+    invites = database.fetch_many(query, (team_id, ))
+
+    # Fetching involved users
+    for invite in invites:
+        # Fetching receiving user
+        user = get_user_by_id(invite['user_id'])
+        invite['user'] = user
+
+        # Fetching sending user
+        sender = get_user_by_id(invite['sender_id'])
+        invite['sender'] = sender
+
+    return jsonify(invites)
 
 @teams.post('/teams/<int:team_id>/groups')
 @token_required
