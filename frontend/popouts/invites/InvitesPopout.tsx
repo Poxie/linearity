@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/auth';
 import { setUserInviteStatus } from '@/redux/user/actions';
 
 export const InvitesPopout = () => {
-    const { patch } = useAuth();
+    const { put, patch } = useAuth();
     const dispatch = useAppDispatch();
 
     const user = useAppSelector(selectUser);
@@ -23,7 +23,11 @@ export const InvitesPopout = () => {
         })
     }
     const acceptInvite = (teamId: number) => {
-
+        dispatch(setUserInviteStatus(teamId, 'accepted'));
+        put(`/teams/${teamId}/members/${user?.id}`)
+            .catch(() => {
+                dispatch(setUserInviteStatus(teamId, 'pending'));
+            })
     }
     
     return(
@@ -59,7 +63,10 @@ export const InvitesPopout = () => {
                                 >
                                     <CloseIcon />
                                 </Button>
-                                <Button type={'hollow'}>
+                                <Button 
+                                    type={'hollow'}
+                                    onClick={() => acceptInvite(invite.team_id)}
+                                >
                                     <CheckmarkIcon />
                                 </Button>
                             </div>
