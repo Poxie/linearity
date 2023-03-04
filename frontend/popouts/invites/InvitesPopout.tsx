@@ -6,9 +6,11 @@ import { CloseIcon } from '@/assets/icons/CloseIcon';
 import { CheckmarkIcon } from '@/assets/icons/CheckmarkIcon';
 import { useAuth } from '@/contexts/auth';
 import { setUserInviteStatus } from '@/redux/user/actions';
+import { addTeam } from '@/redux/teams/actions';
+import { Team } from '@/types';
 
 export const InvitesPopout = () => {
-    const { put, patch } = useAuth();
+    const { get, put, patch } = useAuth();
     const dispatch = useAppDispatch();
 
     const user = useAppSelector(selectUser);
@@ -25,6 +27,10 @@ export const InvitesPopout = () => {
     const acceptInvite = (teamId: number) => {
         dispatch(setUserInviteStatus(teamId, 'accepted'));
         put(`/teams/${teamId}/members/${user?.id}`)
+            .then(async () => {
+                const team = await get<Team>(`/teams/${teamId}`);
+                dispatch(addTeam(team));
+            })
             .catch(() => {
                 dispatch(setUserInviteStatus(teamId, 'pending'));
             })
