@@ -11,7 +11,7 @@ const setTeams: ReducerAction = (state, action) => {
     const teams: Team[] = action.payload;
 
     return updateObject(state, {
-        teams,
+        teams: [...state.teams.filter(team => team.id !== teams[0]?.id), ...teams],
         loading: false
     })
 }
@@ -79,7 +79,7 @@ const setGroups: ReducerAction = (state, action) => {
     const groups: Group[] = action.payload;
 
     return updateObject(state, {
-        groups
+        groups: [...state.groups.filter(group => group.team_id !== groups[0]?.team_id), ...groups]
     })
 }
 
@@ -87,7 +87,7 @@ const setBlocks: ReducerAction = (state, action) => {
     const blocks: Block[] = action.payload;
 
     return updateObject(state, {
-        blocks
+        blocks: [...state.blocks.filter(block => block.team_id !== blocks[0]?.team_id), ...blocks]
     })
 }
 
@@ -130,7 +130,7 @@ const setTasks: ReducerAction = (state, action) => {
     const tasks: Task[] = action.payload;
 
     return updateObject(state, {
-        tasks
+        tasks: [...state.tasks.filter(task => task.team_id !== tasks[0]?.team_id), ...tasks]
     })
 }
 
