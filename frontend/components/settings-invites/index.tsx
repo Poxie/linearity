@@ -153,11 +153,14 @@ export const SettingsInvites = ({
                                 </div>
                                 <div className={styles['buttons']}>
                                     {invite.status === 'pending' && (
-                                        <Button 
-                                            onClick={() => expireInvite(invite.user.id)}
-                                        >
-                                            <CloseIcon />
-                                        </Button>
+                                        <HasTooltip tooltip={'Expire invite'}>
+                                            <Button 
+                                                onClick={() => expireInvite(invite.user.id)}
+                                                ariaLabel={'Expire invite'}
+                                            >
+                                                <CloseIcon />
+                                            </Button>
+                                        </HasTooltip>
                                     )}
                                 </div>
                             </li>
