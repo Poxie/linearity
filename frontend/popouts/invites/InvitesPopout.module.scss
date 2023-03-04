@@ -13,7 +13,6 @@
     }
 }
 .header {
-    margin-bottom: var(--spacing-tertiary);
     background-color: var(--background-tertiary);
     border-radius: var(--border-radius-secondary);
     padding: var(--spacing-tertiary);
@@ -26,7 +25,6 @@
     display: grid;
     gap: var(--spacing-quaternary);
     padding: var(--spacing-tertiary);
-    margin-top: calc(-1 * var(--spacing-tertiary));
     padding-top: 0;
 }
 .item {
@@ -85,4 +83,11 @@
 .accepted {
     border-color: var(--color-success-accent);
     background-color: var(--color-success-muted);
+}
+.empty {
+    padding: var(--spacing-tertiary);
+    padding-top: 0;
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
 }
