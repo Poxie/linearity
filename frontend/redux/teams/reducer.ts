@@ -1,7 +1,7 @@
 import { Block, Group, Invite, Label, Member, Task, Team } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateItemInArray, updateObject } from "../utils";
-import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK, UPDATE_BLOCK, UPDATE_TEAM, REMOVE_TEAM_LABEL, ADD_TEAM_LABEL, UPDATE_TEAM_LABEL, REMOVE_TASK, SET_INVITES, UPDATE_INVITE_STATUS, ADD_INVITE, ADD_TEAM } from "./constants";
+import { SET_GROUPS, SET_BLOCKS, SET_TEAMS, SET_MEMBERS, SET_LABELS, ADD_TASK_ASSIGNEE, REMOVE_TASK_ASSIGNEE, ADD_TASK_LABEL, REMOVE_TASK_LABEL, UPDATE_BLOCK_POSITIONS, UPDATE_TASK_POSITIONS, SET_TASKS, ADD_TASK, UPDATE_TASK_POSITIONS_AND_BLOCKS, ADD_BLOCK, UPDATE_TASK, UPDATE_BLOCK, UPDATE_TEAM, REMOVE_TEAM_LABEL, ADD_TEAM_LABEL, UPDATE_TEAM_LABEL, REMOVE_TASK, SET_INVITES, UPDATE_INVITE_STATUS, ADD_INVITE, ADD_TEAM, SET_TEAM_DATA_LOADED } from "./constants";
 import { TeamsState } from "./types";
 
 // Reducer actions
@@ -35,6 +35,14 @@ const updateTeam: ReducerAction = (state, action) => {
         teams: updateItemInArray(state.teams, teamId, team => updateObject(team, {
             [property]: value
         }))
+    })
+}
+
+const setTeamDataLoaded: ReducerAction = (state, action) => {
+    const teamId: number = action.payload;
+
+    return updateObject(state, {
+        fetchedTeamData: state.fetchedTeamData.concat(teamId)
     })
 }
 
@@ -350,6 +358,7 @@ export const teamsReducer = createReducer({
         fetchedTeams: [],
         items: []
     },
+    fetchedTeamData: [],
     loading: true
 }, {
     [SET_INVITES]: setInvites,
@@ -377,5 +386,6 @@ export const teamsReducer = createReducer({
     [ADD_TASK_ASSIGNEE]: addTaskAssignee,
     [REMOVE_TASK_ASSIGNEE]: removeTaskAssignee,
     [ADD_TASK_LABEL]: addTaskLabel,
-    [REMOVE_TASK_LABEL]: removeTaskLabel
+    [REMOVE_TASK_LABEL]: removeTaskLabel,
+    [SET_TEAM_DATA_LOADED]: setTeamDataLoaded
 })

@@ -19,6 +19,7 @@ export const selectTeamById = createSelector(
     [selectTeams, selectId],
     (teams, teamId) => teams.find(team => team.id === teamId)
 )
+export const selectTeamDataLoaded = (state: RootState, teamId: number) => state.teams.fetchedTeamData.includes(teamId);
 
 const selectMembers = (state: RootState) => state.teams.members;
 export const selectTeamMembers = createSelector(
