@@ -34,7 +34,21 @@ def get_user_by_id(id: int) -> Union[None, User]:
     return user
 
 def get_team_by_id(id: int) -> Union[None, Team]:
-    query = "SELECT * FROM teams WHERE id = %s"
+    query = """
+    SELECT
+        t.*,
+        COUNT(DISTINCT m.id) AS member_count,
+        COUNT(DISTINCT ts.id) AS task_count,
+        g.id AS primary_group_id
+    FROM teams t
+        LEFT JOIN members m ON m.team_id = t.id
+        LEFT JOIN tasks ts ON ts.team_id = t.id
+        LEFT JOIN groups g ON g.team_id = t.id
+    WHERE
+        t.id = %s
+    GROUP BY
+        t.id
+    """
     values = (id,)
 
     team = database.fetch_one(query, values)
