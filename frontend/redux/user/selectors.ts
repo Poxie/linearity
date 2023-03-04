@@ -8,5 +8,5 @@ export const selectUserLoading = (state: RootState) => state.user.loading;
 export const selectUserInvites = (state: RootState) => state.user.invites;
 export const selectUserInviteCount = createSelector(
     [selectUserInvites],
-    invites => invites.length
+    invites => invites.filter(invite => invite.status === 'pending').length
 )
