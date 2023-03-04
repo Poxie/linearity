@@ -25,7 +25,7 @@ export default function TeamLayout({
     const dataLoaded = useAppSelector(state => selectTeamDataLoaded(state, parseInt(teamId)));
 
     useEffect(() => {
-        if(!teamId || !token || dataLoaded) return;
+        if(!token || dataLoaded) return;
 
         const requests = [
             { req: get<Group[]>(`/teams/${teamId}/groups`), action: setGroups },
@@ -44,8 +44,6 @@ export default function TeamLayout({
                 dispatch(setTeamDataLoaded(parseInt(teamId)));
             });
     }, [teamId, get, token, dataLoaded]);
-
-    if(!teamId) return null;
 
     return(
         <>
