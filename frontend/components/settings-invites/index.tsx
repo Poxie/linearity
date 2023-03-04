@@ -11,7 +11,7 @@ import { SearchIcon } from '@/assets/icons/SearchIcon';
 import Button from '../button';
 import { CloseIcon } from '@/assets/icons/CloseIcon';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
-import { selectTeamInvites } from '@/redux/teams/selectors';
+import { selectTeamFetchedInvites, selectTeamInvites } from '@/redux/teams/selectors';
 import { setInvites, updateInviteStatus } from '@/redux/teams/actions';
 import { useModal } from '@/contexts/modal';
 import { AddMemberModal } from '@/modals/add-member/AddMemberModal';
@@ -26,19 +26,20 @@ export const SettingsInvites = ({
     const { setModal } = useModal();
     const dispatch = useAppDispatch();
 
+    const fetchedInvites = useAppSelector(state => selectTeamFetchedInvites(state, parseInt(teamId)));
     const invites = useAppSelector(state => selectTeamInvites(state, parseInt(teamId)));
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
 
     useEffect(() => {
-        if(invites.length) return setLoading(false);
+        if(fetchedInvites) return setLoading(false);
 
         get<Invite[]>(`/teams/${teamId}/invites`)
             .then(invites => {
                 dispatch(setInvites(parseInt(teamId), invites));
                 setLoading(false);
             });
-    }, [invites.length]);
+    }, [fetchedInvites]);
 
     const openModal = () => setModal(<AddMemberModal teamId={parseInt(teamId)} />);
     const expireInvite = (userId: number) => {
@@ -102,7 +103,7 @@ export const SettingsInvites = ({
                     {loading && Array.from(Array(PLACEHOLDER_AMOUNT)).map((_,key) => (
                         <li className={styles['item-placeholder']} aria-hidden="true" />
                     ))}
-                    {filteredInvites.map(invite => {
+                    {fetchedInvites && filteredInvites.map(invite => {
                         const statusClassName = [
                             styles['status'],
                             styles[invite.status]

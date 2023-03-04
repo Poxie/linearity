@@ -135,8 +135,10 @@ export const selectGroupHasFetchedBlocks = createSelector(
     ids => ids.length !== 0
 )
 
-const selectInvites = (state: RootState) => state.teams.invites;
+const selectInvites = (state: RootState) => state.teams.invites.items;
+export const selectTeamFetchedInvites = (state: RootState, teamId: number) => state.teams.invites.fetchedTeams.find(id => id === teamId);
 export const selectTeamInvites = createSelector(
     [selectInvites, selectId],
-    (invites, teamId) => invites.filter(invite => invite.team_id === teamId)
+    (invites, teamId) => 
+        invites.filter(invite => invite.team_id === teamId)
 )

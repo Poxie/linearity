@@ -294,7 +294,10 @@ const setInvites: ReducerAction = (state, action) => {
     const invites: Invite[] = action.payload.invites;
 
     return updateObject(state, {
-        invites: [...state.invites.filter(invite => invite.team_id !== teamId), ...invites]
+        invites: updateObject(state.invites, {
+            items: [...state.invites.items.filter(invite => invite.team_id !== teamId), ...invites],
+            fetchedTeams: state.invites.fetchedTeams.concat(teamId)
+        })
     })
 }
 
@@ -302,7 +305,9 @@ const addInvite: ReducerAction = (state, action) => {
     const invite: Invite = action.payload;
 
     return updateObject(state, {
-        invites: state.invites.concat(invite)
+        invites: updateObject(state.invites, {
+            items: state.invites.items.concat(invite)
+        })
     })
 }
 
@@ -314,10 +319,12 @@ const updateInviteStatus: ReducerAction = (state, action) => {
     } = action.payload;
 
     return updateObject(state, {
-        invites: state.invites.map(invite => {
-            if(invite.user.id !== userId || invite.team_id !== teamId) return invite;
-            return updateObject(invite, {
-                status
+        invites: updateObject(state.invites, {
+            items: state.invites.items.map(invite => {
+                if(invite.user.id !== userId || invite.team_id !== teamId) return invite;
+                return updateObject(invite, {
+                    status
+                })
             })
         })
     })
@@ -331,7 +338,10 @@ export const teamsReducer = createReducer({
     tasks: [],
     members: [],
     labels: [],
-    invites: [],
+    invites: {
+        fetchedTeams: [],
+        items: []
+    },
     loading: true
 }, {
     [SET_INVITES]: setInvites,

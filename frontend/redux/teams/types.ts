@@ -7,6 +7,9 @@ export interface TeamsState {
     blocks: Block[];
     tasks: Task[];
     labels: Label[];
-    invites: Invite[];
+    invites: {
+        items: Invite[];
+        fetchedTeams: number[];
+    };
     loading: boolean;
 }
