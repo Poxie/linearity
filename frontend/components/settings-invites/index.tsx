@@ -28,7 +28,7 @@ export const SettingsInvites = ({
 
     const fetchedInvites = useAppSelector(state => selectTeamFetchedInvites(state, parseInt(teamId)));
     const invites = useAppSelector(state => selectTeamInvites(state, parseInt(teamId)));
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(!fetchedInvites);
     const [search, setSearch] = useState('');
 
     useEffect(() => {
