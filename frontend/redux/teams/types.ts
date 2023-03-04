@@ -1,4 +1,4 @@
-import { Block, Group, Label, Member, Task, Team } from "@/types";
+import { Block, Group, Invite, Label, Member, Task, Team } from "@/types";
 
 export interface TeamsState {
     teams: Team[];
@@ -7,5 +7,6 @@ export interface TeamsState {
     blocks: Block[];
     tasks: Task[];
     labels: Label[];
+    invites: Invite[];
     loading: boolean;
 }

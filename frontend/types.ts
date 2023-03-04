@@ -23,6 +23,16 @@ export interface Team {
     task_count: number;
     primary_group_id: number;
 }
+export interface Invite {
+    user_id: number;
+    team_id: number;
+    sender_id: number;
+    role: 'owner' | 'member';
+    status: 'pending' | 'rejected' | 'accepted' | 'expired';
+    user: User;
+    sender: User;
+    created_at: number;
+}
 export interface Group {
     id: number;
     team_id: number;
