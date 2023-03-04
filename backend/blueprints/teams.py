@@ -196,6 +196,38 @@ def remove_member_from_team_route(team_id: int, user_id: int, token_id: int):
 
     return jsonify({})
 
+@teams.put('/teams/<int:team_id>/invites/<string:username>')
+@token_required
+def send_user_invitation_route(team_id, username: str, token_id: int):
+    role = request.form.get('role') or 'member'
+    
+    # Getting user id from username
+    user_query = "SELECT users.id FROM users WHERE username = %s"
+    user = database.fetch_one(user_query, (username,))
+    if not user:
+        return 'User not found', 404
+    
+    # Checking if user is self
+    if token_id == user['id']:
+        return 'You cannot invite yourself', 403
+    
+    # Checking if member is already part of team
+    member = get_member(user['id'], team_id)
+    if member:
+        return 'User is part of team', 409
+    
+    # Checking if member is already invited
+    invite_query = "SELECT user_id FROM invitations WHERE team_id = %s AND user_id = %s"
+    invite = database.fetch_one(invite_query, (team_id, user['id']))
+    if invite:
+        return 'User is already invited', 409
+    
+    # Creating invite
+    query = "INSERT INTO invitations (sender_id, team_id, user_id, role, status, created_at) VALUES (%s, %s, %s, %s, %s, %s)"
+    database.insert(query, (token_id, team_id, user['id'], role, 'pending', time()))
+
+    return jsonify({})
+
 @teams.get('/teams/<int:team_id>/invites')
 @token_required
 def get_team_invites_route(team_id: int, token_id: int):

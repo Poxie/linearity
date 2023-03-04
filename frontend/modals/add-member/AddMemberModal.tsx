@@ -38,7 +38,7 @@ export const AddMemberModal: React.FC<{
         if(!usernameRef.current) return;
 
         setLoading(true);
-        put(`/users/${usernameRef.current.value}/invitations`, {
+        put(`/teams/${teamId}/invites/${usernameRef.current.value}`, {
             role: getRoleFromId(roleRef.current),
             team_id: teamId
         }).then(() => {
