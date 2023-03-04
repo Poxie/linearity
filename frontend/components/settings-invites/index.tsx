@@ -133,7 +133,7 @@ export const SettingsInvites = ({
                                 <div className={styles['main']}>
                                     <HasTooltip
                                         tooltip={!invite.updated_at ? (
-                                            'Invite is pending'
+                                            `Invite is ${invite.status}`
                                         ) : (
                                             `${statusString} on ${
                                                 new Date(invite.updated_at * 1000)
