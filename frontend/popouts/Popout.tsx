@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 import { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
 import { usePopout } from '@/contexts/popout';
 
-const SPACE_FROM_ELEMENT = 20;
+const SPACE_FROM_ELEMENT = 10;
 const ANIMATE_TRANSLATE_VALUE = -10;
 const ARROW_OFFSET_MIN = 30;
 export const Popout: React.FC<{
