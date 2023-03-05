@@ -47,9 +47,9 @@ export const GroupTask = React.memo<{
                 className={styles['task-main']}
                 ref={ref}
             >
+                <GroupTaskLabels />
                 <GroupTaskHeader />
                 <GroupTaskContent />
-                <GroupTaskLabels />
                 <GroupTaskFooter />
             </div>
         </TaskContext.Provider>
