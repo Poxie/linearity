@@ -31,7 +31,7 @@ export const EditableText: React.FC<{
             <Input 
                 placeholder={placeholder}
                 onBlur={handleBlur}
-                defaultValue={defaultValue}
+                defaultValue={defaultValue || ''}
                 focusOnMount
                 ref={ref}
             />
