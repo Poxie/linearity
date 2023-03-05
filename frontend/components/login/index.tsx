@@ -90,7 +90,7 @@ export default function Login() {
                         Forgot your password?
                     </button>
                     <Link href={'/register'}>
-                        Don't have an account? Create one here.
+                        Don&apos;t have an account? Create one here.
                     </Link>
                 </div>
             </form>
