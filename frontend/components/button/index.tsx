@@ -16,7 +16,8 @@ type ButtonProps = {
     external?: boolean;
     icon?: ReactElement;
 }
-export default React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, style, onClick, href, ariaLabel, target, icon, buttonType='button', external=false, disabled=false, className='', type='default' }, ref) => {
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, style, onClick, href, ariaLabel, target, icon, buttonType='button', external=false, disabled=false, className='', type='default' }, ref) => {
     className = [
         className,
         styles['container'],
@@ -62,3 +63,6 @@ export default React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, sty
         </button>
     )
 });
+Button.displayName = 'Button';
+
+export default Button;

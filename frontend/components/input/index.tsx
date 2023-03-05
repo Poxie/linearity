@@ -83,4 +83,5 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMo
             )}
         </div>
     )
-})
+});
+Input.displayName = 'Input';

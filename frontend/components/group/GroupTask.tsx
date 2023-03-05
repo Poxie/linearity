@@ -55,3 +55,4 @@ export const GroupTask = React.memo<{
         </TaskContext.Provider>
     )
 });
+GroupTask.displayName = 'GroupTask';
