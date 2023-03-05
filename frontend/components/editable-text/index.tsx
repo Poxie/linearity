@@ -32,6 +32,7 @@ export const EditableText: React.FC<{
                 placeholder={placeholder}
                 onBlur={handleBlur}
                 defaultValue={defaultValue || ''}
+                onSubmit={handleBlur}
                 focusOnMount
                 ref={ref}
             />
