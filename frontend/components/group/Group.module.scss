@@ -142,7 +142,7 @@
 
     &:hover {
         span {
-            margin-left: calc(-1 * var(--spacing-quaternary));
+            margin-left: calc(-1 * var(--spacing-quaternary) / 1.5);
         }
     }
 
