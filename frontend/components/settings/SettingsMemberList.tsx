@@ -1,22 +1,15 @@
-import styles from './Settings.module.scss';
 import { useAppSelector } from "@/redux/store";
-import { selectTeamMemberIds } from "@/redux/teams/selectors";
+import { selectTeamMembers } from "@/redux/teams/selectors";
 import { useSettings } from "."
-import { SettingsMember } from "./SettingsMember";
+import { AssigneeList } from '../assignee-list/AssigneeList';
 
 export const SettingsMemberList = () => {
     const { teamId } = useSettings();
-    const memberIds = useAppSelector(state => selectTeamMemberIds(state, teamId));
+    const members = useAppSelector(state => selectTeamMembers(state, teamId));
 
     return(
-        <div className={styles['members']}>
-            {memberIds.map(memberId => (
-                <SettingsMember 
-                    memberId={memberId}
-                    teamId={teamId}
-                    key={memberId}
-                />
-            ))}
-        </div>
+        <AssigneeList 
+            members={members}
+        />
     )
 }
