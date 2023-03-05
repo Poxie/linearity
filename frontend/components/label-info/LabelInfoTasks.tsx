@@ -45,7 +45,7 @@ export const LabelInfoTasks: React.FC<{
                     There are no issues with this label.
                 </span>
             )}
-            {taskIds.map(taskId => <TaskRow taskId={taskId} />)}
+            {taskIds.map(taskId => <TaskRow taskId={taskId} key={taskId} />)}
         </ModalGroup>
     )
 }

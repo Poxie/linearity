@@ -20,7 +20,7 @@ export const TaskRowAssignees: React.FC<{
     return(
         <div className={styles['rows']}>
             {assignees?.map(assignee => (
-                <div className={styles['assignee-icon']}>
+                <div className={styles['assignee-icon']} key={assignee.id}>
                     {assignee.name[0]}
                 </div>
             ))}
