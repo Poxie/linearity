@@ -9,10 +9,12 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { setUserInviteStatus } from '@/redux/user/actions';
 import { addTeam } from '@/redux/teams/actions';
 import { selectUser } from '@/redux/user/selectors';
+import { usePopout } from '@/contexts/popout';
 
 export const InvitesPopoutItem: React.FC<{
     invite: InboxInvite;
 }> = ({ invite }) => {
+    const { close } = usePopout();
     const { get, put, patch } = useAuth();
     const dispatch = useAppDispatch();
 
