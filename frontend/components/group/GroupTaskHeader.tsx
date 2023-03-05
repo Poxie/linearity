@@ -8,13 +8,8 @@ export const GroupTaskHeader = () => {
     const { title } = useAppSelector(state => selectTaskInfo(state, taskId));
 
     return(
-        <div className={styles['task-header']}>
-            <button 
-                className={styles['task-title']}
-                aria-label={'View task'}
-            >
-                {title}
-            </button>
-        </div>
+        <span className={styles['task-title']}>
+            {title}
+        </span>
     )
 }

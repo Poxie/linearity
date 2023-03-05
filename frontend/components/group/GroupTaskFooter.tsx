@@ -24,7 +24,7 @@ export const GroupTaskFooter = () => {
                     </>
                 )}
             </div>
-            <GroupTaskAssignees />
+            <GroupTaskAssignees taskId={taskId} />
         </div>
     )
 }

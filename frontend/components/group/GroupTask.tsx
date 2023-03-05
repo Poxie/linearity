@@ -7,6 +7,7 @@ import { MenuGroup, useMenu } from '@/contexts/menu';
 import { useModal } from '@/contexts/modal';
 import { EditTaskModal } from '@/modals/edit-task/EditTaskModal';
 import { GroupTaskFooter } from './GroupTaskFooter';
+import { GroupTaskButton } from './GroupTaskButton';
 
 const TaskContext = React.createContext({} as {
     taskId: number;
@@ -21,14 +22,10 @@ export const GroupTask = React.memo<{
     const { setMenu } = useMenu();
     const ref = useRef<HTMLDivElement>(null);
 
-    const viewTask = () => {        
-        setModal(<EditTaskModal taskId={taskId} />)
-    }
-
     const openMenu = (event: React.MouseEvent) => {
         const groups: MenuGroup[] = [
             [
-                { text: 'View task', onClick: viewTask, type: 'default' }
+                { text: 'View task', onClick: () => setModal(<EditTaskModal taskId={taskId} />), type: 'default' }
             ]
         ]
         setMenu({
@@ -41,12 +38,12 @@ export const GroupTask = React.memo<{
 
     return(
         <TaskContext.Provider value={{ taskId }}>
-            <div 
-                onClick={viewTask}
+            <div
                 onContextMenu={openMenu}
                 className={styles['task-main']}
                 ref={ref}
             >
+                <GroupTaskButton />
                 <GroupTaskLabels />
                 <GroupTaskHeader />
                 <GroupTaskContent />
