@@ -27,6 +27,7 @@ export const LabelList: React.FC<{
                     hasContextMenu={hasContextMenu}
                     contextMenuOnClick={contextMenuOnClick}
                     onLabelClick={onLabelClick}
+                    small={small}
                     key={label.id}
                 />
             ))}

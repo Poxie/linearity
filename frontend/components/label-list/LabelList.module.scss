@@ -1,5 +1,6 @@
 .container {
     display: flex;
+    align-items: flex-start;
     gap: 4px;
     flex-wrap: wrap;
 }
@@ -12,8 +13,15 @@
     position: relative;
 }
 .small .item {
-    padding: 4px 6px;
+    display: block;
+    padding: 0;
+    width: 30px;
+    height: 7px;
     font-size: 10px;
     background-color: var(--background-quinary);
     border-color: var(--background-quinary);
+
+    span {
+        display: none;
+    }
 }
