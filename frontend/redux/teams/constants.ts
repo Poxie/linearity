@@ -7,6 +7,7 @@ export const UPDATE_TEAM_LABEL = 'UPDATE_TEAM_LABEL';
 export const SET_MEMBERS = 'SET_MEMBERS';
 export const SET_LABELS = 'SET_LABELS';
 export const SET_GROUPS = 'SET_GROUPS';
+export const ADD_GROUP = 'ADD_GROUP';
 export const SET_BLOCKS = 'SET_BLOCKS';
 export const ADD_BLOCK = 'ADD_BLOCK';
 export const UPDATE_BLOCK = 'UPDATE_BLOCK';
