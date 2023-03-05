@@ -97,6 +97,7 @@
 
     button:not(.task-main>button) {
         z-index: 2;
+        position: relative;
     }
 }
 .edit-task-button {
