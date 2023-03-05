@@ -95,7 +95,7 @@ const setBlocks: ReducerAction = (state, action) => {
     const blocks: Block[] = action.payload;
 
     return updateObject(state, {
-        blocks: [...state.blocks.filter(block => block.team_id !== blocks[0]?.team_id), ...blocks]
+        blocks: [...state.blocks.filter(block => block.group_id !== blocks[0]?.group_id), ...blocks]
     })
 }
 
@@ -136,9 +136,10 @@ const updateBlockPositions: ReducerAction = (state, action) => {
 
 const setTasks: ReducerAction = (state, action) => {
     const tasks: Task[] = action.payload;
+    const taskIds = tasks.map(task => task.id);
 
     return updateObject(state, {
-        tasks: [...state.tasks.filter(task => task.team_id !== tasks[0]?.team_id), ...tasks]
+        tasks: [...state.tasks.filter(task => !taskIds.includes(task.id)), ...tasks]
     })
 }
 
