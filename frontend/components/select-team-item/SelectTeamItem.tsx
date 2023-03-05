@@ -10,7 +10,8 @@ export const SelectTeamItem: React.FC<{
     type: 'members' | 'labels';
     onSelect: (item: Member | Label) => void;
     className?: string;
-}> = ({ teamId, type, onSelect, className }) => {
+    onAddButtonClicked?: () => void;
+}> = ({ teamId, type, onSelect, className, onAddButtonClicked }) => {
     const { setPopout } = usePopout();
     const ref = useRef<HTMLButtonElement>(null);
 
@@ -36,7 +37,7 @@ export const SelectTeamItem: React.FC<{
         <button 
             className={className}
             aria-label={'Add label'}
-            onClick={openPopout}
+            onClick={onAddButtonClicked || openPopout}
             ref={ref}
         >
             <AddIcon />

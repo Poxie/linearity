@@ -11,7 +11,8 @@ export const LabelList: React.FC<{
     contextMenuOnClick?: boolean;
     teamId?: number;
     onLabelSelected?: (label: Label) => void;
-}> = ({ labels, onLabelClick, small, hasContextMenu, contextMenuOnClick, teamId, onLabelSelected }) => {
+    onAddButtonClicked?: () => void;
+}> = ({ labels, onLabelClick, small, hasContextMenu, contextMenuOnClick, teamId, onLabelSelected, onAddButtonClicked }) => {
     if(onLabelSelected && !teamId) throw new Error('onLabelSelected requires teamId prop');
     if(contextMenuOnClick && !hasContextMenu) throw new Error('contextMenuOnClick requires hasContextMenu prop');
 
@@ -31,10 +32,13 @@ export const LabelList: React.FC<{
                     key={label.id}
                 />
             ))}
-            {onLabelSelected && (
+            {(onLabelSelected || onAddButtonClicked) && (
                 <SelectTeamItem 
                     teamId={teamId as number}
-                    onSelect={item => onLabelSelected(item as Label)}
+                    onSelect={item => {
+                        if(onLabelSelected) onLabelSelected(item as Label);
+                    }}
+                    onAddButtonClicked={onAddButtonClicked}
                     type={'labels'}
                 />
             )}
