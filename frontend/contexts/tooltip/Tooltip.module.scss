@@ -7,8 +7,8 @@
     font-size: 12px !important;
     border-radius: 6px;
     font-size: 14px;
-    white-space: nowrap;
     pointer-events: none;
+    max-width: 240px;
 
     &::after {
         --arrow-size: 6px;
