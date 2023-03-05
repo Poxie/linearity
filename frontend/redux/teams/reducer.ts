@@ -236,7 +236,7 @@ const setMembers: ReducerAction = (state, action) => {
     const members: Member[] = action.payload;
 
     return updateObject(state, {
-        members
+        members: [...state.members.filter(member => member.team_id !== members[0].team_id), ...members]
     })
 }
 
@@ -244,7 +244,7 @@ const setLabels: ReducerAction = (state, action) => {
     const labels: Label[] = action.payload;
 
     return updateObject(state, {
-        labels
+        labels: [...state.labels.filter(label => label.team_id !== labels[0].team_id), ...labels]
     })
 }
 
