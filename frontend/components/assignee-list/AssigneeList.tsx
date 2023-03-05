@@ -7,7 +7,8 @@ export const AssigneeList: React.FC<{
     onMemberClick?: (member: Member) => void;
     onMemberSelected?: (member: Member) => void;
     teamId?: number
-}> = ({ members, onMemberClick, onMemberSelected, teamId }) => {
+    onAddButtonClicked?: () => void;
+}> = ({ members, onMemberClick, onMemberSelected, teamId, onAddButtonClicked }) => {
     if(onMemberSelected && !teamId) throw new Error('onMemberSelected requires teamId prop');
 
     return(
@@ -28,10 +29,13 @@ export const AssigneeList: React.FC<{
                 </li>
             ))}
 
-            {onMemberSelected && (
+            {(onMemberSelected || onAddButtonClicked) && (
                 <SelectTeamItem 
                     teamId={teamId as number}
-                    onSelect={item => onMemberSelected(item as Member)}
+                    onSelect={item => {
+                        if(onMemberSelected) onMemberSelected(item as Member);
+                    }}
+                    onAddButtonClicked={onAddButtonClicked}
                     type={'members'}
                 />
             )}
