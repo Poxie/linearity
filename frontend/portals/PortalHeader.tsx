@@ -1,5 +1,6 @@
 import { CloseIcon } from '@/assets/icons/CloseIcon';
 import { usePortal } from '@/contexts/portal';
+import { HasTooltip } from '@/contexts/tooltip/HasTooltip';
 import styles from './Portal.module.scss';
 
 export const PortalHeader: React.FC<{
@@ -14,9 +15,11 @@ export const PortalHeader: React.FC<{
                 <span>
                     {header}
                 </span>
-                <button onClick={close}>
-                    <CloseIcon />
-                </button>
+                <HasTooltip tooltip={'Close'} position={'bottom'}>
+                    <button onClick={close}>
+                        <CloseIcon />
+                    </button>
+                </HasTooltip>
             </div>
             {subHeader && (
                 <span className={styles['header-sub']}>
