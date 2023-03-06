@@ -9,6 +9,7 @@ import { Team } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { selectToken, selectUser, selectUserLoading } from '@/redux/user/selectors';
+import { PortalProvider } from '@/contexts/portal';
 
 export default function TeamLayout({
     children,
@@ -43,9 +44,11 @@ export default function TeamLayout({
     return (
         <div className={styles['app-content']}>
             <Sidebar />
-            <main className={styles['container']}>
-                {children}
-            </main>
+            <PortalProvider>
+                <main className={styles['container']}>
+                    {children}
+                </main>
+            </PortalProvider>
         </div>
     )
 }

@@ -5,7 +5,7 @@
     gap: var(--spacing-secondary);
     padding: var(--spacing-primary);
     height: calc(100vh - var(--navbar-height) - var(--team-header-height) - var(--group-selector-height));
-    width: calc(100vw - var(--sidebar-width));
+    width: calc(100vw - var(--sidebar-width) - var(--portal-width));
     overflow: auto;
 
     &::-webkit-scrollbar {

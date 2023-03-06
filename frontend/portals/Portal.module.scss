@@ -1,16 +1,25 @@
-.container {
-    --width: 400px;
-    background-color: var(--background-tertiary);
+.portal-container {
+    // This is updated from the portal provider component
+    --portal-width: 0px;
+    --portal-spacing: var(--spacing-tertiary);
+    display: flex;
+    gap: var(--spacing-tertiary);
+    width: 100%;
+
+    &>:first-child {
+        flex: 1;
+    }
+    &.has-portal>main:first-child {
+        border-top-right-radius: var(--border-radius-secondary);
+    }
+}
+.portal {
+    background-color: var(--background-secondary);
     border-radius: var(--border-radius-secondary);
-    width: var(--width);
-    right: calc(-1 * var(--width));
-    position: fixed;
-    top: calc(var(--navbar-height) + var(--team-header-height));
-    height: calc(100vh - var(--navbar-height) - var(--team-header-height) - var(--spacing-primary));
-    z-index: 100000;
+    width: calc(var(--portal-width) - var(--portal-spacing));
 }
 .header {
-    border-bottom: 1px solid var(--background-quaternary);
+    border-bottom: 1px solid var(--background-tertiary);
     padding: var(--spacing-secondary);
 }
 .header-main {
@@ -32,7 +41,7 @@
 
         &:hover {
             fill: var(--text-primary);
-            background-color: var(--background-quaternary);
+            background-color: var(--background-tertiary);
         }
     }
 }

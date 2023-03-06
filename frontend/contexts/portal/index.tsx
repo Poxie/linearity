@@ -1,5 +1,5 @@
-import { AnimatePresence } from 'framer-motion';
-import React, { ReactElement, useState } from 'react';
+import React, { CSSProperties, ReactElement, useState } from 'react';
+import styles from '../../portals/Portal.module.scss';
 
 type PortalContextType = {
     setPortal: (portal: ReactElement) => void;
@@ -23,10 +23,16 @@ export const PortalProvider: React.FC<{
     }
     return(
         <PortalContext.Provider value={value}>
-            {children}
-            <AnimatePresence>
+            <div
+                className={[
+                    styles['portal-container'],
+                    portal ? styles['has-portal'] : ''
+                ].join(' ')}
+                style={{ '--portal-width': portal ? '400px' : '0px' } as CSSProperties}
+            >
+                {children}
                 {portal}
-            </AnimatePresence>
+            </div>
         </PortalContext.Provider>
     )
 }

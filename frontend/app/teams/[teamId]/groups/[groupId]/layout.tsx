@@ -1,7 +1,6 @@
 "use client";
 
 import { GroupSelector } from "@/components/team/GroupSelector";
-import { PortalProvider } from "@/contexts/portal";
 
 export default function GroupLayout({
     children,
@@ -11,11 +10,9 @@ export default function GroupLayout({
     params: { teamId?: string };
 }) {
     return(
-        <PortalProvider>
-            <div style={{ flex: 1 }}>
-                <GroupSelector teamId={parseInt(teamId || '')} /> 
-                {children}
-            </div>
-        </PortalProvider>
+        <>
+            <GroupSelector teamId={parseInt(teamId || '')} /> 
+            {children}
+        </>
     )
 }
