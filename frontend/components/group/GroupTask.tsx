@@ -17,7 +17,8 @@ export const useTask = () => React.useContext(TaskContext);
 
 export const GroupTask = React.memo<{
     taskId: number;
-}>(({ taskId }) => {
+    className?: string;
+}>(({ taskId, className }) => {
     const { setModal } = useModal();
     const { setMenu } = useMenu();
     const ref = useRef<HTMLDivElement>(null);
@@ -35,12 +36,15 @@ export const GroupTask = React.memo<{
         })
     }
 
-
+    className = [
+        styles['task-main'],
+        className
+    ].join(' ');
     return(
         <TaskContext.Provider value={{ taskId }}>
             <div
                 onContextMenu={openMenu}
-                className={styles['task-main']}
+                className={className}
                 ref={ref}
             >
                 <GroupTaskButton />
