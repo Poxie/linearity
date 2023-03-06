@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import styles from './Group.module.scss';
 import { useAppDispatch, useAppSelector } from "@/redux/store";
@@ -19,14 +21,13 @@ const PositionContext = React.createContext({} as PositionContextType);
 export const usePosition = () => React.useContext(PositionContext);
 
 export const Group: React.FC<{
-    groupId: number;
-    teamId: number;
-}> = ({ groupId, teamId }) => {
+    params: { teamId: string, groupId: string }
+}> = ({ params: { groupId, teamId } }) => {
     const { patch } = useAuth();
     const { setModal } = useModal();
 
-    const loaded = useAppSelector(state => selectTeamDataLoaded(state, teamId));
-    const blocks = useAppSelector(state => selectPositionedBlocks(state, groupId));
+    const loaded = useAppSelector(state => selectTeamDataLoaded(state, Number(teamId)));
+    const blocks = useAppSelector(state => selectPositionedBlocks(state, Number(groupId)));
     const tasks = useAppSelector(selectAllPositionedTasks);
     const dispatch = useAppDispatch();
 
@@ -107,7 +108,7 @@ export const Group: React.FC<{
         }
     }
     const openBlockPortal = () => {
-        setModal(<AddBlockModal groupId={groupId} />);
+        setModal(<AddBlockModal groupId={Number(groupId)} />);
     }
     
     const value = {
@@ -120,8 +121,8 @@ export const Group: React.FC<{
                 {blocks?.map(block => (
                     <GroupBlock 
                         id={block.id}
-                        groupId={groupId}
-                        teamId={teamId}
+                        groupId={Number(groupId)}
+                        teamId={Number(teamId)}
                         index={block.position}
                         key={block.id}
                     />

@@ -5,12 +5,13 @@ import { GroupSelector } from "@/components/team/GroupSelector";
 import { useAuth } from "@/contexts/auth";
 import { PortalProvider } from "@/contexts/portal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { setGroups, setLabels, setMembers, setTeamDataLoaded } from "@/redux/teams/actions";
+import { setBlocks, setGroups, setLabels, setMembers, setTasks, setTeamDataLoaded } from "@/redux/teams/actions";
 import { selectTeamDataLoaded, selectTeamMembers } from "@/redux/teams/selectors";
 import { selectToken } from "@/redux/user/selectors";
-import { Group, Label, Member, User } from "@/types";
+import { Group, Label, Member, Task, User } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Block } from "typescript";
 
 export default function TeamLayout({
     children,
@@ -31,7 +32,9 @@ export default function TeamLayout({
 
         const requests = [
             { req: get<Group[]>(`/teams/${teamId}/groups`), action: setGroups },
-            { req: get<User[]>(`/teams/${teamId}/members`), action: setMembers },
+            { req: get<Block[]>(`/teams/${teamId}/blocks`), action: setBlocks },
+            { req: get<Task[]>(`/teams/${teamId}/tasks`), action: setTasks },
+            { req: get<Member[]>(`/teams/${teamId}/members`), action: setMembers },
             { req: get<Label[]>(`/teams/${teamId}/labels`), action: setLabels }
         ]
 

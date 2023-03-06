@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from utils.auth import token_required
-from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_label_by_id, get_group_by_id, get_task_by_id
+from utils.common import create_id, get_team_by_id, get_user_by_id, get_member, get_label_by_id, get_group_by_id, get_task_by_id, get_team_tasks
 from utils.constants import PATCH_TEAM_ALLOWED_PROPERTIES, PATCH_LABEL_ALLOWED_PROPERTIES, ALLOWED_MEMBER_ROLES, ALLOWED_INVITE_STATUSES
 from database import database
 from time import time
@@ -600,3 +600,40 @@ def get_label_tasks_route(label_id: int, token_id: int):
     tasks = [get_task_by_id(item['task_id'], hydrate=True) for item in items]
 
     return jsonify(tasks)
+
+@teams.get('/teams/<int:team_id>/tasks')
+@token_required
+def get_team_tasks_route(team_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, team['id'])
+    if not member:
+        return 'Unauthorized', 401
+
+    # Fetching tasks
+    tasks = get_team_tasks(team_id)
+    
+    return jsonify(tasks)
+
+@teams.get('/teams/<int:team_id>/blocks')
+@token_required
+def get_team_blocks_route(team_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+
+    # Checking if user is part of team
+    member = get_member(token_id, team['id'])
+    if not member:
+        return 'Unauthorized', 401
+    
+    # Fetching blocks
+    query = "SELECT * FROM blocks WHERE team_id = %s"
+    blocks = database.fetch_many(query, (team_id,))
+
+    return jsonify(blocks)

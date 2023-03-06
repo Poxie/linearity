@@ -138,28 +138,9 @@ def get_group_blocks_route(group_id: int, token_id: int):
         return 'Unauthorized', 401
 
     # Fetching blocks
-    query = """
-    SELECT
-        b.*,
-        GROUP_CONCAT(DISTINCT t.id) as task_ids
-    FROM blocks b
-        LEFT JOIN tasks t ON t.block_id = b.id
-    WHERE
-        b.group_id = %s
-    GROUP BY
-        b.id
-    """
+    query = "SELECT * FROM blocks WHERE group_id = %s"
     values = (group_id,)
     blocks = database.fetch_many(query, values)
-
-    # Fetching block tasks
-    for block in blocks:
-        block['tasks'] = []
-        if not block['task_ids']: continue
-
-        task_ids = block['task_ids'].split(',')
-        tasks = [get_task_by_id(int(task_id), hydrate=True) for task_id in task_ids]
-        block['tasks'] = tasks
 
     return jsonify(blocks)
 

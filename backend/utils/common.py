@@ -148,6 +148,21 @@ def get_block_tasks(block_id: int) -> Union[None, List[Task]]:
 
     return tasks
 
+def get_team_tasks(team_id: int) -> Union[None, List[Task]]:
+    # Fetching task ids
+    query = "SELECT id FROM tasks WHERE team_id = %s"
+    values = (team_id,)
+    task_ids = database.fetch_many(query, values)
+
+    # Fetching task specific data
+    tasks = []
+    for task_id in task_ids:
+        task = get_task_by_id(task_id['id'], hydrate=True)
+        if task:
+            tasks.append(task)
+
+    return tasks
+
 def get_task_by_id(id: int, hydrate=False) -> Union[None, Task]:
     # Fetching task
     query = "SELECT * FROM tasks WHERE id = %s"
