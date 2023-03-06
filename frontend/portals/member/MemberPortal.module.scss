@@ -45,9 +45,58 @@
     }
 }
 
+.filters {
+    padding: var(--spacing-secondary);
+    display: flex;
+    justify-content: space-between;
+}
+.filters-main {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-tertiary);
+    font-size: 14px;
+
+    svg {
+        width: 12px;
+        fill: var(--text-primary);
+    }
+}
+.empty-filter {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: var(--spacing-quaternary);
+    border: 1px solid var(--background-tertiary);
+    border-radius: var(--border-radius-tertiary);
+}
+.label {
+    @extend .empty-filter;
+    display: flex;
+    padding: 0;
+
+    button {
+        padding: var(--spacing-quaternary);
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-quaternary);
+    }
+    svg {
+        width: 8px;
+        fill: var(--text-secondary);
+        display: block;
+    }
+}
+.label-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--background-tertiary);
+    border-radius: 50%;
+}
+
 .tasks {
     display: grid;
-    padding: var(--spacing-secondary);
+    padding: 0 var(--spacing-secondary);
     gap: var(--spacing-quaternary);
     max-height: 100%;
     overflow: auto;
