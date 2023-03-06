@@ -16,6 +16,7 @@ export const MemberPortalIsseus: React.FC<{
                 <GroupTask 
                     taskId={task.id}
                     className={styles['task']}
+                    key={task.id}
                 />
             ))}
 
