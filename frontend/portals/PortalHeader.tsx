@@ -16,7 +16,7 @@ export const PortalHeader: React.FC<{
                     {header}
                 </span>
                 <HasTooltip tooltip={'Close'} position={'bottom'}>
-                    <button onClick={close}>
+                    <button onClick={close} aria-label={'Close'}>
                         <CloseIcon />
                     </button>
                 </HasTooltip>
