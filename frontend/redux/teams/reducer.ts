@@ -101,9 +101,10 @@ const addGroup: ReducerAction = (state, action) => {
 
 const setBlocks: ReducerAction = (state, action) => {
     const blocks: Block[] = action.payload;
+    const blockIds = blocks.map(block => block.id);
 
     return updateObject(state, {
-        blocks: [...state.blocks.filter(block => block.group_id !== blocks[0]?.group_id), ...blocks]
+        blocks: [...state.blocks.filter(block => !blockIds.includes(block.id)), ...blocks]
     })
 }
 
