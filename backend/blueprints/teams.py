@@ -126,6 +126,42 @@ def get_team_members_route(team_id: int, token_id: int):
 
     return jsonify(members)
 
+@teams.get('/teams/<int:team_id>/members/<int:user_id>/tasks')
+@token_required
+def get_member_tasks_route(team_id: int, user_id: int, token_id: int):
+    # Checking if team exists
+    team = get_team_by_id(team_id)
+    if not team:
+        return 'Team not found', 404
+    
+    # Checking if member exists
+    member = get_member(user_id, team_id)
+    if not member:
+        return 'Member not found', 404
+    
+     # Checking if user is part of team
+    member = get_member(token_id, team_id)
+    if not member:
+        return 'Unauthorized', 401
+    
+    # Fetching tasks based on assignees
+    query = """
+    SELECT
+        a.task_id,
+        m.team_id
+    FROM assignees a
+        LEFT JOIN members m ON a.id = m.id
+    WHERE
+        a.id = %s
+    GROUP BY
+        a.task_id
+    """
+    data = database.fetch_many(query, (user_id,))
+
+    tasks = [get_task_by_id(item['task_id'], hydrate=True) for item in data]
+
+    return jsonify(tasks)
+
 @teams.put('/teams/<int:team_id>/members/<int:user_id>')
 @token_required
 def add_member_to_team_route(team_id: int, user_id: int, token_id: int):
