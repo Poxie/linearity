@@ -1,0 +1,49 @@
+.user-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-tertiary);
+    padding: var(--spacing-secondary);
+    border-bottom: 1px solid var(--background-tertiary);
+}
+.user-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--border-radius-tertiary);
+    border: 2px solid var(--background-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.user-text {
+    display: grid;
+    gap: var(--spacing-quaternary);
+}
+.name {
+    font-size: 20px;
+}
+.bio {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+.tabs {
+    padding: var(--spacing-secondary);
+    display: flex;
+    gap: var(--spacing-quaternary);
+    
+    button {
+        display: block;
+        padding: var(--spacing-quaternary) var(--spacing-tertiary);
+        border-radius: var(--border-radius-tertiary);
+        transition: background-color .2s, color .2s;
+        color: var(--text-secondary);
+        font-size: 12px;
+
+        &:hover, &.active {
+            background-color: var(--background-tertiary);
+            color: var(--text-primary);
+        }
+        &:active {
+            background-color: var(--background-quaternary);
+        }
+    }
+}

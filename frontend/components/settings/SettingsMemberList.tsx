@@ -1,7 +1,7 @@
 import { useModal } from "@/contexts/modal";
 import { usePortal } from "@/contexts/portal";
 import { AddMemberModal } from "@/modals/add-member/AddMemberModal";
-import { UserPortal } from "@/portals/user/UserPortal";
+import { MemberPortal } from "@/portals/member/MemberPortal";
 import { useAppSelector } from "@/redux/store";
 import { selectTeamMembers } from "@/redux/teams/selectors";
 import { Member } from "@/types";
@@ -15,7 +15,7 @@ export const SettingsMemberList = () => {
     const members = useAppSelector(state => selectTeamMembers(state, teamId));
 
     const openModal = () => setModal(<AddMemberModal teamId={teamId} />);
-    const viewMember = (member: Member) => setPortal(<UserPortal teamId={teamId} userId={member.id} />);
+    const viewMember = (member: Member) => setPortal(<MemberPortal teamId={teamId} userId={member.id} />);
 
     return(
         <AssigneeList 
