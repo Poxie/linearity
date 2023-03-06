@@ -27,29 +27,28 @@
 }
 .tabs {
     @extend .user-header;
+    padding-bottom: 0;
+    display: flex;
+    gap: var(--spacing-primary);
     
     button {
         display: block;
-        padding: var(--spacing-quaternary) var(--spacing-tertiary);
-        border-radius: var(--border-radius-tertiary);
+        padding-bottom: var(--spacing-secondary);
         transition: background-color .2s, color .2s;
         color: var(--text-secondary);
         font-size: 12px;
 
         &:hover, &.active {
-            background-color: var(--background-tertiary);
+            border-bottom: 1px solid #fff;
             color: var(--text-primary);
-        }
-        &:active {
-            background-color: var(--background-quaternary);
         }
     }
 }
 
 .tasks {
     display: grid;
-    gap: var(--spacing-quaternary);
     padding: var(--spacing-secondary);
+    gap: var(--spacing-quaternary);
     max-height: 100%;
     overflow: auto;
 
