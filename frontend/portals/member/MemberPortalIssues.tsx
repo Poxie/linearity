@@ -3,7 +3,7 @@ import { GroupTask } from "@/components/group/GroupTask";
 import { useAuth } from "@/contexts/auth";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setTasks } from "@/redux/teams/actions";
-import { selectTasksByAssignee } from "@/redux/teams/selectors";
+import { selectMemberById, selectTasksByAssignee } from "@/redux/teams/selectors";
 import { Task } from "@/types";
 import { useEffect, useState } from "react";
 
@@ -15,6 +15,7 @@ export const MemberPortalIsseus: React.FC<{
     const dispatch = useAppDispatch();
 
     const tasks = useAppSelector(state => selectTasksByAssignee(state, teamId, memberId));
+    const member = useAppSelector(state => selectMemberById(state, teamId, memberId));
     
     useEffect(() => {
         if(tasks.length) return;
@@ -33,6 +34,12 @@ export const MemberPortalIsseus: React.FC<{
                     className={styles['task']}
                 />
             ))}
+
+            {!tasks.length && (
+                <span className={styles['empty']}>
+                    {member?.name} has no assigned issues
+                </span>
+            )}
         </div>
     )
 }
