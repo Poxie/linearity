@@ -126,9 +126,16 @@ export const selectTasksByLabel = createSelector(
     [selectTasks, selectId, _selectId],
     (tasks, teamId, labelId) => tasks.filter(task => {
         const hasLabel = task.labels.find(label => label.id === labelId);
-        console.log(hasLabel);
         return !!hasLabel;
     }).map(item => item.id)
+)
+export const selectTasksByAssignee = createSelector(
+    [selectTasks, selectId, _selectId],
+    (tasks, teamId, assigneeId) => 
+        tasks.filter(task => (
+            task.team_id === teamId && 
+            task.assignees.map(a => a.id).includes(assigneeId)
+        ))
 )
 
 export const selectGroupHasFetchedBlocks = createSelector(

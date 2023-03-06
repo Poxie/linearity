@@ -26,9 +26,7 @@
     font-size: 14px;
 }
 .tabs {
-    padding: var(--spacing-secondary);
-    display: flex;
-    gap: var(--spacing-quaternary);
+    @extend .user-header;
     
     button {
         display: block;
@@ -45,5 +43,31 @@
         &:active {
             background-color: var(--background-quaternary);
         }
+    }
+}
+
+.tasks {
+    display: grid;
+    gap: var(--spacing-quaternary);
+    padding: var(--spacing-secondary);
+    max-height: 100%;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 20px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border: 7px solid var(--background-secondary);
+        background-color: var(--background-tertiary);
+        border-radius: 120px;
+    }
+}
+.task {
+    background-color: transparent !important;
+    border-color: var(--background-tertiary) !important;
+    transition: background-color .2s;
+
+    &:hover {
+        background-color: var(--background-tertiary) !important;
     }
 }

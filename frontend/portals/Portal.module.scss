@@ -17,6 +17,8 @@
     background-color: var(--background-secondary);
     border-radius: var(--border-radius-secondary);
     width: calc(var(--portal-width) - var(--portal-spacing));
+    display: flex;
+    flex-direction: column;
 }
 .header {
     border-bottom: 1px solid var(--background-tertiary);

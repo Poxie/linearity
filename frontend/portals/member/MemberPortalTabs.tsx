@@ -1,12 +1,13 @@
+import { MemberPortalSection } from './MemberPortal';
 import styles from './MemberPortal.module.scss';
 
-const TABS = [
-    { id: 'MEMBER_ACTIVITY', text: 'Activity' }, 
-    { id: 'MEMBER_ISSUES', text: 'Issues' }
+const TABS: { id: MemberPortalSection, text: string }[] = [
+    { id: 'MEMBER_ISSUES', text: 'Issues' },
+    { id: 'MEMBER_ACTIVITY', text: 'Activity' }
 ];
 export const MemberPortalTabs: React.FC<{
-    setSection: (section: string) => void;
-    section: string;
+    setSection: (section: MemberPortalSection) => void;
+    section: MemberPortalSection;
 }> = ({ setSection, section }) => {
     return(
         <ul className={styles['tabs']}>
