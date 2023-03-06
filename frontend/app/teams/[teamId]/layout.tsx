@@ -1,14 +1,10 @@
 "use client";
 
 import { TeamHeader } from "@/components/team-header";
-import { GroupSelector } from "@/components/team/GroupSelector";
 import { useAuth } from "@/contexts/auth";
-import { PortalProvider } from "@/contexts/portal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { setBlocks, setGroups, setLabels, setMembers, setTasks, setTeamDataLoaded } from "@/redux/teams/actions";
-import { selectTeamDataLoaded, selectTeamMembers } from "@/redux/teams/selectors";
-import { selectToken } from "@/redux/user/selectors";
-import { Group, Label, Member, Task, User } from "@/types";
+import { Group, Label, Member, Task } from "@/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Block } from "typescript";
@@ -24,12 +20,7 @@ export default function TeamLayout({
     const { get } = useAuth();
     const dispatch = useAppDispatch();
 
-    const token = useAppSelector(selectToken);
-    const dataLoaded = useAppSelector(state => selectTeamDataLoaded(state, parseInt(teamId)));
-
     useEffect(() => {
-        if(!token || dataLoaded) return;
-
         const requests = [
             { req: get<Group[]>(`/teams/${teamId}/groups`), action: setGroups },
             { req: get<Block[]>(`/teams/${teamId}/blocks`), action: setBlocks },
@@ -51,7 +42,7 @@ export default function TeamLayout({
             .catch(error => {
                 if([404, 401].includes(error.code)) replace(`/teams`);
             })
-    }, [teamId, get, token, dataLoaded])
+    }, [teamId, get])
 
     return(
         <>
