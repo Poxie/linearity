@@ -69,7 +69,7 @@ export const Popout: React.FC<{
                 left = elLeft + elWidth + options.distance;
             }
             if(left > window.innerWidth - popWidth) {
-                left = elLeft - popWidth + elWidth;
+                left = window.innerWidth - popWidth - SPACE_FROM_EDGE;
             }
             if(left < 0) {
                 left = elLeft + elWidth + options.distance;
