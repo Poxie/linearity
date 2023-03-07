@@ -2,6 +2,7 @@ export interface User {
     id: number;
     username: string;
     name: string;
+    bio: string | null;
     avatar: string | null;
     created_at: number;
 }

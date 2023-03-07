@@ -9,9 +9,10 @@ type ReducerAction = (state: TeamsState, action: AnyAction) => TeamsState;
 
 const setTeams: ReducerAction = (state, action) => {
     const teams: Team[] = action.payload;
+    const teamIds = teams.map(team => team.id);
 
     return updateObject(state, {
-        teams: [...state.teams.filter(team => team.id !== teams[0]?.id), ...teams],
+        teams: [...state.teams.filter(team => !teamIds.includes(team.id)), ...teams],
         loading: false
     })
 }

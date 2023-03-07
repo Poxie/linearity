@@ -1,7 +1,7 @@
 import { InboxInvite, User } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateObject } from "../utils";
-import { SET_TOKEN, SET_USER, SET_USER_INVITES, SET_USER_INVITE_STATUS } from "./constants";
+import { SET_TOKEN, SET_USER, SET_USER_INVITES, SET_USER_INVITE_STATUS, UPDATE_USER } from "./constants";
 import { UserState } from "./types";
 
 // Reducer actions
@@ -21,6 +21,17 @@ const setUser: ReducerAction = (state, action) => {
     return updateObject(state, {
         user,
         loading: false
+    })
+}
+
+const updateUser: ReducerAction = (state, action) => {
+    const property: keyof User = action.payload.property;
+    const value: any = action.payload.value;
+
+    return updateObject(state, {
+        user: updateObject(state.user, {
+            [property]: value
+        })
     })
 }
 
@@ -55,6 +66,7 @@ export const userReducer = createReducer({
 }, {
     [SET_TOKEN]: setToken,
     [SET_USER]: setUser,
+    [UPDATE_USER]: updateUser,
     [SET_USER_INVITES]: setUserInvites,
     [SET_USER_INVITE_STATUS]: setUserInviteStatus
 })
