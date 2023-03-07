@@ -188,9 +188,11 @@ def get_task_assignees(task_id: int) -> Union[None, User]:
     query = """
     SELECT
         a.*,
-        u.*
+        u.*,
+        t.team_id
     FROM assignees a
         JOIN users u ON u.id = a.id
+        LEFT JOIN tasks t ON t.id = a.task_id
     WHERE
         a.task_id = %s
     GROUP BY
