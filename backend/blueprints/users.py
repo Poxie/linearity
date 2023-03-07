@@ -91,6 +91,11 @@ def update_user_route(user_id: int, token_id: int):
     # Making sure user is authorized
     if user_id != token_id:
         return 'Unauthorized', 401
+    
+    # Checking if user exists
+    user = get_user_by_id(user_id)
+    if not user:
+        return 'Unauthorized'
 
     # Getting user properties to update
     form = request.form
@@ -101,6 +106,18 @@ def update_user_route(user_id: int, token_id: int):
     for key, value in form.items():
         # Making sure user can update property
         if key not in PATCH_USER_ALLOWED_PROPERTIES: continue
+
+        # Checking if property is username
+        if key == 'username':
+            # Checking if user already has this username
+            if value == user['username']:
+                return 'You already have this username', 401
+
+            # Checking if username is unavailable
+            username_query = "SELECT id FROM users WHERE username = %s"
+            user = database.fetch_one(username_query, (value,))
+            if user:
+                return 'Username is unavailable', 401
 
         # Appending values
         keys.append(key)
