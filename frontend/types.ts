@@ -4,6 +4,7 @@ export interface User {
     name: string;
     bio: string | null;
     avatar: string | null;
+    email: string | null;
     created_at: number;
 }
 export interface Member extends User {

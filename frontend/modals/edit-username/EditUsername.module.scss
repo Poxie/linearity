@@ -1,0 +1,15 @@
+.error {
+    display: flex;
+    gap: var(--spacing-tertiary);
+    padding: var(--spacing-tertiary);
+    background-color: var(--color-danger-muted);
+    border: 1px solid var(--color-danger-accent);
+    border-radius: var(--border-radius-tertiary);
+    font-size: 14px;
+    margin-top: var(--spacing-tertiary);
+
+    svg {
+        width: 15px;
+        fill: var(--text-primary);
+    }
+}

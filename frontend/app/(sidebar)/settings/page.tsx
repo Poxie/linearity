@@ -1,3 +1,3 @@
-import { UserSettings } from "@/components/user-settings";
+import { Account } from "@/components/account";
 
-export default UserSettings;
+export default Account;

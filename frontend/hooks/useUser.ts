@@ -8,13 +8,20 @@ export const useUser = (userId: number) => {
     const { patch } = useAuth();
     const dispatch = useAppDispatch();
     
-    const updateProperty = useCallback(async (property: keyof User, value: any, prevValue: any) => {
+    const updateProperty = useCallback(async ({ property, value, prevValue, onError, onSuccess }: {
+        property: keyof User;
+        value: any;
+        prevValue: any;
+        onError: (error: Error) => void;
+        onSuccess: () => void;
+    }) => {
         dispatch(updateUser(property, value));
         patch(`/users/${userId}`, {
             [property]: value
-        }).catch(error => {
+        }).then(onSuccess).catch(error => {
             dispatch(updateUser(property, prevValue));
-        })
+            onError(error);
+        });
     }, [userId, patch]);
 
     return { updateProperty };
