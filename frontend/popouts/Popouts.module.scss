@@ -5,23 +5,4 @@
     border-radius: var(--border-radius-secondary);
     box-shadow: rgb(0 0 0 / 30%) 0px 1px 4px 0px;
     min-width: 250px;
-
-    &::after {
-        --popout-arrow-size: 10px;
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: var(--popout-arrow-size) solid transparent;
-    }
-    &.up::after {
-        border-top-color: var(--background-tertiary);
-    }
-    &.left::after {
-        left: 100%;
-        top: calc(var(--popout-offset) - var(--popout-arrow-size));
-        transform: none;
-        border-left-color: var(--background-tertiary);
-    }
 }

@@ -1,107 +1,99 @@
 import styles from './Popouts.module.scss';
 import { motion } from "framer-motion"
-import { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
-import { usePopout } from '@/contexts/popout';
+import { CSSProperties, useEffect, useRef, useState } from "react";
+import { PopoutState, usePopout } from '@/contexts/popout';
 
-const SPACE_FROM_ELEMENT = 10;
-const ANIMATE_TRANSLATE_VALUE = -10;
-const ARROW_OFFSET_MIN = 30;
+const INITIAL_STYLE = { opacity: 0 };
+const ANIMATED_STYLE = { opacity: 1 };
+const ANIMATION_DURATION = .15;
+
+const SPACE_FROM_EDGE = 15;
 export const Popout: React.FC<{
     children: any;
-    element: RefObject<HTMLElement>;
-    position: 'up' | 'left';
-}> = ({ children, element, position }) => {
+    element: PopoutState['ref'];
+    options: PopoutState['options'];
+}> = ({ children, element, options }) => {
     const { close } = usePopout();
-    const popout = useRef<HTMLDivElement>(null);
-    const [popoutOffset, setPopoutOffset] = useState(0);
-
+    const ref = useRef<HTMLDivElement>(null);
+    
     // Closing popout on click outside
-    // Updating popout position, on mount and resize
     useEffect(() => {
-        if(!popout.current) return;
-
-        // Closing popout if click outside
         const handleClickOutside = (e: Event) => {
             // @ts-ignore: this works
-            if(popout.current && !popout.current.contains(e.target)) {
+            if(ref.current && !ref.current.contains(e.target)) {
                 close();
             }
         }
 
-        // Updating popout position
-        const updatePopoutPosition = () => {
-            if(!element.current || !popout.current) return;
+        window.addEventListener('mousedown', handleClickOutside);
+        return () => window.removeEventListener('mousedown', handleClickOutside)
+    }, []);
 
-            // Getting sizes and position of clicked element and popout
-            let { top, left, width: _width, height: _height } = element.current.getBoundingClientRect();
-            const { width, height } = popout.current.getBoundingClientRect();
-            
-            // Determining position for popout
-            if(position === 'up') {
-                top -= height + SPACE_FROM_ELEMENT;
-                left -= width / 2 - _width / 2;
-            } else if(position === 'left') {
-                left -= width + SPACE_FROM_ELEMENT;
+    // Determining popout position
+    useEffect(() => {
+        if(!ref.current) return;
+
+        const updatePosition = () => {
+            if(!ref.current || !element?.current) return;
+
+            const { top: elTop, left: elLeft, width: elWidth, height: elHeight } = element?.current?.getBoundingClientRect();
+            const { top: popTop, left: popLeft, width: popWidth, height: popHeight } = ref.current.getBoundingClientRect();
+
+            let top = 0;
+            let left = 0;
+            switch(options?.position) {
+                case 'left':
+                    top = elTop;
+                    left = elLeft - popWidth - options.distance;
+                    break;
+                case 'right':
+                    top = elTop;
+                    left = elLeft + elWidth + options.distance
+                    break;
+                case 'top':
+                    top = elTop - popHeight - options.distance;
+                    left = elLeft + elWidth / 2 - popWidth / 2;
+                    break;
+                case 'bottom':
+                    top = elTop + elHeight + options.distance;
+                    left = elLeft + elWidth / 2 - popWidth / 2;
+                    break;
             }
 
-            // Determining arrow offset
-            // If element is smaller than offset, position popout accordingly
-            if(_height < ARROW_OFFSET_MIN) {
-                top -= ARROW_OFFSET_MIN - _height;
-            };
-            const offset = _height < ARROW_OFFSET_MIN ? (
-                ARROW_OFFSET_MIN - _height / 2
-            ) : (
-                _height / 2
-            )
-            setPopoutOffset(offset);
-            
-            // Updating popout top and left
-            popout.current.style.top = `${top}px`;
-            popout.current.style.left = `${left}px`;
+            if(top < SPACE_FROM_EDGE) {
+                top = SPACE_FROM_EDGE;
+                left = elLeft - popWidth - options.distance;
+            }
+            if(top > window.innerHeight - popHeight - SPACE_FROM_EDGE) {
+                top = window.innerHeight - popHeight - SPACE_FROM_EDGE;
+                left = elLeft + elWidth + options.distance;
+            }
+            if(left > window.innerWidth - popWidth) {
+                left = elLeft - popWidth + elWidth;
+            }
+            if(left < 0) {
+                left = elLeft + elWidth + options.distance;
+            }
+
+            ref.current.style.top = `${top}px`;
+            ref.current.style.left = `${left}px`;
         }
-        updatePopoutPosition();
+        updatePosition();
 
-        // Listening to popout resize
-        new ResizeObserver(updatePopoutPosition).observe(popout.current);
+        new ResizeObserver(updatePosition).observe(ref.current);
 
-        // Listening to mouse clisk
-        window.addEventListener('mousedown', handleClickOutside);
+        window.addEventListener('resize', updatePosition);
+        return () => window.removeEventListener('resize', updatePosition);
+    }, [options]);
 
-        window.addEventListener('resize', updatePopoutPosition);
-        return () => {
-            window.removeEventListener('resize', updatePopoutPosition);
-            window.removeEventListener('mousedown', handleClickOutside);
-        }
-    }, [element, position]);
-
-    // Determining popout animations
-    const initial = { 
-        translateY: position === 'up' ? ANIMATE_TRANSLATE_VALUE : 0,
-        translateX: position === 'left' ? ANIMATE_TRANSLATE_VALUE : 0,
-        opacity: 0
-    }
-    const animate = { 
-        translateY: 0,
-        translateX: 0,
-        opacity: 1
-    }
-
-    const className = [
-        styles['container'],
-        styles[position]
-    ].join(' ');
     return(
         <motion.div
-            className={className}
-            animate={animate}
-            initial={initial}
-            exit={initial}
-            transition={{ duration: .2 }}
-            style={{
-                '--popout-offset': `${popoutOffset}px`
-            } as CSSProperties}
-            ref={popout}
+            exit={INITIAL_STYLE}
+            initial={INITIAL_STYLE}
+            animate={ANIMATED_STYLE}
+            transition={{ duration: ANIMATION_DURATION }}
+            className={styles['container']}
+            ref={ref}
         >
             {children}
         </motion.div>

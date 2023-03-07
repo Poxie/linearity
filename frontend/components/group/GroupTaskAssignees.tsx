@@ -26,6 +26,7 @@ export const GroupTaskAssignees: React.FC<{
     }
     const openPopout = () => setPopout({
         popout: <TeamItems onSelect={addMember} teamId={teamId} type={'members'} />,
+        options: { position: 'top' },
         ref
     })
 

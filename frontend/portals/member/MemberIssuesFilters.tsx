@@ -24,7 +24,7 @@ export const MemberIssuesFilters: React.FC<{
                 closeOnSelect
             />
         ),
-        position: 'left',
+        options: { position: 'left' },
         ref
     })
 
