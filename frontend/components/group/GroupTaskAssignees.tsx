@@ -9,6 +9,8 @@ import { TeamItems } from '@/popouts/team-items/TeamItems';
 import { useBlock } from './GroupBlock';
 import { useTask } from '@/hooks/useTask';
 import { Label, Member } from '@/types';
+import { MemberPopout } from '@/popouts/member/MemberPopout';
+import { GroupTaskAssignee } from './GroupTaskAssignee';
 
 export const GroupTaskAssignees: React.FC<{
     taskId: number;
@@ -38,19 +40,22 @@ export const GroupTaskAssignees: React.FC<{
             tooltip={assignees?.length ? `Assigned to ${assigneeNames}` : 'Assign issue'}
         >
             <>
-            {assignees?.map(assignee => (
-                <span key={assignee.id}>
-                    {assignee.name[0]}
-                </span>
-            ))}
-            {!assignees?.length && (
+            {!assignees?.length ? (
                 <button 
                     onClick={openPopout}
                     aria-label={'Assign issue'}
+                    className={styles['assign-button']}
                     ref={ref}
                 >
                     <AddIcon />
                 </button>
+            ) : (
+                assignees?.map(assignee => (
+                    <GroupTaskAssignee 
+                        assignee={assignee} 
+                        key={assignee.id} 
+                    />
+                ))
             )}
             </>
         </HasTooltip>

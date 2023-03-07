@@ -115,7 +115,21 @@
     display: flex;
     z-index: 2;
 
-    span {
+    .assign-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 1px solid var(--background-quinary);
+        padding: 5px;
+        
+        svg {
+            width: 8px;
+            fill: var(--text-secondary);
+        }
+    }
+
+    .assignee {
         border-radius: 50%;
         background-color: var(--background-quaternary);
         border: 1px solid var(--background-quinary);
@@ -142,22 +156,8 @@
     }
 
     &:hover {
-        span {
+        .assignee {
             margin-left: calc(-1 * var(--spacing-quaternary) / 1.5);
-        }
-    }
-
-    button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        border: 1px solid var(--background-quinary);
-        padding: 5px;
-        
-        svg {
-            width: 8px;
-            fill: var(--text-secondary);
         }
     }
 }
