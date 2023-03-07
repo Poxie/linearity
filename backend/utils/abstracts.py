@@ -4,6 +4,8 @@ from typing import Union, TypedDict, List
 class User(TypedDict):
     id: int
     username: str
+    name: str
+    bio: Union[None, str]
     email: Union[None, str]
     avatar: Union[None, str]
     created_at: int
