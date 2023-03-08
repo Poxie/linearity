@@ -12,7 +12,7 @@ export const ProfilePreview = () => {
                 </div>
                 <div className={styles['preview-main']}>
                     <div className={styles['preview-icon']}>
-                        {user?.name[0].toUpperCase()}
+                        {user?.name[0]?.toUpperCase()}
                     </div>
                     <div className={styles['preview-text']}>
                         <span className={styles['preview-name']}>
