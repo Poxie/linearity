@@ -1,0 +1,25 @@
+.container {
+    font-size: 13px;
+    display: flex;
+    gap: var(--spacing-tertiary);
+    padding: var(--spacing-secondary);
+    border-radius: var(--border-radius-tertiary);
+
+    svg {
+        width: 15px;
+        fill: var(--text-primary);
+    }
+
+    &.danger {
+        background-color: var(--color-danger-muted);
+        border: 1px solid var(--color-danger-accent);
+    }
+    &.success {
+        background-color: var(--color-success-muted);
+        border: 1px solid var(--color-success-accent);
+    }
+    &.info {
+        background-color: var(--color-muted);
+        border: 1px solid var(--color-accent);
+    }
+}
