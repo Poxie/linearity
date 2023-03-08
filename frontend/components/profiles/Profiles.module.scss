@@ -1,0 +1,85 @@
+.container {
+    padding: var(--spacing-primary);
+}
+.tabs {
+    display: flex;
+    gap: var(--spacing-primary);
+    border-bottom: 1px solid var(--background-tertiary);
+}
+.tab {
+    color: var(--text-secondary);
+    border-bottom: 1px solid transparent;
+    padding-bottom: var(--spacing-primary);
+    transition: color .2s, border-bottom .2s;
+
+    &:hover, &.active {
+        color: var(--text-primary);
+        border-bottom-color: var(--text-primary);
+    }
+}
+
+.content {
+    display: flex;
+    gap: var(--spacing-secondary);
+    padding: var(--spacing-primary) 0;
+
+    &>div {
+        flex: 1;
+    }
+}
+.profile {
+    display: grid;
+    gap: var(--spacing-tertiary);
+    padding: var(--spacing-primary);
+    background-color: var(--background-primary);
+    border-radius: var(--border-radius-secondary);
+}
+.profile-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+.preview {
+    height: 100%;
+    padding: var(--spacing-primary);
+    background-color: var(--background-primary);
+    border-radius: var(--border-radius-secondary);
+}
+.preview-content {
+    border-radius: var(--border-radius-secondary);
+    overflow: hidden;
+}
+.preview-banner {
+    height: 50px;
+    background-color: var(--background-tertiary);
+}
+.preview-main {
+    display: grid;
+    gap: var(--spacing-tertiary);
+    padding: var(--spacing-primary);
+    background-color: var(--background-secondary);
+}
+.preview-icon {
+    --icon-size: 60px;
+    --border-size: 5px;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-secondary);
+    border: var(--border-size) solid var(--background-secondary);
+    margin-top: calc(-1 * var(--icon-size) + var(--spacing-tertiary) - var(--border-size));
+    margin-left: calc(-1 * var(--border-size));
+    background-color: var(--background-primary);
+}
+.preview-text {
+    display: grid;
+    gap: var(--spacing-quaternary);
+}
+.preview-name {
+    font-size: 18px;
+}
+.preview-bio {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
