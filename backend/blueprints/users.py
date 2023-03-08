@@ -118,6 +118,10 @@ def update_user_route(user_id: int, token_id: int):
             user = database.fetch_one(username_query, (value,))
             if user:
                 return 'Username is unavailable', 401
+            
+        # Checking if required property has no value
+        if key == 'name' and not value:
+            return f'{key.title()} cannot be empty', 400
 
         # Appending values
         keys.append(key)
