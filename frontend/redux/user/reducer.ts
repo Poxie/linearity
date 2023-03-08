@@ -1,7 +1,7 @@
 import { InboxInvite, User } from "@/types";
 import { AnyAction } from "redux";
 import { createReducer, updateObject } from "../utils";
-import { SET_TOKEN, SET_USER, SET_USER_INVITES, SET_USER_INVITE_STATUS, UPDATE_USER } from "./constants";
+import { SET_TOKEN, SET_USER, SET_USER_INVITES, SET_USER_INVITE_STATUS, UPDATE_USER, _UPDATE_USER } from "./constants";
 import { UserState } from "./types";
 
 // Reducer actions
@@ -32,6 +32,14 @@ const updateUser: ReducerAction = (state, action) => {
         user: updateObject(state.user, {
             [property]: value
         })
+    })
+}
+
+const _updateUser: ReducerAction = (state, action) => {
+    const user: Partial<User> = action.payload;
+
+    return updateObject(state, {
+        user: updateObject(state.user, user)
     })
 }
 
@@ -67,6 +75,7 @@ export const userReducer = createReducer({
     [SET_TOKEN]: setToken,
     [SET_USER]: setUser,
     [UPDATE_USER]: updateUser,
+    [_UPDATE_USER]: _updateUser,
     [SET_USER_INVITES]: setUserInvites,
     [SET_USER_INVITE_STATUS]: setUserInviteStatus
 })

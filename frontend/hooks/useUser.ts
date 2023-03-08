@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/auth";
 import { useAppDispatch } from "@/redux/store";
-import { updateUser } from "@/redux/user/actions";
+import { updateUser, _updateUser } from "@/redux/user/actions";
 import { User } from "@/types";
 import { useCallback } from "react";
 
@@ -8,6 +8,18 @@ export const useUser = (userId: number) => {
     const { patch } = useAuth();
     const dispatch = useAppDispatch();
     
+    const updateProperties = useCallback(async ({ user, onError, onSuccess }: {
+        user: Partial<User>;
+        onError?: (error: Error) => void;
+        onSuccess?: () => void;
+    }) => {
+        patch(`/users/${userId}`, user)
+            .then(() => {
+                dispatch(_updateUser(user));
+                if(onSuccess) onSuccess();
+            })
+            .catch(onError);
+    }, [userId, patch]);
     const updateProperty = useCallback(async ({ property, value, prevValue, onError, onSuccess }: {
         property: keyof User;
         value: any;
@@ -24,5 +36,5 @@ export const useUser = (userId: number) => {
         });
     }, [userId, patch]);
 
-    return { updateProperty };
+    return { updateProperty, updateProperties };
 }
