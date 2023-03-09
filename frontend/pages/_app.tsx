@@ -21,13 +21,13 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     const getLayout = Component.getLayout ?? ((page) => page)
   
     return(
-        <Providers>
-            <div className={roboto.className}>
+        <div className={roboto.className}>
+            <Providers>
                 <Navbar />
                 {getLayout(
                     <Component {...pageProps} />
                 )}
-            </div>
-        </Providers>
+            </Providers>
+        </div>
     )
 }
