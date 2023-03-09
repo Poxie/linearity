@@ -7,15 +7,15 @@ import { AddMemberModal } from '@/modals/add-member/AddMemberModal';
 import { ModalGroup } from '@/modals/ModalGroup';
 import { useAppSelector } from '@/redux/store';
 import { selectTeamMembers } from '@/redux/teams/selectors';
+import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 import Button from '../button';
 import { Input } from '../input';
 import styles from './SettingsMembers.module.scss';
 
-export const SettingsMembers: React.FC<{
-    params: { teamId: string };
-}> = ({ params: { teamId } }) => {
+export const SettingsMembers = () => {
     const { setModal } = useModal();
+    const teamId = useRouter().query.teamId as string;
     const members = useAppSelector(state => selectTeamMembers(state, parseInt(teamId)));
 
     const [search, setSearch] = useState('');

@@ -116,6 +116,7 @@ export const GroupBlock: React.FC<{
     return(
         <BlockContext.Provider value={value}>
             <div 
+                data-testid={'block'}
                 className={styles['block']}
                 data-block-index={index}
                 data-block-id={id}

@@ -12,6 +12,7 @@ import { MemberIcon } from '@/assets/icons/MemberIcon';
 import { SettingsLabelList } from './SettingsLabelList';
 import { SettingsMemberList } from './SettingsMemberList';
 import { EditableText } from '../editable-text';
+import { useRouter } from 'next/router';
 
 const SettingsContext = React.createContext({} as {
     teamId: number;
@@ -19,9 +20,10 @@ const SettingsContext = React.createContext({} as {
 
 export const useSettings = () => React.useContext(SettingsContext);
 
-export const Settings = ({ params: { teamId } }: {
-    params: { teamId: string }
-}) => {
+export const Settings = () => {
+    const { query } = useRouter();
+    const teamId = query.teamId as string;
+    
     const team = useAppSelector(state => selectTeamById(state, parseInt(teamId)));
     const { updateProperty } = useTeam(parseInt(teamId));
 

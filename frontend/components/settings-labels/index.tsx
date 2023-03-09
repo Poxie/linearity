@@ -16,11 +16,11 @@ import { TrashIcon } from '@/assets/icons/TrashIcon';
 import { EditIcon } from '@/assets/icons/EditIcon';
 import { Label } from '@/types';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-export const SettingsLabels: React.FC<{
-    params: { teamId: string };
-}> = ({ params: { teamId } }) => {
+export const SettingsLabels = () => {
     const { setModal } = useModal();
+    const teamId = useRouter().query.teamId as string;
     const { removeLabel } = useTeam(parseInt(teamId));
 
     const labels = useAppSelector(state => selectTeamLabels(state, parseInt(teamId)));

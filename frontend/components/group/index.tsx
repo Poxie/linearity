@@ -21,13 +21,14 @@ const PositionContext = React.createContext({} as PositionContextType);
 export const usePosition = () => React.useContext(PositionContext);
 
 export const Group: React.FC<{
-    params: { teamId: string, groupId: string }
-}> = ({ params: { groupId, teamId } }) => {
+    groupId: number;
+    teamId: number;
+}> = ({ groupId, teamId }) => {
     const { patch } = useAuth();
     const { setModal } = useModal();
 
-    const loaded = useAppSelector(state => selectTeamDataLoaded(state, Number(teamId)));
-    const blocks = useAppSelector(state => selectPositionedBlocks(state, Number(groupId)));
+    const loaded = useAppSelector(state => selectTeamDataLoaded(state, teamId));
+    const blocks = useAppSelector(state => selectPositionedBlocks(state, groupId));
     const tasks = useAppSelector(selectAllPositionedTasks);
     const dispatch = useAppDispatch();
 
@@ -108,7 +109,7 @@ export const Group: React.FC<{
         }
     }
     const openBlockPortal = () => {
-        setModal(<AddBlockModal groupId={Number(groupId)} />);
+        setModal(<AddBlockModal groupId={groupId} />);
     }
     
     const value = {
@@ -121,8 +122,8 @@ export const Group: React.FC<{
                 {blocks?.map(block => (
                     <GroupBlock 
                         id={block.id}
-                        groupId={Number(groupId)}
-                        teamId={Number(teamId)}
+                        groupId={groupId}
+                        teamId={teamId}
                         index={block.position}
                         key={block.id}
                     />

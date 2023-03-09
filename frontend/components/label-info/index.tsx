@@ -5,19 +5,17 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { setTasks } from '@/redux/teams/actions';
 import { selectTasksByLabel } from '@/redux/teams/selectors';
 import { Task } from '@/types';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from './LabelInfo.module.scss';
 import { LabelInfoHeader } from './LabelInfoHeader';
 import { LabelInfoTasks } from './LabelInfoTasks';
 
-export const LabelInfo = ({
-    params: { labelId, teamId }
-}: {
-    params: { labelId: string, teamId: string }
-}) => {
+export const LabelInfo = () => {
     const { get } = useAuth();
     const dispatch = useAppDispatch();
 
+    const { teamId, labelId } = useRouter().query as { teamId: string, labelId: string };
     const taskIds = useAppSelector(state => selectTasksByLabel(state, parseInt(teamId), parseInt(labelId)));
     const [loading, setLoading] = useState(true);
 

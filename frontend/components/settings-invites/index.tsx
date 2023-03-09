@@ -15,17 +15,15 @@ import { setInvites } from '@/redux/teams/actions';
 import { useModal } from '@/contexts/modal';
 import { AddMemberModal } from '@/modals/add-member/AddMemberModal';
 import { SettingsInvite } from './SettingsInvite';
+import { useRouter } from 'next/router';
 
 const PLACEHOLDER_AMOUNT = 4;
-export const SettingsInvites = ({
-    params: { teamId }
-}: {
-    params: { teamId: string };
-}) => {
+export const SettingsInvites = () => {
     const { get, patch } = useAuth();
     const { setModal } = useModal();
     const dispatch = useAppDispatch();
 
+    const teamId = useRouter().query.teamId as string;
     const fetchedInvites = useAppSelector(state => selectTeamFetchedInvites(state, parseInt(teamId)));
     const invites = useAppSelector(state => selectTeamInvites(state, parseInt(teamId)));
     const [loading, setLoading] = useState(!fetchedInvites);
