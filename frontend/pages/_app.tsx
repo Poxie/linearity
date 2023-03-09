@@ -4,6 +4,9 @@ import { AppProps } from "next/app"
 import { ReactElement, ReactNode } from "react"
 import { Providers } from '@/contexts'
 import { Navbar } from '@/components/navbar'
+import { Roboto } from '@next/font/google';
+
+const roboto = Roboto({ weight: ['400', '500', '700'] });
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode
@@ -19,10 +22,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   
     return(
         <Providers>
-            <Navbar />
-            {getLayout(
-                <Component {...pageProps} />
-            )}
+            <div className={roboto.className}>
+                <Navbar />
+                {getLayout(
+                    <Component {...pageProps} />
+                )}
+            </div>
         </Providers>
     )
 }
