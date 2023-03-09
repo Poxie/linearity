@@ -46,7 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, sty
                 {children}
             </a>
         ) : (
-            <Link href={href} {...props}>
+            <Link target={target} href={href} {...props}>
                 {icon}
                 {children}
             </Link>

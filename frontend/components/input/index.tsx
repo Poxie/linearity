@@ -8,7 +8,6 @@ type InputProps = {
     containerClassName?: string;
     inputClassName?: string;
     onChange?: (value: string) => void;
-    onSubmit?: (value: string) => void;
     onFocus?: () => void;
     onBlur?: () => void;
     name?: string;
@@ -18,7 +17,7 @@ type InputProps = {
     icon?: ReactElement;
     defaultValue?: string;
 }
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMount, containerClassName, inputClassName, onChange, onSubmit, onFocus, onBlur, name, placeholder, icon, textArea=false, type='text', defaultValue='' }, ref) => {
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMount, containerClassName, inputClassName, onChange, onFocus, onBlur, name, placeholder, icon, textArea=false, type='text', defaultValue='' }, ref) => {
     const inputRef = useRef<any>(null);
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
@@ -26,12 +25,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMo
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         onChange && onChange(e.currentTarget.value);
     }
-    // Handling keypress
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if(e.key === 'Enter' && e.currentTarget.value) {
-            onSubmit && onSubmit(e.currentTarget.value);
-        }
-    }
+
     useEffect(() => {
         // Setting default value
         inputRef.current.value = defaultValue;
@@ -46,7 +40,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMo
     const props = {
         type,
         onChange: handleChange,
-        onKeyDown: handleKeyDown,
         className: inputClassName,
         onFocus: onFocus,
         onBlur: onBlur,
@@ -68,7 +61,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ focusOnMo
     return(
         <div className={containerClassName}>
             {icon && (
-                <label htmlFor={name} aria-label={placeholder}>
+                <label htmlFor={name} aria-label={placeholder} data-testid="input-icon">
                     {icon}
                 </label>
             )}
