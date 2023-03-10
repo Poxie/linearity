@@ -33,7 +33,7 @@ export const MemberPortal: React.FC<{
                         {user?.name}
                     </span>
                     <span className={styles['bio']}>
-                        {user?.name} has no bio
+                        {user?.bio || `${user?.name} has no bio`}
                     </span>
                 </div>
             </div>
