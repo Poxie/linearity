@@ -17,7 +17,7 @@ export const MemberPortalIsseus: React.FC<{
 
     const filteredTasks = useMemo(() => tasks.filter(task => (
         label ? task.labels.find(l => l.id === label.id) : true
-    )), [memberId, label?.id]);
+    )), [tasks.length, memberId, label?.id]);
     return(
         <>
         <MemberIssuesFilters 
