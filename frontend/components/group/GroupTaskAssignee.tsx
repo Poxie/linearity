@@ -1,32 +1,24 @@
 import styles from './Group.module.scss';
-import { usePopout } from "@/contexts/popout";
-import { MemberPopout } from "@/popouts/member/MemberPopout";
 import { Member } from "@/types"
-import { useRef } from "react";
+import { usePortal } from '@/contexts/portal';
+import { MemberPortal } from '@/portals/member/MemberPortal';
 
 export const GroupTaskAssignee: React.FC<{
     assignee: Member;
 }> = ({ assignee }) => {
-    const { setPopout } = usePopout();
-    
-    const ref = useRef<HTMLButtonElement>(null);
+    const { setPortal } = usePortal();
 
-    const openPopout = () => setPopout({
-        popout: (
-            <MemberPopout 
-                teamId={assignee.team_id} 
-                userId={assignee.id}
-            />
-        ),
-        ref
-    })
+    const openPortal = () => setPortal(
+        <MemberPortal 
+            teamId={assignee.team_id} 
+            userId={assignee.id}
+        />
+    )
 
     return(
         <button 
             className={styles['assignee']}
-            onClick={openPopout}
-            key={assignee.id}
-            ref={ref}
+            onClick={openPortal}
         >
             {assignee.name[0]}
         </button>
