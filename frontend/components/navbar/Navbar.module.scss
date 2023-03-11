@@ -1,6 +1,28 @@
-.container {
-    padding: var(--spacing-primary);
+.content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--spacing-primary);
+    height: var(--navbar-height);
 }
 .header {
     font-size: 22px;
+}
+.user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-tertiary);
+    padding: var(--spacing-tertiary);
+    padding-right: var(--spacing-secondary);
+    margin-right: calc(-1 * var(--spacing-tertiary));
+    transition: background-color .2s;
+    border-radius: var(--border-radius-tertiary);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--background-secondary);
+    }
+}
+.user-avatar {
+    --size: 25px;
 }
