@@ -1,6 +1,4 @@
-"use client";
-
-import styles from '@/app/login/page.module.scss';
+import styles from './Login.module.scss';
 import { GoogleIcon } from '@/assets/icons/GoogleIcon';
 import { PasswordIcon } from "@/assets/icons/PasswordIcon";
 import { UserIcon } from "@/assets/icons/UserIcon";

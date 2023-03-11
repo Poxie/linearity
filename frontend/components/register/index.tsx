@@ -1,13 +1,10 @@
-"use client";
-
 import { PasswordIcon } from '@/assets/icons/PasswordIcon';
 import { UserIcon } from '@/assets/icons/UserIcon';
-import { useAuth } from '@/contexts/auth';
 import { useAppDispatch } from '@/redux/store';
 import { setToken } from '@/redux/user/actions';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
-import styles from '../../app/login/page.module.scss';
+import styles from '../login/Login.module.scss';
 import Button from '../button';
 import { Input } from '../input';
 
