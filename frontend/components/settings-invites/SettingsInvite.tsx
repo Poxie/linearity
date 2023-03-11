@@ -6,6 +6,7 @@ import { CloseIcon } from "@/assets/icons/CloseIcon";
 import { useAppDispatch } from "@/redux/store";
 import { updateInviteStatus } from "@/redux/teams/actions";
 import { useAuth } from "@/contexts/auth";
+import { UserAvatar } from "../user-avatar";
 
 export const SettingsInvite: React.FC<{
     invite: Invite;
@@ -47,9 +48,11 @@ export const SettingsInvite: React.FC<{
     return(
         <li className={styles['item']}>
             <div className={styles['flex']}>
-                <div className={styles['icon']}>
-                    {invite.user.name[0]}
-                </div>
+                <UserAvatar 
+                    className={styles['avatar']}
+                    avatar={invite.user.avatar}
+                    name={invite.user.name}
+                />
                 <span>
                     {invite.user.name}
                 </span>

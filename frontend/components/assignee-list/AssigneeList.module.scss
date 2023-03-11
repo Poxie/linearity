@@ -11,13 +11,8 @@
     align-items: center;
     gap: var(--spacing-quaternary);
 }
-.item-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
+.item-avatar {
+    --size: 16px;
+    font-size: 9px;
     background-color: var(--background-quinary);
 }

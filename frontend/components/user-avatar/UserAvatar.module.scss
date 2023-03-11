@@ -1,0 +1,16 @@
+.container {
+    --size: 50px;
+    width: var(--size);
+    height: var(--size);
+    border-radius: var(--border-radius-tertiary);
+    border: 1px solid var(--background-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+
+    &.round {
+        border-radius: 50%;
+    }
+}

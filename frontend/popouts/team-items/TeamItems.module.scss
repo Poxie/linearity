@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-tertiary);
-    padding: var(--spacing-tertiary);
+    padding: var(--spacing-quaternary);
     border-radius: var(--border-radius-tertiary);
     transition: background-color .2s;
     cursor: pointer;
@@ -19,16 +19,10 @@
         background-color: var(--background-quaternary);
     }
 }
-.member-icon {
-    width: 25px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--background-quinary);
-    border: 2px solid var(--background-quaternary);
-    border-radius: 50%;
-    font-size: 12px;
+.member-avatar {
+    --size: 25px;
+    border-color: var(--background-quinary);
+    font-size: 10px;
 }
 .label {
     width: 100%;

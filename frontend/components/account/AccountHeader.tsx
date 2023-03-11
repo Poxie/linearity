@@ -1,9 +1,8 @@
-"use client";
-
 import { useAppSelector } from '@/redux/store';
 import { selectUser, selectUserLoading } from '@/redux/user/selectors';
 import { useRouter } from 'next/navigation';
 import Button from '../button';
+import { UserAvatar } from '../user-avatar';
 import styles from './Account.module.scss';
 
 export const AccountHeader = () => {
@@ -19,9 +18,11 @@ export const AccountHeader = () => {
     
     return(
         <div className={styles['header']}>
-            <div className={styles['header-icon']}>
-                {user.name[0].toUpperCase()}
-            </div>
+            <UserAvatar 
+                className={styles['header-avatar']}
+                avatar={user.avatar}
+                name={user.name}
+            />
             <div className={styles['header-text']}>
                 <div className={styles['header-text-main']}>
                     <span className={styles['header-name']}>

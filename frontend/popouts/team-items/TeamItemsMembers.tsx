@@ -1,5 +1,6 @@
 import styles from './TeamItems.module.scss';
 import { Member } from "@/types"
+import { UserAvatar } from '@/components/user-avatar';
 
 export const TeamItemsMembers: React.FC<{
     members: Member[];
@@ -13,9 +14,12 @@ export const TeamItemsMembers: React.FC<{
                         className={styles['member-item']}
                         onClick={() => handleSelect(member)}
                     >
-                        <span className={styles['member-icon']}>
-                            {member.name[0]}
-                        </span>
+                        <UserAvatar 
+                            className={styles['member-avatar']}
+                            avatar={member.avatar}
+                            name={member.name}
+                            round
+                        />
                         {member.name}
                     </button>
                 </li>

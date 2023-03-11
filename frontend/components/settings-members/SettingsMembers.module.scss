@@ -48,15 +48,11 @@
     align-items: center;
     gap: var(--spacing-tertiary);
 }
-.member-icon {
-    width: 25px;
+.item-avatar {
+    --size: 25px;
     height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--background-quaternary);
-    border: 2px solid var(--background-tertiary);
-    border-radius: var(--border-radius-tertiary);
+    font-size: 11px;
+    border-color: var(--background-quaternary);
 }
 .empty {
     color: var(--text-secondary);

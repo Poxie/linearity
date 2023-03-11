@@ -1,5 +1,3 @@
-"use client";
-
 import { MemberIcon } from '@/assets/icons/MemberIcon';
 import { SearchIcon } from '@/assets/icons/SearchIcon';
 import { useModal } from '@/contexts/modal';
@@ -11,6 +9,7 @@ import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 import Button from '../button';
 import { Input } from '../input';
+import { UserAvatar } from '../user-avatar';
 import styles from './SettingsMembers.module.scss';
 
 export const SettingsMembers = () => {
@@ -63,9 +62,11 @@ export const SettingsMembers = () => {
                     {filteredMembers.map(member => (
                         <li key={member.id} className={styles['list-item']}>
                             <div className={styles['list-item-main']}>
-                                <div className={styles['member-icon']}>
-                                    {member.name[0]}
-                                </div>
+                                <UserAvatar 
+                                    className={styles['item-avatar']}
+                                    avatar={member.avatar}
+                                    name={member.name}
+                                />
                                 <span>
                                     {member.name}
                                 </span>

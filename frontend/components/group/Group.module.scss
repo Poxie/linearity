@@ -131,17 +131,8 @@
 
     .assignee {
         border-radius: 50%;
-        background-color: var(--background-quaternary);
-        border: 1px solid var(--background-quinary);
         margin-left: calc(-1 * var(--spacing-primary) / 2);
         transition: margin .2s;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 9px;
-        font-weight: 600;
         cursor: pointer;
     
         svg {
@@ -153,6 +144,11 @@
         &:first-child {
             margin-left: 0;
         }
+    }
+    .assignee-avatar {
+        --size: 20px;
+        font-size: 9px;
+        border-color: var(--background-quinary);
     }
 
     &:hover {

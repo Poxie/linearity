@@ -1,6 +1,7 @@
 import styles from './AssigneeList.module.scss';
 import { Member } from "@/types"
 import { SelectTeamItem } from '../select-team-item/SelectTeamItem';
+import { UserAvatar } from '../user-avatar';
 
 export const AssigneeList: React.FC<{
     members: Member[];
@@ -21,9 +22,12 @@ export const AssigneeList: React.FC<{
                             onMemberClick && onMemberClick(member);
                         }}
                     >
-                        <div className={styles['item-icon']}>
-                            {member.name[0]}
-                        </div>
+                        <UserAvatar 
+                            className={styles['item-avatar']}
+                            avatar={member.avatar}
+                            name={member.name}
+                            round
+                        />
                         {member.name}
                     </button>
                 </li>
