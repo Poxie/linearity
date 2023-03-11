@@ -1,6 +1,5 @@
 .user-header {
     display: flex;
-    align-items: center;
     gap: var(--spacing-tertiary);
     padding: var(--spacing-secondary);
     border-bottom: 1px solid var(--background-tertiary);
@@ -10,7 +9,7 @@
 }
 .user-text {
     display: grid;
-    gap: var(--spacing-quaternary);
+    gap: 4px;
 }
 .name {
     font-size: 20px;
