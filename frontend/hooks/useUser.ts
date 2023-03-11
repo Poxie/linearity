@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/auth";
 import { useAppDispatch } from "@/redux/store";
-import { updateUser, _updateUser } from "@/redux/user/actions";
+import { setUser, updateUser, _updateUser } from "@/redux/user/actions";
 import { User } from "@/types";
 import { useCallback } from "react";
 
@@ -13,9 +13,9 @@ export const useUser = (userId: number) => {
         onError?: (error: Error) => void;
         onSuccess?: () => void;
     }) => {
-        patch(`/users/${userId}`, user)
-            .then(() => {
-                dispatch(_updateUser(user));
+        patch<User>(`/users/${userId}`, user)
+            .then(user => {
+                dispatch(setUser(user));
                 if(onSuccess) onSuccess();
             })
             .catch(onError);

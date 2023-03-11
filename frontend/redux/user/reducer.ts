@@ -19,7 +19,7 @@ const setUser: ReducerAction = (state, action) => {
     const user: User | null = action.payload;
 
     return updateObject(state, {
-        user,
+        user: updateObject(state.user, user),
         loading: false
     })
 }
