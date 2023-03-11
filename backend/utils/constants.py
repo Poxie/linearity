@@ -7,3 +7,4 @@ PATCH_TASK_ALLOWED_PROPERTIES=['title', 'description', 'block_id', 'position', '
 PATCH_LABEL_ALLOWED_PROPERTIES=['name', 'color']
 ALLOWED_MEMBER_ROLES=['member']
 ALLOWED_INVITE_STATUSES=['rejected', 'expired']
+AVATAR_PATH='../imgs/avatar/'

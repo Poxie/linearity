@@ -3,7 +3,7 @@ from flask import Blueprint, jsonify, request
 from database import database
 from utils.common import create_id, get_user_by_id, get_user_teams, get_member, get_team_by_id
 from utils.auth import token_required
-from utils.constants import PATCH_USER_ALLOWED_PROPERTIES
+from utils.constants import PATCH_USER_ALLOWED_PROPERTIES, AVATAR_PATH
 from time import time
 from cryptography.fernet import Fernet
 f = Fernet(os.getenv('CRYPTOGRAPHY_KEY'))
@@ -126,6 +126,21 @@ def update_user_route(user_id: int, token_id: int):
         # Appending values
         keys.append(key)
         values += (value,)
+
+    # Checking uploaded files
+    for key, value in request.files.items():
+        app_root = os.path.dirname(os.path.abspath(__file__))
+        id = f'{user_id}-{round(time())}.png'
+        file_name = None
+        
+        if key == 'avatar':
+            folder = os.path.join(app_root, AVATAR_PATH)
+            file_name = os.path.join(folder, id)
+            
+            keys.append(key)
+            values += (id,)
+
+            value.save(file_name)
 
     # If not properties are updated
     if not len(keys):
