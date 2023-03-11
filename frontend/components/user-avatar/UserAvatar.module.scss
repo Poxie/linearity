@@ -1,5 +1,6 @@
 .container {
     --size: 50px;
+    min-width: var(--size);
     width: var(--size);
     height: var(--size);
     border-radius: var(--border-radius-tertiary);
