@@ -70,4 +70,16 @@ describe('Input', () => {
         expect(mockFocus).toHaveBeenCalled();
         expect(mockBlur).toHaveBeenCalled();
     })
+    it('should return the input value on enter', () => {
+        const mockSubmit = jest.fn(text => text);
+
+        render(<Input onSubmit={mockSubmit} />);
+        const input = screen.getByRole('textbox');
+
+        fireEvent.change(input, { target: { value: DEFAULT_WRITING } });
+        fireEvent.keyDown(input, { key: 'Enter', charCode: 13 });
+
+        expect(mockSubmit).toHaveBeenCalled();
+        expect(mockSubmit).toHaveReturnedWith(DEFAULT_WRITING);
+    })
 })
