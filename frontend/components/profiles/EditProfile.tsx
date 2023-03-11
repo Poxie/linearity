@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import Button from '../button';
 import { Input } from '../input';
 import { StatusMessage } from '../status-message';
+import { ProfileAvatar } from './ProfileAvatar';
 import styles from './Profiles.module.scss';
 import { useProfile } from './UserProfile';
 
@@ -43,6 +44,7 @@ export const EditProfile = () => {
 
     return(
         <div className={styles['profile']}>
+            <ProfileAvatar />
             <Input 
                 defaultValue={name}
                 placeholder={'Name'}

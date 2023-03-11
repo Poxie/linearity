@@ -8,9 +8,12 @@ import { ProfilePreview } from './ProfilePreview';
 import styles from './Profiles.module.scss';
 import { useUser } from '@/hooks/useUser';
 
+type ProfileUser = Omit<User, 'avatar'> & {
+    avatar: null | string | File;
+}
 const ProfileContext = React.createContext({} as {
-    profile: User;
-    localUpdate: (user: Partial<User>) => void;
+    profile: ProfileUser;
+    localUpdate: (user: Partial<ProfileUser>) => void;
     update: ({
         onSuccess,
         onError,
@@ -27,9 +30,9 @@ export const useProfile = () => React.useContext(ProfileContext);
 export const UserProfile = () => {
     const user = useAppSelector(selectUser);
     const { updateProperties } = useUser(user?.id as number);
-    const [profile, setProfile] = useState(user as User);
+    const [profile, setProfile] = useState(user as ProfileUser);
 
-    const localUpdate = (user: Partial<User>) => setProfile(prev => ({
+    const localUpdate = (user: Partial<ProfileUser>) => setProfile(prev => ({
         ...prev,
         ...user
     }));
@@ -44,7 +47,8 @@ export const UserProfile = () => {
     }) => {
         const propsToUpdate = [
             [user?.name, profile.name, 'name'],
-            [user?.bio, profile.bio, 'bio']
+            [user?.bio, profile.bio, 'bio'],
+            [user?.avatar, profile.avatar, 'avatar']
         ].filter(
             ([prevValue, newValue]) => prevValue !== newValue
         ) as [any, any, keyof User][];
