@@ -2,6 +2,7 @@ import styles from './Group.module.scss';
 import { useAppSelector } from "@/redux/store";
 import { selectBlockInfo, selectBlockTaskCount } from "@/redux/teams/selectors";
 import { useBlock } from "./GroupBlock"
+import { useBlock as _useBlock } from '@/hooks/useBlock';
 import { MenuGroup, useMenu } from '@/contexts/menu';
 import { useRef } from 'react';
 import { useModal } from '@/contexts/modal';
@@ -15,6 +16,7 @@ export const GroupBlockHeader: React.FC<{
     const { setMenu } = useMenu();
     const { setModal } = useModal();
     const { blockId, groupId } = useBlock();
+    const { removeSelf } = _useBlock(blockId);
 
     const { name } = useAppSelector(state => selectBlockInfo(state, blockId));
     const taskCount = useAppSelector(state => selectBlockTaskCount(state, blockId));
@@ -32,6 +34,9 @@ export const GroupBlockHeader: React.FC<{
             [
                 { text: 'Edit block', onClick: editBlock, type: 'default' },
                 { text: 'Add issue', onClick: addIssue, type: 'default' }
+            ],
+            [
+                { text: 'Remove block', onClick: removeSelf, type: 'danger' }
             ]
         ]
 

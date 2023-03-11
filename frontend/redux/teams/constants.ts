@@ -10,6 +10,7 @@ export const SET_GROUPS = 'SET_GROUPS';
 export const ADD_GROUP = 'ADD_GROUP';
 export const SET_BLOCKS = 'SET_BLOCKS';
 export const ADD_BLOCK = 'ADD_BLOCK';
+export const REMOVE_BLOCK = 'REMOVE_BLOCK';
 export const UPDATE_BLOCK = 'UPDATE_BLOCK';
 export const SET_TASKS = 'SET_TASKS';
 export const ADD_TASK = 'ADD_TASK';

@@ -2,12 +2,18 @@ import { useAuth } from "@/contexts/auth";
 import { useAppDispatch } from "@/redux/store";
 import { Block, Task } from "@/types";
 import { useCallback } from "react"
-import { addTask as addBlockTask, updateBlock } from "@/redux/teams/actions";
+import { addTask as addBlockTask, removeBlock, updateBlock } from "@/redux/teams/actions";
 
 export const useBlock = (blockId: number) => {
-    const { post, patch } = useAuth();
+    const { post, patch, destroy } = useAuth();
     const dispatch = useAppDispatch();
 
+    const removeSelf = useCallback(async () => {
+        destroy(`/blocks/${blockId}`)
+            .then(() => {
+                dispatch(removeBlock(blockId));
+            });
+    }, [blockId]);
     const addTask = useCallback(async (task: {
         title?: string;
         description?: string;
@@ -27,5 +33,5 @@ export const useBlock = (blockId: number) => {
         });
     }, [blockId, patch]);
 
-    return { addTask, updateProperty };
+    return { addTask, updateProperty, removeSelf };
 }
