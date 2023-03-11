@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import styles from './Group.module.scss';
+import { useTask as _useTask } from '@/hooks/useTask';
 import { GroupTaskContent } from './GroupTaskContent';
 import { GroupTaskHeader } from './GroupTaskHeader';
 import { GroupTaskLabels } from './GroupTaskLabels';
@@ -21,12 +22,16 @@ export const GroupTask = React.memo<{
 }>(({ taskId, className }) => {
     const { setModal } = useModal();
     const { setMenu } = useMenu();
+    const { removeSelf } = _useTask(taskId);
     const ref = useRef<HTMLDivElement>(null);
 
     const openMenu = (event: React.MouseEvent) => {
         const groups: MenuGroup[] = [
             [
                 { text: 'View task', onClick: () => setModal(<EditTaskModal taskId={taskId} />), type: 'default' }
+            ],
+            [
+                { text: 'Delete task', onClick: removeSelf, type: 'danger' }
             ]
         ]
         setMenu({
