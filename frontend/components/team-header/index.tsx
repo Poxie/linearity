@@ -8,6 +8,7 @@ import { Dropdown } from '../dropdown';
 import { Input } from '../input';
 import styles from './TeamHeader.module.scss';
 import { TeamHeaderPlaceholder } from './TeamHeaderPlaceholder';
+import { TeamHeaderSearch } from './TeamHeaderSearch';
 
 export const TeamHeader: React.FC<{
     teamId: number;
@@ -36,10 +37,9 @@ export const TeamHeader: React.FC<{
                     defaultSelected={teamId}
                     onChange={goToTeam}
                 />
-                <Input 
-                    containerClassName={styles['input']}
-                    placeholder={`Search in ${team?.name}`}
-                    icon={<SearchIcon />}
+                <TeamHeaderSearch 
+                    name={team?.name} 
+                    teamId={teamId} 
                 />
             </div>
             <div className={styles['header-content']}>

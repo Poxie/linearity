@@ -73,6 +73,10 @@ export const selectBlockInfo = createSelector(
 )
 
 const selectTasks = (state: RootState) => state.teams.tasks;
+export const selectTasksByTeam = createSelector(
+    [selectTasks, selectId],
+    (tasks, teamId) => tasks.filter(task => task.team_id === teamId)
+)
 export const selectTasksByBlockId = createSelector(
     [selectTasks, selectId],
     (tasks, blockId) => tasks.filter(task => task.block_id === blockId)
