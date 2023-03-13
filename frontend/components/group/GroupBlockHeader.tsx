@@ -32,10 +32,11 @@ export const GroupBlockHeader: React.FC<{
     const openMenu = (e: React.MouseEvent) => {
         const groups: MenuGroup[] = [
             [
-                { text: 'Edit block', onClick: editBlock, type: 'default' },
-                { text: 'Add issue', onClick: addIssue, type: 'default' }
+                { text: 'Add issue', onClick: addIssue, type: 'default' },
+                { text: 'View block', onClick: editBlock, type: 'default' },
             ],
             [
+                { text: 'Edit block', onClick: editBlock, type: 'default' },
                 { text: 'Remove block', onClick: removeSelf, type: 'danger' }
             ]
         ]
