@@ -9,6 +9,7 @@ import { LabelList } from '../label-list/LabelList';
 import { UserAvatar } from '../user-avatar';
 import { SearchGroup } from './SearchGroup';
 import styles from './TeamHeader.module.scss';
+import { useState } from 'react';
 
 const SHOW_COUNT = 4;
 export const TeamHeaderSearchResults: React.FC<{
@@ -18,6 +19,9 @@ export const TeamHeaderSearchResults: React.FC<{
 }> = ({ search, teamId, close }) => {
     const { setModal } = useModal();
     const { setPortal } = usePortal();
+
+    const [showAllMembers, setShowAllMembers] = useState(false);
+    const [showAllTasks, setShowAllTasks] = useState(false);
 
     const openMemberPortal = (memberId: number) => setPortal(<MemberPortal teamId={teamId} userId={memberId} />);
     const openTaskModal = (taskId: number) => setModal(<EditTaskModal taskId={taskId} />);
@@ -29,13 +33,19 @@ export const TeamHeaderSearchResults: React.FC<{
         members.filter(member => 
             member.name.toLowerCase().includes(search.toLowerCase()
         ))
-    ).slice(0, SHOW_COUNT);
+    )
     const filteredTasks = (
         tasks.filter(task => 
             task.title.toLowerCase().includes(search.toLowerCase())    
         )
-    ).slice(0, SHOW_COUNT);
+    )
 
+    const memberShowAmount = showAllMembers ? filteredMembers.length : (
+        SHOW_COUNT < filteredMembers.length ? SHOW_COUNT : filteredMembers.length
+    );
+    const taskShowAmount = showAllTasks ? filteredTasks.length : (
+        SHOW_COUNT < filteredTasks.length ? SHOW_COUNT : filteredTasks.length
+    );
     const empty = !filteredMembers.length && !filteredTasks.length;
     return(
         <motion.div 
@@ -51,9 +61,15 @@ export const TeamHeaderSearchResults: React.FC<{
             )}
 
             {filteredMembers.length !== 0 && (
-                <SearchGroup header={'Members'}>
+                <SearchGroup 
+                    header={'Members'}
+                    showAmount={filteredMembers.length < memberShowAmount ? filteredMembers.length : memberShowAmount}
+                    totalAmount={filteredMembers.length}
+                    showingMore={showAllMembers}
+                    toggleShowMore={() => setShowAllMembers(!showAllMembers)}
+                >
                     <ul className={styles['search-list']}>
-                        {filteredMembers.map(member => (
+                        {filteredMembers.slice(0, memberShowAmount).map(member => (
                             <li>
                                 <button 
                                     className={styles['search-item']}
@@ -82,9 +98,15 @@ export const TeamHeaderSearchResults: React.FC<{
                 </SearchGroup>
             )}
             {filteredTasks.length !== 0 && (
-                <SearchGroup header={'Issues'}>
+                <SearchGroup 
+                    header={'Issues'}
+                    showAmount={filteredTasks.length < taskShowAmount ? filteredTasks.length : taskShowAmount}
+                    totalAmount={filteredTasks.length}
+                    showingMore={showAllTasks}
+                    toggleShowMore={() => setShowAllTasks(!showAllTasks)}
+                >
                     <ul className={styles['search-list']}>
-                        {filteredTasks.map(task => (
+                        {filteredTasks.slice(0, taskShowAmount).map(task => (
                             <li>
                                 <button 
                                     className={styles['search-item']}

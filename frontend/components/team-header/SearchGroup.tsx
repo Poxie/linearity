@@ -1,14 +1,31 @@
 import styles from './TeamHeader.module.scss';
 
+const DEFAULT_SHOW_COUNT = 4;
 export const SearchGroup: React.FC<{
+    totalAmount: number;
+    showAmount: number;
     header: string;
+    showingMore: boolean;
+    toggleShowMore: () => void;
     children: any;
-}> = ({ header, children }) => {
+}> = ({ totalAmount, showAmount, header, showingMore, toggleShowMore, children }) => {
     return(
         <div className={styles['search-group']}>
-            <span className={styles['search-group-header']}>
-                {header}
-            </span>
+            <div className={styles['search-group-header']}>
+                <div className={styles['header-main']}>
+                    <span>
+                        {header}
+                    </span>
+                    <span className={styles['search-count']}>
+                        Showing {showAmount} of {totalAmount}
+                    </span>
+                </div>
+                {totalAmount > DEFAULT_SHOW_COUNT && (
+                    <button onClick={toggleShowMore}>
+                        {showingMore ? 'Show less' : 'Show more'}
+                    </button>
+                )}
+            </div>
             {children}
         </div>
     )

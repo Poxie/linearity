@@ -47,9 +47,29 @@
     border-top: 1px solid var(--background-quaternary);
 }
 .search-group-header {
-    display: block;
     font-size: 12px;
+    display: flex;
+    justify-content: space-between;
     margin-bottom: var(--spacing-quaternary);
+
+    button {
+        font-size: 11px;
+        color: var(--text-secondary);
+        transition: color .2s;
+
+        &:hover {
+            color: var(--text-primary);
+        }
+    }
+}
+.header-main {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--spacing-tertiary);
+}
+.search-count {
+    color: var(--text-secondary);
+    font-size: 11px;
 }
 .avatar {
     --size: 22px;
