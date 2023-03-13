@@ -2,6 +2,7 @@ import { AddIcon } from '@/assets/icons/AddIcon';
 import { useAppSelector } from '@/redux/store';
 import { selectTeams, selectTeamsLoading } from '@/redux/teams/selectors';
 import Button from '../button';
+import { AddTeamButton } from './AddTeamButton';
 import styles from './TeamSelection.module.scss';
 import { TeamSelectionInbox } from './TeamSelectionInbox';
 import { TeamSelectionItem } from './TeamSelectionItem';
@@ -49,12 +50,7 @@ export const TeamSelection = () => {
             </div>
             {!loading && (
                 <div className={styles['footer']}>
-                    <Button
-                        icon={<AddIcon />}
-                        className={styles['footer-button']}
-                    >
-                        Add Team
-                    </Button>
+                    <AddTeamButton />
                     <TeamSelectionInbox />
                 </div>
             )}
