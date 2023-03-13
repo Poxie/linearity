@@ -5,10 +5,15 @@ import { SidebarGroup } from "./SidebarGroup"
 import Link from 'next/link';
 import Button from '../button';
 import { AddIcon } from '@/assets/icons/AddIcon';
+import { useModal } from '@/contexts/modal';
+import { AddTeamModal } from '@/modals/add-team';
 
 export const SidebarTeams = () => {
+    const { setModal } = useModal();
     const teams = useAppSelector(selectTeams);
     const loading = useAppSelector(selectTeamsLoading);
+
+    const openModal = () => setModal(<AddTeamModal />);
 
     return(
         <SidebarGroup header={'My teams'}>
@@ -31,6 +36,7 @@ export const SidebarTeams = () => {
                     type={'hollow'} 
                     icon={<AddIcon />}
                     className={styles['add-team-button']}
+                    onClick={openModal}
                 >
                     Add Team
                 </Button>
