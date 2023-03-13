@@ -1,7 +1,5 @@
-import { AddIcon } from '@/assets/icons/AddIcon';
 import { useAppSelector } from '@/redux/store';
 import { selectTeams, selectTeamsLoading } from '@/redux/teams/selectors';
-import Button from '../button';
 import { AddTeamButton } from './AddTeamButton';
 import styles from './TeamSelection.module.scss';
 import { TeamSelectionInbox } from './TeamSelectionInbox';

@@ -1,13 +1,28 @@
 .container {
-    padding: var(--spacing-primary) 0;
     display: grid;
+    padding: var(--spacing-primary) 0;
     gap: var(--spacing-primary);
+    overflow: hidden;
+
+    &::-webkit-scrollbar {
+        width: 30px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--background-quaternary);
+        border: 10px solid var(--background-secondary);
+        border-radius: 120px;
+    }
 }
 .header, .list {
     padding: 0 var(--spacing-primary);
 }
 .header {
     margin: 0;
+}
+.list {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 .list>.item {
     background-color: var(--background-quaternary);
@@ -18,6 +33,7 @@
 .list>ul {
     display: grid;
     gap: var(--spacing-tertiary);
+    overflow: auto;
 
     .item {
         cursor: pointer;
@@ -27,6 +43,15 @@
             background-color: var(--background-quaternary);
             transform: translateY(-2px);
         }
+    }
+
+    &::-webkit-scrollbar {
+        width: 25px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--background-quaternary);
+        border: 8px solid var(--background-secondary);
+        border-radius: 120px;
     }
 }
 .item {
