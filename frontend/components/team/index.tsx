@@ -1,6 +1,4 @@
-export const Team: React.FC<{
-    params: { teamId: number };
-}> = ({ params: { teamId } }) => {
+export const Team = () => {
     return(
         <div>
             teammm
