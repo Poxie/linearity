@@ -31,6 +31,7 @@ export const GroupTask = React.memo<{
                 { text: 'View task', onClick: () => setModal(<EditTaskModal taskId={taskId} />), type: 'default' }
             ],
             [
+                { text: 'Edit task', onClick: () => setModal(<EditTaskModal taskId={taskId} />), type: 'default' },
                 { text: 'Delete task', onClick: removeSelf, type: 'danger' }
             ]
         ]
