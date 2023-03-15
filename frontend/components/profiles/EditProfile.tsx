@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
 import Button from '../button';
+import { useState } from 'react';
 import { Input } from '../input';
 import { StatusMessage } from '../status-message';
 import { ProfileAvatar } from './ProfileAvatar';
+import { ProfileGroup } from './ProfileGroup';
 import styles from './Profiles.module.scss';
 import { useProfile } from './UserProfile';
 
@@ -44,39 +45,45 @@ export const EditProfile = () => {
 
     return(
         <div className={styles['profile']}>
-            <ProfileAvatar />
-            <Input 
-                defaultValue={name}
-                placeholder={'Name'}
-                onChange={name => localUpdate({ name })}
-            />
-            <Input 
-                defaultValue={bio || ''}
-                placeholder={'bio'}
-                onChange={bio => localUpdate({ bio })}
-                textArea
-            />
             {status && (
                 <StatusMessage 
                     {...status}
                 />
             )}
-            <div className={styles['profile-buttons']}>
-                {hasChanges && (
+            <ProfileGroup header={'Avatar'}>
+                <ProfileAvatar />
+            </ProfileGroup>
+            <ProfileGroup header={'About me'}>
+                <div className={styles['inputs']}>
+                    <Input 
+                        defaultValue={name}
+                        placeholder={'Name'}
+                        onChange={name => localUpdate({ name })}
+                    />
+                    <Input 
+                        defaultValue={bio || ''}
+                        placeholder={'bio'}
+                        onChange={bio => localUpdate({ bio })}
+                        textArea
+                    />
+                </div>
+            </ProfileGroup>
+            {hasChanges && (
+                <div className={styles['profile-buttons']}>
                     <Button 
                         type={'transparent'}
                         onClick={reset}
                     >
                         Reset
                     </Button>
-                )}
-                <Button 
-                    onClick={onClick} 
-                    disabled={loading}
-                >
-                    {loading ? 'Updating...' : 'Update'}
-                </Button>
-            </div>
+                    <Button 
+                        onClick={onClick} 
+                        disabled={loading}
+                    >
+                        {loading ? 'Updating...' : 'Update'}
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }
