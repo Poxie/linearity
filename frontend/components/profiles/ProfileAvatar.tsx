@@ -16,7 +16,7 @@ export const ProfileAvatar = () => {
     }
 
     let avatarUrl = avatar ? `${process.env.NEXT_PUBLIC_IMG_ENDPOINT}/avatar/${avatar}` : undefined;
-    if(avatar instanceof File) {
+        if(avatar instanceof File) {
         const blob = new Blob([avatar]);
         avatarUrl = URL.createObjectURL(blob);
     }
@@ -33,12 +33,22 @@ export const ProfileAvatar = () => {
                 />
                 {!avatarUrl ? name[0].toUpperCase() : ''}
             </div>
-            <Button 
-                className={styles['avatar-button']}
-                onClick={() => input.current?.click()}
-            >
-                Change avatar
-            </Button>
+            <div className={styles['avatar-buttons']}>
+                <Button 
+                    className={styles['avatar-button']}
+                    onClick={() => input.current?.click()}
+                >
+                    Change avatar
+                </Button>
+                {avatarUrl && (
+                    <Button 
+                        className={styles['remove-avatar-button']}
+                        onClick={() => localUpdate({ avatar: null })}
+                    >
+                        Remove avatar
+                    </Button>
+                )}
+            </div>
         </div>
     )
 }
