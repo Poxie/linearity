@@ -23,6 +23,8 @@ const ProfileContext = React.createContext({} as {
         onError: (error: Error) => void;
         onNoChanges: () => void;
     }) => void;
+    reset: () => void;
+    hasChanges: boolean;
 });
 
 export const useProfile = () => React.useContext(ProfileContext);
@@ -63,11 +65,19 @@ export const UserProfile = () => {
             onError
         });
     }
+    const reset = () => {
+        if(!user) return;
+        setProfile(user);
+    }
+
+    const hasChanges = Object.entries(profile).filter(([prop, val]) => user && user[prop as keyof User] !== val).length !== 0;
     
     const value = {
         profile,
         localUpdate,
-        update
+        update,
+        hasChanges,
+        reset
     }
     return(
         <ProfileContext.Provider value={value}>

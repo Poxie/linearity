@@ -7,7 +7,7 @@ import styles from './Profiles.module.scss';
 import { useProfile } from './UserProfile';
 
 export const EditProfile = () => {
-    const { profile: { name, bio }, localUpdate, update } = useProfile();
+    const { profile: { name, bio }, localUpdate, update, reset, hasChanges } = useProfile();
     
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState<null | {
@@ -62,6 +62,14 @@ export const EditProfile = () => {
                 />
             )}
             <div className={styles['profile-buttons']}>
+                {hasChanges && (
+                    <Button 
+                        type={'transparent'}
+                        onClick={reset}
+                    >
+                        Reset
+                    </Button>
+                )}
                 <Button 
                     onClick={onClick} 
                     disabled={loading}
