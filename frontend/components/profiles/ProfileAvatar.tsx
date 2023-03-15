@@ -12,6 +12,8 @@ export const ProfileAvatar = () => {
         if(!e.target.files) return;
 
         const avatar = e.target.files[0];
+        if(!avatar) return;
+
         localUpdate({ avatar });
     }
 
