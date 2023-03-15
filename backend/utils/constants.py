@@ -1,5 +1,5 @@
 ID_LENGTH=14
-PATCH_USER_ALLOWED_PROPERTIES=['username', 'name', 'bio']
+PATCH_USER_ALLOWED_PROPERTIES=['username', 'name', 'bio', 'avatar']
 PATCH_TEAM_ALLOWED_PROPERTIES=['name', 'description']
 PATCH_GROUP_ALLOWED_PROPERTIES=['name', 'description']
 PATCH_BLOCK_ALLOWED_PROPERTIES=['name', 'description']

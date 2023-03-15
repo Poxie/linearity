@@ -122,6 +122,12 @@ def update_user_route(user_id: int, token_id: int):
         # Checking if required property has no value
         if key == 'name' and not value:
             return f'{key.title()} cannot be empty', 400
+        
+        # Checking if avatar is valid
+        if key == 'avatar' and value != 'null':
+            return 'Avatars must be null or file', 400
+        if key == 'avatar':
+            value = None
 
         # Appending values
         keys.append(key)
