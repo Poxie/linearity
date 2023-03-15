@@ -73,6 +73,10 @@
 .avatar-button {
     font-size: 12px;
     padding: var(--spacing-tertiary);
+
+    &:hover {
+        color: var(--text-primary) !important;
+    }
 }
 .remove-avatar-button {
     @extend .avatar-button;
