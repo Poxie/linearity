@@ -80,7 +80,7 @@ export const EditProfile = () => {
                         onClick={onClick} 
                         disabled={loading}
                     >
-                        {loading ? 'Updating...' : 'Update'}
+                        {loading ? 'Saving...' : 'Save Changes'}
                     </Button>
                 </div>
             )}
