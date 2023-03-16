@@ -13,10 +13,11 @@ export const useUser = (userId: number) => {
         onError?: (error: Error) => void;
         onSuccess?: () => void;
     }) => {
-        patch<User>(`/users/${userId}`, user)
+        return patch<User>(`/users/${userId}`, user)
             .then(user => {
                 dispatch(setUser(user));
                 if(onSuccess) onSuccess();
+                return user;
             })
             .catch(onError);
     }, [userId, patch]);

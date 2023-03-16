@@ -63,7 +63,9 @@ export const UserProfile = () => {
             user: userProps,
             onSuccess,
             onError
-        });
+        }).then(user => {
+            localUpdate({ ...user });
+        })
     }
     const reset = () => {
         if(!user) return;
